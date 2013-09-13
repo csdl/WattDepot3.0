@@ -1,0 +1,144 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0">
+
+	<xs:annotation>
+		<xs:appinfo>
+			<jaxb:globalBindings generateIsSetMethod="true">
+				<xjc:serializable uid="12343" />
+			</jaxb:globalBindings>
+		</xs:appinfo>
+	</xs:annotation>
+
+	<!-- Primitive elements and attributes -->
+	<xs:element name="Key" type="xs:string" />
+	<xs:element name="PropertyValue" type="xs:string" />
+	<xs:element name="Name" type="xs:string" />
+	<xs:element name="Abbr" type="xs:string" />
+	<xs:element name="Timestamp" type="xs:dateTime" />
+	<xs:element name="MeasValue" type="xs:decimal" />
+	<xs:element name="Protocol" type="xs:string" />
+	<xs:element name="Type" type="xs:string" />
+	<xs:element name="Version" type="xs:string" />
+	<xs:element name="URI" type="xs:anyURI" />
+	<xs:element name="Latitude" type="xs:decimal" />
+	<xs:element name="Longitude" type="xs:decimal" />
+	<xs:element name="Altitude" type="xs:decimal" />
+	<xs:element name="Description" type="xs:string" />
+	<xs:element name="UpdateRate" type="xs:integer" />
+	<xs:element name="Owner" type="xs:anyURI" />
+	<xs:element name="Public" type="xs:boolean" />
+
+
+	<xs:element name="Property">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Key" />
+				<xs:element ref="PropertyValue" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Properties">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Property" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Unit">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Name" />
+				<xs:element ref="Abbr" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Measurement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Timestamp" />
+				<xs:element ref="MeasValue" />
+				<xs:element ref="Unit" />
+				<xs:element ref="Properties" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="MeterModel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Protocol" />
+				<xs:element ref="Type" />
+				<xs:element ref="Version" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="MeterDataQuery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="URI" />
+				<xs:element ref="Location" />
+				<xs:element ref="MeterModel" />
+				<xs:element ref="Sensor" />
+				<xs:element ref="Properties" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Location">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Latitude" />
+				<xs:element ref="Longitude" />
+				<xs:element ref="Altitude" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="Description" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Sensor">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UpdateRate" />
+				<xs:element ref="MeterDataQuery" />
+				<xs:element ref="AtomicSource" />
+				<xs:element ref="Properties" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="VirtualSource">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Name" />
+				<xs:element ref="AtomicSource" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="VirtualSource" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AtomicSource">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Name" />
+				<xs:element ref="AccessControl" />
+				<xs:element ref="Sensor" />
+				<xs:element ref="MeterDataQuery" />
+				<xs:element ref="Measurement" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="AccessControl">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Owner" />
+				<xs:element ref="Public" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
