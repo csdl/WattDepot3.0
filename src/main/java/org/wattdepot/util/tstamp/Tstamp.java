@@ -1,4 +1,4 @@
-package org.wattdepot.util.timestamp;
+package org.wattdepot.util.tstamp;
 
 import java.util.ArrayList;
 import java.util.Calendar;

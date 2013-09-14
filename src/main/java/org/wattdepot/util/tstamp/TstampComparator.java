@@ -1,4 +1,4 @@
-package org.wattdepot.util.timestamp;
+package org.wattdepot.util.tstamp;
 
 import java.io.Serializable;
 import java.util.Comparator;
