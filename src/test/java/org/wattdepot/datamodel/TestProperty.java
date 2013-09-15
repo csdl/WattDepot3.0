@@ -5,6 +5,9 @@ package org.wattdepot.datamodel;
 
 import static org.junit.Assert.*;
 
+import javax.xml.bind.JAXBException;
+
+import org.json.JSONException;
 import org.junit.Test;
 
 /**
@@ -51,6 +54,33 @@ public class TestProperty {
     this.prop1 = new Property(this.key1, this.value1);
     assertEquals("Property toString did not return expected result", "Property [key=" + this.key1
         + ", value=" + this.value1 + "]", prop1.toString());
+  }
+
+  /**
+   * Tests the toXML() method of Property.
+   * @throws JAXBException if there is a problem.
+   */
+  @Test
+  public void testPropertyToXML() throws JAXBException {
+    this.prop1 = new Property(this.key1, this.value1);
+    String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Property><Key>" +
+    this.key1 + "</Key><PropertyValue>" + this.value1 + "</PropertyValue></Property>";
+    assertEquals("Property toXML did not return expected result: " + prop1.toXML(), result,
+        prop1.toXML());
+  }
+
+  /**
+   * Tests the toJson() method of Property.
+   * @throws JAXBException if there is a problem.
+   * @throws JSONException if there is a problem.
+   */
+  @Test
+  public void testPropertyToJSON() throws JAXBException, JSONException {
+    this.prop1 = new Property(this.key1, this.value1);
+    String result = "{\"Property\":{\"Key\":\"" + this.key1 +"\",\"PropertyValue\":\"" + 
+    this.value1 + "\"}}";
+    assertEquals("Property toJson did not return expected result: " + prop1.toJson(), result,
+        prop1.toJson());
   }
 
   /**

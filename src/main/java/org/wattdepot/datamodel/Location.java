@@ -9,6 +9,7 @@ package org.wattdepot.datamodel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "latitude", "longitude", "altitude", "description" })
 @XmlRootElement(name = "Location")
-public class Location implements Serializable {
+public class Location extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Latitude", required = true)
@@ -54,6 +55,25 @@ public class Location implements Serializable {
   protected BigDecimal altitude;
   @XmlElement(name = "Description", required = true)
   protected String description;
+
+  /** Default constructor. */
+  public Location() {
+    // JAXB needs a default constructor.
+  }
+
+  /**
+   * @param latitude The Latitude in decimal.
+   * @param longitude The Longitude in decimal.
+   * @param altitude The Altitude in meters
+   * @param description A description of the location.
+   */
+  public Location(BigDecimal latitude, BigDecimal longitude, BigDecimal altitude, String description) {
+    super();
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.altitude = altitude;
+    this.description = description;
+  }
 
   /**
    * Gets the value of the latitude property.
@@ -153,6 +173,74 @@ public class Location implements Serializable {
 
   public boolean isSetDescription() {
     return (this.description != null);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((altitude == null) ? 0 : altitude.hashCode());
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
+    result = prime * result + ((longitude == null) ? 0 : longitude.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Location other = (Location) obj;
+    if (altitude == null) {
+      if (other.altitude != null)
+        return false;
+    }
+    else if (!altitude.equals(other.altitude))
+      return false;
+    if (description == null) {
+      if (other.description != null)
+        return false;
+    }
+    else if (!description.equals(other.description))
+      return false;
+    if (latitude == null) {
+      if (other.latitude != null)
+        return false;
+    }
+    else if (!latitude.equals(other.latitude))
+      return false;
+    if (longitude == null) {
+      if (other.longitude != null)
+        return false;
+    }
+    else if (!longitude.equals(other.longitude))
+      return false;
+    return true;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "Location [latitude=" + latitude + ", longitude=" + longitude + ", altitude=" + altitude
+        + ", description=" + description + "]";
   }
 
 }

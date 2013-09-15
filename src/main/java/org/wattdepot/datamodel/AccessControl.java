@@ -9,6 +9,8 @@
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
+
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,11 +21,11 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>
  * Java class for anonymous complex type.
- *
+ * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- *
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -36,20 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
+ * 
  * @author JAXB
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "owner", "_public" })
 @XmlRootElement(name = "AccessControl")
-public class AccessControl implements Serializable {
+public class AccessControl extends DataModel implements Serializable {
 
+  /** JAXBContext for creating XML text.*/
+  private static JAXBContext jaxbContext;
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Owner", required = true)
   @XmlSchemaType(name = "anyURI")
   protected String owner;
   @XmlElement(name = "Public")
   protected boolean _public;
+
+  /** Default constructor for JAXB. */
+  public AccessControl() {
+    // JAXB requires default constructor
+  }
+
+  /**
+   * Constructor.
+   * 
+   * @param owner
+   *          The owner of this AccessControl.
+   * @param _public
+   *          A boolean true if the AccessControl is public.
+   */
+  public AccessControl(String owner, boolean _public) {
+    super();
+    this.owner = owner;
+    this._public = _public;
+  }
 
   /**
    * Gets the value of the owner property.
@@ -95,6 +118,61 @@ public class AccessControl implements Serializable {
 
   public boolean isSetPublic() {
     return true;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (_public ? 1231 : 1237);
+    result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    AccessControl other = (AccessControl) obj;
+    if (_public != other._public) {
+      return false;
+    }
+    if (owner == null) {
+      if (other.owner != null) {
+        return false;
+      }
+    }
+    else if (!owner.equals(other.owner)) {
+      return false;
+    }
+    return true;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "AccessControl [owner=" + owner + ", _public=" + _public + "]";
   }
 
 }

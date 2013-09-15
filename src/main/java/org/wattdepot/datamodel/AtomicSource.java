@@ -10,6 +10,7 @@ package org.wattdepot.datamodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,7 +19,8 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Java class for anonymous complex type.
+ * Java class for AtomicSources. AtomicSources have an associated Sensor, MeterDataQuery (meter),
+ * Name, AccessControl and a List of Measurements for the meter.
  * 
  * <p>
  * The following schema fragment specifies the expected content contained within
@@ -46,7 +48,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = { "name", "accessControl", "sensor", "meterDataQuery",
     "measurement" })
 @XmlRootElement(name = "AtomicSource")
-public class AtomicSource implements Serializable {
+public class AtomicSource extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Name", required = true)
@@ -59,6 +61,29 @@ public class AtomicSource implements Serializable {
   protected MeterDataQuery meterDataQuery;
   @XmlElement(name = "Measurement")
   protected List<Measurement> measurement;
+
+  /** Default constructor for JAXB. */
+  public AtomicSource() {
+    // JAXB requires default constructor.
+  }
+
+  /**
+   * Creates an AtomicSource.
+   * @param name The name of this source.
+   * @param accessControl The AccessControl for this source.
+   * @param sensor The Sensor poling the Meter.
+   * @param meterDataQuery The MeterDataQuery representing the Meter.
+   * @param measurement A List of Measurements.
+   */
+  public AtomicSource(String name, AccessControl accessControl, Sensor sensor,
+      MeterDataQuery meterDataQuery, List<Measurement> measurement) {
+    super();
+    this.name = name;
+    this.accessControl = accessControl;
+    this.sensor = sensor;
+    this.meterDataQuery = meterDataQuery;
+    this.measurement = measurement;
+  }
 
   /**
    * Gets the value of the name property.
@@ -196,6 +221,75 @@ public class AtomicSource implements Serializable {
 
   public void unsetMeasurement() {
     this.measurement = null;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((accessControl == null) ? 0 : accessControl.hashCode());
+    result = prime * result + ((measurement == null) ? 0 : measurement.hashCode());
+    result = prime * result + ((meterDataQuery == null) ? 0 : meterDataQuery.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((sensor == null) ? 0 : sensor.hashCode());
+    return result;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    AtomicSource other = (AtomicSource) obj;
+    if (accessControl == null) {
+      if (other.accessControl != null)
+        return false;
+    }
+    else if (!accessControl.equals(other.accessControl))
+      return false;
+    if (measurement == null) {
+      if (other.measurement != null)
+        return false;
+    }
+    else if (!measurement.equals(other.measurement))
+      return false;
+    if (meterDataQuery == null) {
+      if (other.meterDataQuery != null)
+        return false;
+    }
+    else if (!meterDataQuery.equals(other.meterDataQuery))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    }
+    else if (!name.equals(other.name))
+      return false;
+    if (sensor == null) {
+      if (other.sensor != null)
+        return false;
+    }
+    else if (!sensor.equals(other.sensor))
+      return false;
+    return true;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "AtomicSource [name=" + name + ", accessControl=" + accessControl + ", sensor=" + sensor
+        + ", meterDataQuery=" + meterDataQuery + ", measurement=" + measurement + "]";
   }
 
 }
