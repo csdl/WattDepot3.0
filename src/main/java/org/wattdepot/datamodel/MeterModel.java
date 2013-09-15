@@ -5,7 +5,6 @@
 // Generated on: 2013.09.13 at 12:12:07 PM HST 
 //
 
-
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -38,106 +39,91 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "protocol",
-    "type",
-    "version"
-})
+@XmlType(name = "", propOrder = { "protocol", "type", "version" })
 @XmlRootElement(name = "MeterModel")
-public class MeterModel
-    implements Serializable
-{
+public class MeterModel implements Serializable {
 
-    private final static long serialVersionUID = 12343L;
-    @XmlElement(name = "Protocol", required = true)
-    protected String protocol;
-    @XmlElement(name = "Type", required = true)
-    protected String type;
-    @XmlElement(name = "Version", required = true)
-    protected String version;
+  private final static long serialVersionUID = 12343L;
+  @XmlElement(name = "Protocol", required = true)
+  protected String protocol;
+  @XmlElement(name = "Type", required = true)
+  protected String type;
+  @XmlElement(name = "Version", required = true)
+  protected String version;
 
-    /**
-     * Gets the value of the protocol property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getProtocol() {
-        return protocol;
-    }
+  /**
+   * Gets the value of the protocol property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getProtocol() {
+    return protocol;
+  }
 
-    /**
-     * Sets the value of the protocol property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setProtocol(String value) {
-        this.protocol = value;
-    }
+  /**
+   * Sets the value of the protocol property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setProtocol(String value) {
+    this.protocol = value;
+  }
 
-    public boolean isSetProtocol() {
-        return (this.protocol!= null);
-    }
+  public boolean isSetProtocol() {
+    return (this.protocol != null);
+  }
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
+  /**
+   * Gets the value of the type property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getType() {
+    return type;
+  }
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
-    }
+  /**
+   * Sets the value of the type property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setType(String value) {
+    this.type = value;
+  }
 
-    public boolean isSetType() {
-        return (this.type!= null);
-    }
+  public boolean isSetType() {
+    return (this.type != null);
+  }
 
-    /**
-     * Gets the value of the version property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getVersion() {
-        return version;
-    }
+  /**
+   * Gets the value of the version property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getVersion() {
+    return version;
+  }
 
-    /**
-     * Sets the value of the version property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setVersion(String value) {
-        this.version = value;
-    }
+  /**
+   * Sets the value of the version property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setVersion(String value) {
+    this.version = value;
+  }
 
-    public boolean isSetVersion() {
-        return (this.version!= null);
-    }
+  public boolean isSetVersion() {
+    return (this.version != null);
+  }
 
 }

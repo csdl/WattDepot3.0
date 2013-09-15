@@ -1,4 +1,4 @@
-package org.wattdepot.util.logger;
+package org.wattdepot.util;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +14,7 @@ public class TestStackTrace {
    * Tests the Stack Tracing. 
    * Generates an exception, makes the Stack Trace, and checks to see if it seems OK.
    */
-  @Test public void testStackTrace () {
+  @Test public void testStackTrace() {
     String trace;
     try {
       throw new Exception("Test Exception");

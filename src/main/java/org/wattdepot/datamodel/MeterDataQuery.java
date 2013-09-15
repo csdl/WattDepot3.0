@@ -5,7 +5,6 @@
 // Generated on: 2013.09.13 at 12:12:07 PM HST 
 //
 
-
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -41,169 +42,146 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "uri",
-    "location",
-    "meterModel",
-    "sensor",
-    "properties"
-})
+@XmlType(name = "", propOrder = { "uri", "location", "meterModel", "sensor", "properties" })
 @XmlRootElement(name = "MeterDataQuery")
-public class MeterDataQuery
-    implements Serializable
-{
+public class MeterDataQuery implements Serializable {
 
-    private final static long serialVersionUID = 12343L;
-    @XmlElement(name = "URI", required = true)
-    @XmlSchemaType(name = "anyURI")
-    protected String uri;
-    @XmlElement(name = "Location", required = true)
-    protected Location location;
-    @XmlElement(name = "MeterModel", required = true)
-    protected MeterModel meterModel;
-    @XmlElement(name = "Sensor", required = true)
-    protected Sensor sensor;
-    @XmlElement(name = "Properties")
-    protected Properties properties;
+  private final static long serialVersionUID = 12343L;
+  @XmlElement(name = "URI", required = true)
+  @XmlSchemaType(name = "anyURI")
+  protected String uri;
+  @XmlElement(name = "Location", required = true)
+  protected Location location;
+  @XmlElement(name = "MeterModel", required = true)
+  protected MeterModel meterModel;
+  @XmlElement(name = "Sensor", required = true)
+  protected Sensor sensor;
+  @XmlElement(name = "Properties")
+  protected Properties properties;
 
-    /**
-     * Gets the value of the uri property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getURI() {
-        return uri;
-    }
+  /**
+   * Gets the value of the uri property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getURI() {
+    return uri;
+  }
 
-    /**
-     * Sets the value of the uri property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setURI(String value) {
-        this.uri = value;
-    }
+  /**
+   * Sets the value of the uri property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setURI(String value) {
+    this.uri = value;
+  }
 
-    public boolean isSetURI() {
-        return (this.uri!= null);
-    }
+  public boolean isSetURI() {
+    return (this.uri != null);
+  }
 
-    /**
-     * Gets the value of the location property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Location }
-     *     
-     */
-    public Location getLocation() {
-        return location;
-    }
+  /**
+   * Gets the value of the location property.
+   * 
+   * @return possible object is {@link Location }
+   * 
+   */
+  public Location getLocation() {
+    return location;
+  }
 
-    /**
-     * Sets the value of the location property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Location }
-     *     
-     */
-    public void setLocation(Location value) {
-        this.location = value;
-    }
+  /**
+   * Sets the value of the location property.
+   * 
+   * @param value
+   *          allowed object is {@link Location }
+   * 
+   */
+  public void setLocation(Location value) {
+    this.location = value;
+  }
 
-    public boolean isSetLocation() {
-        return (this.location!= null);
-    }
+  public boolean isSetLocation() {
+    return (this.location != null);
+  }
 
-    /**
-     * Gets the value of the meterModel property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MeterModel }
-     *     
-     */
-    public MeterModel getMeterModel() {
-        return meterModel;
-    }
+  /**
+   * Gets the value of the meterModel property.
+   * 
+   * @return possible object is {@link MeterModel }
+   * 
+   */
+  public MeterModel getMeterModel() {
+    return meterModel;
+  }
 
-    /**
-     * Sets the value of the meterModel property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MeterModel }
-     *     
-     */
-    public void setMeterModel(MeterModel value) {
-        this.meterModel = value;
-    }
+  /**
+   * Sets the value of the meterModel property.
+   * 
+   * @param value
+   *          allowed object is {@link MeterModel }
+   * 
+   */
+  public void setMeterModel(MeterModel value) {
+    this.meterModel = value;
+  }
 
-    public boolean isSetMeterModel() {
-        return (this.meterModel!= null);
-    }
+  public boolean isSetMeterModel() {
+    return (this.meterModel != null);
+  }
 
-    /**
-     * Gets the value of the sensor property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Sensor }
-     *     
-     */
-    public Sensor getSensor() {
-        return sensor;
-    }
+  /**
+   * Gets the value of the sensor property.
+   * 
+   * @return possible object is {@link Sensor }
+   * 
+   */
+  public Sensor getSensor() {
+    return sensor;
+  }
 
-    /**
-     * Sets the value of the sensor property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Sensor }
-     *     
-     */
-    public void setSensor(Sensor value) {
-        this.sensor = value;
-    }
+  /**
+   * Sets the value of the sensor property.
+   * 
+   * @param value
+   *          allowed object is {@link Sensor }
+   * 
+   */
+  public void setSensor(Sensor value) {
+    this.sensor = value;
+  }
 
-    public boolean isSetSensor() {
-        return (this.sensor!= null);
-    }
+  public boolean isSetSensor() {
+    return (this.sensor != null);
+  }
 
-    /**
-     * Gets the value of the properties property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Properties }
-     *     
-     */
-    public Properties getProperties() {
-        return properties;
-    }
+  /**
+   * Gets the value of the properties property.
+   * 
+   * @return possible object is {@link Properties }
+   * 
+   */
+  public Properties getProperties() {
+    return properties;
+  }
 
-    /**
-     * Sets the value of the properties property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Properties }
-     *     
-     */
-    public void setProperties(Properties value) {
-        this.properties = value;
-    }
+  /**
+   * Sets the value of the properties property.
+   * 
+   * @param value
+   *          allowed object is {@link Properties }
+   * 
+   */
+  public void setProperties(Properties value) {
+    this.properties = value;
+  }
 
-    public boolean isSetProperties() {
-        return (this.properties!= null);
-    }
+  public boolean isSetProperties() {
+    return (this.properties != null);
+  }
 
 }

@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wattdepot</groupId>
-  <artifactId>wattdepot</artifactId>
+  <artifactId>wattdepot3</artifactId>
   <name>WattDepot</name>
-  <version>2.2.2-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <description>WattDepot is an open source, RESTful web service that collects electricity data (such as current power utilization or cumulative power utilization) from meters and stores it in a database.</description>
   <url>https://github.com/csdl/wattdepot/</url>
   <prerequisites>
@@ -154,7 +154,7 @@
         <configuration>
           <excludeFilterFile>${findbugs.filter.file}</excludeFilterFile>
           <excludes>
-            <exclude>**/jaxb/**</exclude>
+            <exclude>**/datamodel/**</exclude>
             <exclude>**/tinker/**</exclude>
           </excludes>
         </configuration>
@@ -172,7 +172,7 @@
         </executions>
         <configuration>
           <configLocation>${checkstyle.filter.file}</configLocation>
-          <excludes>**/tinker/**, **/jaxb/**</excludes>
+          <excludes>**/datamodel/**, **/datamodel/**</excludes>
         </configuration>
       </plugin>
       <plugin>
@@ -192,8 +192,8 @@
           <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
           <minimumTokens>100</minimumTokens>
           <excludes>
-            <exclude>**/tinker/**</exclude>
-            <exclude>**/jaxb/**</exclude>
+            <exclude>**/datamodel/**</exclude>
+            <exclude>**/datamodel/**</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -211,6 +211,18 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${cobertura.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-site-plugin</artifactId>
         <version>${site.plugin.version}</version>
         <configuration>
@@ -222,7 +234,7 @@
               <configuration>
                 <excludeFilterFile>${findbugs.filter.file}</excludeFilterFile>
                 <excludes>
-                  <exclude>**/jaxb/**</exclude>
+                  <exclude>**/datamodel/**</exclude>
                   <exclude>**/tinker/**</exclude>
                 </excludes>
               </configuration>
@@ -233,7 +245,7 @@
               <version>${checkstyle.plugin.version}</version>
               <configuration>
                 <configLocation>${checkstyle.filter.file}</configLocation>
-                <excludes>**/jaxb/**, **/tinker/**</excludes>
+                <excludes>**/datamodel/**, **/tinker/**</excludes>
               </configuration>
             </plugin>
             <plugin>
@@ -255,7 +267,7 @@
                 <minimumTokens>100</minimumTokens>
                 <excludes>
                   <exclude>**/tinker/**</exclude>
-                  <exclude>**/jaxb/**</exclude>
+                  <exclude>**/datamodel/**</exclude>
                 </excludes>
               </configuration>
             </plugin>
@@ -381,12 +393,6 @@
       <artifactId>httpunit</artifactId>
       <version>1.7</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jtidy</artifactId>
-          <groupId>jtidy</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
@@ -401,44 +407,50 @@
         <artifactId>maven-jxr-plugin</artifactId>
         <version>2.3</version>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.6</version>
+      </plugin>
     </plugins>
   </reporting>
   <properties>
-    <pool.version>1.6</pool.version>
-    <commons-cli.version>1.2</commons-cli.version>
-    <config.dir>${basedir}</config.dir>
-    <site.plugin.version>3.3</site.plugin.version>
-    <dbcp.version>1.4</dbcp.version>
-    <tomcat.jdbc.version>7.0.42</tomcat.jdbc.version>
-    <javadoc.plugin.version>2.9.1</javadoc.plugin.version>
-    <assembly.plugin.version>2.4</assembly.plugin.version>
     <appassembler.plugin.version>1.3.1</appassembler.plugin.version>
-    <concurrent.version>1.0</concurrent.version>
-    <findbugs.plugin.version>2.5.2</findbugs.plugin.version>
-    <httpunit.version>1.7</httpunit.version>
-    <targetJdk>1.6</targetJdk>
-    <google-visualization-java.version>1.0.2</google-visualization-java.version>
-    <surefire.plugin.version>2.15</surefire.plugin.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <google-collections.version>1.0-rc2</google-collections.version>
     <junit.version>4.11</junit.version>
-    <postgres.version>9.1-901-1.jdbc4</postgres.version>
-    <opencsv.version>2.3</opencsv.version>
-    <checkstyle.filter.file>${config.dir}/checkstyle.xml</checkstyle.filter.file>
-    <restlet.version>2.1.2</restlet.version>
-    <json.version>20090211</json.version>
+    <targetJdk>1.7</targetJdk>
     <dependency.plugin.version>2.8</dependency.plugin.version>
-    <modbus-jamod.version>1.2</modbus-jamod.version>
-    <commons-logging.version>1.1.3</commons-logging.version>
-    <findbugs.filter.file>${config.dir}/findbugs.exclude.xml</findbugs.filter.file>
-    <jcs.version>1.3</jcs.version>
     <berkeleydb.version>5.0.73</berkeleydb.version>
-    <commons-lang.version>2.6</commons-lang.version>
-    <pmd.plugin.version>2.6</pmd.plugin.version>
-    <antrun.plugin.version>1.7</antrun.plugin.version>
-    <derby.version>10.10.1.1</derby.version>
     <checkstyle.plugin.version>2.10</checkstyle.plugin.version>
+    <assembly.plugin.version>2.4</assembly.plugin.version>
+    <findbugs.plugin.version>2.5.2</findbugs.plugin.version>
+    <javadoc.plugin.version>2.9.1</javadoc.plugin.version>
+    <checkstyle.filter.file>${config.dir}/checkstyle.xml</checkstyle.filter.file>
+    <commons-cli.version>1.2</commons-cli.version>
+    <cobertura.version>2.6</cobertura.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jcs.version>1.3</jcs.version>
+    <pool.version>1.6</pool.version>
+    <postgres.version>9.1-901-1.jdbc4</postgres.version>
+    <surefire.plugin.version>2.15</surefire.plugin.version>
+    <dbcp.version>1.4</dbcp.version>
     <icu4j.version>51.2</icu4j.version>
+    <opencsv.version>2.3</opencsv.version>
+    <restlet.version>2.1.2</restlet.version>
+    <site.plugin.version>3.3</site.plugin.version>
+    <config.dir>${basedir}</config.dir>
+    <tomcat.jdbc.version>7.0.42</tomcat.jdbc.version>
+    <google-visualization-java.version>1.0.2</google-visualization-java.version>
+    <antrun.plugin.version>1.7</antrun.plugin.version>
+    <concurrent.version>1.0</concurrent.version>
+    <derby.version>10.10.1.1</derby.version>
+    <json.version>20090211</json.version>
+    <commons-logging.version>1.1.3</commons-logging.version>
+    <pmd.plugin.version>2.6</pmd.plugin.version>
+    <httpunit.version>1.7</httpunit.version>
+    <commons-lang.version>2.6</commons-lang.version>
+    <findbugs.filter.file>${config.dir}/findbugs.exclude.xml</findbugs.filter.file>
+    <modbus-jamod.version>1.2</modbus-jamod.version>
+    <google-collections.version>1.0-rc2</google-collections.version>
   </properties>
 </project>
 

@@ -5,7 +5,6 @@
 // Generated on: 2013.09.13 at 12:12:07 PM HST 
 //
 
-
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
@@ -16,11 +15,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -40,137 +41,118 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "latitude",
-    "longitude",
-    "altitude",
-    "description"
-})
+@XmlType(name = "", propOrder = { "latitude", "longitude", "altitude", "description" })
 @XmlRootElement(name = "Location")
-public class Location
-    implements Serializable
-{
+public class Location implements Serializable {
 
-    private final static long serialVersionUID = 12343L;
-    @XmlElement(name = "Latitude", required = true)
-    protected BigDecimal latitude;
-    @XmlElement(name = "Longitude", required = true)
-    protected BigDecimal longitude;
-    @XmlElement(name = "Altitude")
-    protected BigDecimal altitude;
-    @XmlElement(name = "Description", required = true)
-    protected String description;
+  private final static long serialVersionUID = 12343L;
+  @XmlElement(name = "Latitude", required = true)
+  protected BigDecimal latitude;
+  @XmlElement(name = "Longitude", required = true)
+  protected BigDecimal longitude;
+  @XmlElement(name = "Altitude")
+  protected BigDecimal altitude;
+  @XmlElement(name = "Description", required = true)
+  protected String description;
 
-    /**
-     * Gets the value of the latitude property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
+  /**
+   * Gets the value of the latitude property.
+   * 
+   * @return possible object is {@link BigDecimal }
+   * 
+   */
+  public BigDecimal getLatitude() {
+    return latitude;
+  }
 
-    /**
-     * Sets the value of the latitude property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setLatitude(BigDecimal value) {
-        this.latitude = value;
-    }
+  /**
+   * Sets the value of the latitude property.
+   * 
+   * @param value
+   *          allowed object is {@link BigDecimal }
+   * 
+   */
+  public void setLatitude(BigDecimal value) {
+    this.latitude = value;
+  }
 
-    public boolean isSetLatitude() {
-        return (this.latitude!= null);
-    }
+  public boolean isSetLatitude() {
+    return (this.latitude != null);
+  }
 
-    /**
-     * Gets the value of the longitude property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
+  /**
+   * Gets the value of the longitude property.
+   * 
+   * @return possible object is {@link BigDecimal }
+   * 
+   */
+  public BigDecimal getLongitude() {
+    return longitude;
+  }
 
-    /**
-     * Sets the value of the longitude property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setLongitude(BigDecimal value) {
-        this.longitude = value;
-    }
+  /**
+   * Sets the value of the longitude property.
+   * 
+   * @param value
+   *          allowed object is {@link BigDecimal }
+   * 
+   */
+  public void setLongitude(BigDecimal value) {
+    this.longitude = value;
+  }
 
-    public boolean isSetLongitude() {
-        return (this.longitude!= null);
-    }
+  public boolean isSetLongitude() {
+    return (this.longitude != null);
+  }
 
-    /**
-     * Gets the value of the altitude property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getAltitude() {
-        return altitude;
-    }
+  /**
+   * Gets the value of the altitude property.
+   * 
+   * @return possible object is {@link BigDecimal }
+   * 
+   */
+  public BigDecimal getAltitude() {
+    return altitude;
+  }
 
-    /**
-     * Sets the value of the altitude property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setAltitude(BigDecimal value) {
-        this.altitude = value;
-    }
+  /**
+   * Sets the value of the altitude property.
+   * 
+   * @param value
+   *          allowed object is {@link BigDecimal }
+   * 
+   */
+  public void setAltitude(BigDecimal value) {
+    this.altitude = value;
+  }
 
-    public boolean isSetAltitude() {
-        return (this.altitude!= null);
-    }
+  public boolean isSetAltitude() {
+    return (this.altitude != null);
+  }
 
-    /**
-     * Gets the value of the description property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getDescription() {
-        return description;
-    }
+  /**
+   * Gets the value of the description property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getDescription() {
+    return description;
+  }
 
-    /**
-     * Sets the value of the description property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDescription(String value) {
-        this.description = value;
-    }
+  /**
+   * Sets the value of the description property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setDescription(String value) {
+    this.description = value;
+  }
 
-    public boolean isSetDescription() {
-        return (this.description!= null);
-    }
+  public boolean isSetDescription() {
+    return (this.description != null);
+  }
 
 }

@@ -5,7 +5,6 @@
 // Generated on: 2013.09.13 at 12:12:07 PM HST 
 //
 
-
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -42,177 +43,159 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "name",
-    "accessControl",
-    "sensor",
-    "meterDataQuery",
-    "measurement"
-})
+@XmlType(name = "", propOrder = { "name", "accessControl", "sensor", "meterDataQuery",
+    "measurement" })
 @XmlRootElement(name = "AtomicSource")
-public class AtomicSource
-    implements Serializable
-{
+public class AtomicSource implements Serializable {
 
-    private final static long serialVersionUID = 12343L;
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "AccessControl", required = true)
-    protected AccessControl accessControl;
-    @XmlElement(name = "Sensor", required = true)
-    protected Sensor sensor;
-    @XmlElement(name = "MeterDataQuery", required = true)
-    protected MeterDataQuery meterDataQuery;
-    @XmlElement(name = "Measurement")
-    protected List<Measurement> measurement;
+  private final static long serialVersionUID = 12343L;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "AccessControl", required = true)
+  protected AccessControl accessControl;
+  @XmlElement(name = "Sensor", required = true)
+  protected Sensor sensor;
+  @XmlElement(name = "MeterDataQuery", required = true)
+  protected MeterDataQuery meterDataQuery;
+  @XmlElement(name = "Measurement")
+  protected List<Measurement> measurement;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
+
+  public boolean isSetName() {
+    return (this.name != null);
+  }
+
+  /**
+   * Gets the value of the accessControl property.
+   * 
+   * @return possible object is {@link AccessControl }
+   * 
+   */
+  public AccessControl getAccessControl() {
+    return accessControl;
+  }
+
+  /**
+   * Sets the value of the accessControl property.
+   * 
+   * @param value
+   *          allowed object is {@link AccessControl }
+   * 
+   */
+  public void setAccessControl(AccessControl value) {
+    this.accessControl = value;
+  }
+
+  public boolean isSetAccessControl() {
+    return (this.accessControl != null);
+  }
+
+  /**
+   * Gets the value of the sensor property.
+   * 
+   * @return possible object is {@link Sensor }
+   * 
+   */
+  public Sensor getSensor() {
+    return sensor;
+  }
+
+  /**
+   * Sets the value of the sensor property.
+   * 
+   * @param value
+   *          allowed object is {@link Sensor }
+   * 
+   */
+  public void setSensor(Sensor value) {
+    this.sensor = value;
+  }
+
+  public boolean isSetSensor() {
+    return (this.sensor != null);
+  }
+
+  /**
+   * Gets the value of the meterDataQuery property.
+   * 
+   * @return possible object is {@link MeterDataQuery }
+   * 
+   */
+  public MeterDataQuery getMeterDataQuery() {
+    return meterDataQuery;
+  }
+
+  /**
+   * Sets the value of the meterDataQuery property.
+   * 
+   * @param value
+   *          allowed object is {@link MeterDataQuery }
+   * 
+   */
+  public void setMeterDataQuery(MeterDataQuery value) {
+    this.meterDataQuery = value;
+  }
+
+  public boolean isSetMeterDataQuery() {
+    return (this.meterDataQuery != null);
+  }
+
+  /**
+   * Gets the value of the measurement property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+   * for the measurement property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getMeasurement().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link Measurement }
+   * 
+   * 
+   */
+  public List<Measurement> getMeasurement() {
+    if (measurement == null) {
+      measurement = new ArrayList<Measurement>();
     }
+    return this.measurement;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  public boolean isSetMeasurement() {
+    return ((this.measurement != null) && (!this.measurement.isEmpty()));
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
-
-    /**
-     * Gets the value of the accessControl property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link AccessControl }
-     *     
-     */
-    public AccessControl getAccessControl() {
-        return accessControl;
-    }
-
-    /**
-     * Sets the value of the accessControl property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link AccessControl }
-     *     
-     */
-    public void setAccessControl(AccessControl value) {
-        this.accessControl = value;
-    }
-
-    public boolean isSetAccessControl() {
-        return (this.accessControl!= null);
-    }
-
-    /**
-     * Gets the value of the sensor property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Sensor }
-     *     
-     */
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    /**
-     * Sets the value of the sensor property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Sensor }
-     *     
-     */
-    public void setSensor(Sensor value) {
-        this.sensor = value;
-    }
-
-    public boolean isSetSensor() {
-        return (this.sensor!= null);
-    }
-
-    /**
-     * Gets the value of the meterDataQuery property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link MeterDataQuery }
-     *     
-     */
-    public MeterDataQuery getMeterDataQuery() {
-        return meterDataQuery;
-    }
-
-    /**
-     * Sets the value of the meterDataQuery property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link MeterDataQuery }
-     *     
-     */
-    public void setMeterDataQuery(MeterDataQuery value) {
-        this.meterDataQuery = value;
-    }
-
-    public boolean isSetMeterDataQuery() {
-        return (this.meterDataQuery!= null);
-    }
-
-    /**
-     * Gets the value of the measurement property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the measurement property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getMeasurement().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Measurement }
-     * 
-     * 
-     */
-    public List<Measurement> getMeasurement() {
-        if (measurement == null) {
-            measurement = new ArrayList<Measurement>();
-        }
-        return this.measurement;
-    }
-
-    public boolean isSetMeasurement() {
-        return ((this.measurement!= null)&&(!this.measurement.isEmpty()));
-    }
-
-    public void unsetMeasurement() {
-        this.measurement = null;
-    }
+  public void unsetMeasurement() {
+    this.measurement = null;
+  }
 
 }

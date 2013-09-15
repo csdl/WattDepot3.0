@@ -135,7 +135,7 @@ public class TestTstamp {
 
   /**
    * Tests getTimestampList method.
-   * 
+   *
    * @throws Exception If there are problems.
    */
   @Test

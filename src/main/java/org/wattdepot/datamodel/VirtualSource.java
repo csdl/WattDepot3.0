@@ -5,7 +5,6 @@
 // Generated on: 2013.09.13 at 12:12:07 PM HST 
 //
 
-
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
@@ -17,11 +16,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for anonymous complex type.
+ * <p>
+ * Java class for anonymous complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -40,124 +41,117 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "name",
-    "atomicSource",
-    "virtualSource"
-})
+@XmlType(name = "", propOrder = { "name", "atomicSource", "virtualSource" })
 @XmlRootElement(name = "VirtualSource")
-public class VirtualSource
-    implements Serializable
-{
+public class VirtualSource implements Serializable {
 
-    private final static long serialVersionUID = 12343L;
-    @XmlElement(name = "Name", required = true)
-    protected String name;
-    @XmlElement(name = "AtomicSource")
-    protected List<AtomicSource> atomicSource;
-    @XmlElement(name = "VirtualSource")
-    protected List<VirtualSource> virtualSource;
+  private final static long serialVersionUID = 12343L;
+  @XmlElement(name = "Name", required = true)
+  protected String name;
+  @XmlElement(name = "AtomicSource")
+  protected List<AtomicSource> atomicSource;
+  @XmlElement(name = "VirtualSource")
+  protected List<VirtualSource> virtualSource;
 
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
+  /**
+   * Gets the value of the name property.
+   * 
+   * @return possible object is {@link String }
+   * 
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Sets the value of the name property.
+   * 
+   * @param value
+   *          allowed object is {@link String }
+   * 
+   */
+  public void setName(String value) {
+    this.name = value;
+  }
+
+  public boolean isSetName() {
+    return (this.name != null);
+  }
+
+  /**
+   * Gets the value of the atomicSource property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+   * for the atomicSource property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getAtomicSource().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link AtomicSource }
+   * 
+   * 
+   */
+  public List<AtomicSource> getAtomicSource() {
+    if (atomicSource == null) {
+      atomicSource = new ArrayList<AtomicSource>();
     }
+    return this.atomicSource;
+  }
 
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
+  public boolean isSetAtomicSource() {
+    return ((this.atomicSource != null) && (!this.atomicSource.isEmpty()));
+  }
 
-    public boolean isSetName() {
-        return (this.name!= null);
-    }
+  public void unsetAtomicSource() {
+    this.atomicSource = null;
+  }
 
-    /**
-     * Gets the value of the atomicSource property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the atomicSource property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getAtomicSource().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link AtomicSource }
-     * 
-     * 
-     */
-    public List<AtomicSource> getAtomicSource() {
-        if (atomicSource == null) {
-            atomicSource = new ArrayList<AtomicSource>();
-        }
-        return this.atomicSource;
+  /**
+   * Gets the value of the virtualSource property.
+   * 
+   * <p>
+   * This accessor method returns a reference to the live list, not a snapshot.
+   * Therefore any modification you make to the returned list will be present
+   * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
+   * for the virtualSource property.
+   * 
+   * <p>
+   * For example, to add a new item, do as follows:
+   * 
+   * <pre>
+   * getVirtualSource().add(newItem);
+   * </pre>
+   * 
+   * 
+   * <p>
+   * Objects of the following type(s) are allowed in the list
+   * {@link VirtualSource }
+   * 
+   * 
+   */
+  public List<VirtualSource> getVirtualSource() {
+    if (virtualSource == null) {
+      virtualSource = new ArrayList<VirtualSource>();
     }
+    return this.virtualSource;
+  }
 
-    public boolean isSetAtomicSource() {
-        return ((this.atomicSource!= null)&&(!this.atomicSource.isEmpty()));
-    }
+  public boolean isSetVirtualSource() {
+    return ((this.virtualSource != null) && (!this.virtualSource.isEmpty()));
+  }
 
-    public void unsetAtomicSource() {
-        this.atomicSource = null;
-    }
-
-    /**
-     * Gets the value of the virtualSource property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the virtualSource property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getVirtualSource().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link VirtualSource }
-     * 
-     * 
-     */
-    public List<VirtualSource> getVirtualSource() {
-        if (virtualSource == null) {
-            virtualSource = new ArrayList<VirtualSource>();
-        }
-        return this.virtualSource;
-    }
-
-    public boolean isSetVirtualSource() {
-        return ((this.virtualSource!= null)&&(!this.virtualSource.isEmpty()));
-    }
-
-    public void unsetVirtualSource() {
-        this.virtualSource = null;
-    }
+  public void unsetVirtualSource() {
+    this.virtualSource = null;
+  }
 
 }
