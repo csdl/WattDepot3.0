@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "name", "atomicSource", "virtualSource" })
 @XmlRootElement(name = "VirtualSource")
-public class VirtualSource implements Serializable {
+public class VirtualSource extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Name", required = true)

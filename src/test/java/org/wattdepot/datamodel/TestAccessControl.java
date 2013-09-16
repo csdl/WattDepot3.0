@@ -25,7 +25,7 @@ public class TestAccessControl {
    */
   @Test
   public void testPropertyToString() {
-    this.acc1 = new AccessControl(this.owner1, this.priv1);
+    this.acc1 = TestObjectFactory.buildAccessControl1();
     String result = "AccessControl [owner=" + this.owner1 + ", _public=" + this.priv1 + "]";
     assertEquals("AccessControl toString did not return expected result: " + acc1.toString(), 
         result, acc1.toString());
@@ -37,7 +37,7 @@ public class TestAccessControl {
    */
   @Test
   public void testPropertyToXML() throws JAXBException {
-    this.acc1 = new AccessControl(this.owner1, this.priv1);
+    this.acc1 = TestObjectFactory.buildAccessControl1();
     String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><AccessControl>" +
     "<Owner>" + this.owner1 + "</Owner><Public>" + this.priv1 + "</Public></AccessControl>";
     assertEquals("Property toXML did not return expected result: " + acc1.toXML(), result,
@@ -51,7 +51,7 @@ public class TestAccessControl {
    */
   @Test
   public void testPropertyToJSON() throws JAXBException, JSONException {
-    this.acc1 = new AccessControl(this.owner1, this.priv1);
+    this.acc1 = TestObjectFactory.buildAccessControl1();
     String result = "{\"AccessControl\":{\"Owner\":\"" + this.owner1 + "\",\"Public\":" + 
     this.priv1 + "}}";
     assertEquals("Property toJson did not return expected result: " + acc1.toJson(), result,

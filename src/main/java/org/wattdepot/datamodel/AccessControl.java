@@ -10,7 +10,6 @@ package org.wattdepot.datamodel;
 
 import java.io.Serializable;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -46,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "AccessControl")
 public class AccessControl extends DataModel implements Serializable {
 
-  /** JAXBContext for creating XML text.*/
-  private static JAXBContext jaxbContext;
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Owner", required = true)
   @XmlSchemaType(name = "anyURI")

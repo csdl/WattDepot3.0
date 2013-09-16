@@ -168,7 +168,6 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>${json.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jcs</groupId>
@@ -387,7 +386,6 @@
 					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
 					<minimumTokens>100</minimumTokens>
 					<excludes>
-						<exclude>**/datamodel/**</exclude>
 						<exclude>**/datamodel/**</exclude>
 					</excludes>
 				</configuration>

@@ -30,10 +30,10 @@ public class TestLocation {
    */
   @Test
   public void testPropertyToString() {
-    loc1 = new Location(lat1, lon1, alt1, des1);
+    loc1 = TestObjectFactory.buildLocation1();
     String result = "Location [latitude=" + this.lat1 + ", longitude=" + this.lon1 + 
         ", altitude=" + this.alt1 + ", description=" + this.des1 + "]";
-    assertEquals("AccessControl toString did not return expected result: " + loc1.toString(), 
+    assertEquals("Location  toString did not return expected result: " + loc1.toString(), 
         result, loc1.toString());
   }
 
@@ -43,12 +43,12 @@ public class TestLocation {
    */
   @Test
   public void testPropertyToXML() throws JAXBException {
-    loc1 = new Location(lat1, lon1, alt1, des1);
+    loc1 = TestObjectFactory.buildLocation1();
     String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Location>" +
         "<Latitude>" + this.lat1 + "</Latitude><Longitude>" + this.lon1 + "</Longitude>" +
         "<Altitude>" + this.alt1 + "</Altitude><Description>" + this.des1 + 
         "</Description></Location>";
-    assertEquals("Property toXML did not return expected result: " + loc1.toXML(), result,
+    assertEquals("Location toXML did not return expected result: " + loc1.toXML(), result,
         loc1.toXML());
   }
 
@@ -59,10 +59,10 @@ public class TestLocation {
    */
   @Test
   public void testPropertyToJSON() throws JAXBException, JSONException {
-    loc1 = new Location(lat1, lon1, alt1, des1);
+    loc1 = TestObjectFactory.buildLocation1();
     String result = "{\"Location\":{\"Description\":\"Description1\",\"Altitude\":100.1," +
     "\"Latitude\":21.294642,\"Longitude\":-157.812727}}";
-    assertEquals("Property toJson did not return expected result: " + loc1.toJson(), result,
+    assertEquals("Location toJson did not return expected result: " + loc1.toJson(), result,
         loc1.toJson());
   }
 

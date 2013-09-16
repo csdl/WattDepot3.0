@@ -47,7 +47,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "timestamp", "measValue", "unit", "properties" })
 @XmlRootElement(name = "Measurement")
-public class Measurement implements Serializable, Comparable<Measurement> {
+public class Measurement extends DataModel implements Serializable, Comparable<Measurement> {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Timestamp", required = true)

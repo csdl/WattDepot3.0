@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "property" })
 @XmlRootElement(name = "Properties")
-public class Properties implements Serializable {
+public class Properties extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "Property")

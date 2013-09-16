@@ -9,6 +9,7 @@ package org.wattdepot.datamodel;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "updateRate", "meterDataQuery", "atomicSource", "properties" })
 @XmlRootElement(name = "Sensor")
-public class Sensor implements Serializable {
+public class Sensor extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "UpdateRate", required = true)
@@ -54,6 +55,27 @@ public class Sensor implements Serializable {
   protected AtomicSource atomicSource;
   @XmlElement(name = "Properties")
   protected Properties properties;
+
+  /** Default constructor.*/
+  public Sensor() {
+    // JAXB needs default constructor.
+  }
+  
+  /**
+   * @param updateRate
+   * @param meterDataQuery
+   * @param atomicSource
+   * @param properties
+   */
+  public Sensor(BigInteger updateRate, MeterDataQuery meterDataQuery, AtomicSource atomicSource,
+      Properties properties) {
+    super();
+    this.updateRate = updateRate;
+    this.meterDataQuery = meterDataQuery;
+    this.atomicSource = atomicSource;
+    this.properties = properties;
+  }
+
 
   /**
    * Gets the value of the updateRate property.
@@ -153,6 +175,68 @@ public class Sensor implements Serializable {
 
   public boolean isSetProperties() {
     return (this.properties != null);
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((atomicSource == null) ? 0 : atomicSource.hashCode());
+    result = prime * result + ((meterDataQuery == null) ? 0 : meterDataQuery.hashCode());
+    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+    result = prime * result + ((updateRate == null) ? 0 : updateRate.hashCode());
+    return result;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Sensor other = (Sensor) obj;
+    if (atomicSource == null) {
+      if (other.atomicSource != null)
+        return false;
+    }
+    else if (!atomicSource.equals(other.atomicSource))
+      return false;
+    if (meterDataQuery == null) {
+      if (other.meterDataQuery != null)
+        return false;
+    }
+    else if (!meterDataQuery.equals(other.meterDataQuery))
+      return false;
+    if (properties == null) {
+      if (other.properties != null)
+        return false;
+    }
+    else if (!properties.equals(other.properties))
+      return false;
+    if (updateRate == null) {
+      if (other.updateRate != null)
+        return false;
+    }
+    else if (!updateRate.equals(other.updateRate))
+      return false;
+    return true;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "Sensor [updateRate=" + updateRate + ", meterDataQuery=" + meterDataQuery
+        + ", atomicSource=" + atomicSource + ", properties=" + properties + "]";
   }
 
 }

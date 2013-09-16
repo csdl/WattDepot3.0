@@ -70,6 +70,67 @@ public class TestMeasurement {
     assertTrue("Measurement incorrectly reports interpolation", meas1.isInterpolated());
     meas1.setInterpolated(false);
     assertFalse("Measurement incorrectly reports interpolation", meas1.isInterpolated());
-  
   }
+  
+  /**
+   * Tests the toString() method of Property.
+   * @throws Exception 
+   */
+  @Test
+  public void testToString() throws Exception {
+    String key1 = "foo-key", value1 = "foo";
+    XMLGregorianCalendar timestamp1 = Tstamp.makeTimestamp(DEFAULT_TIMESTAMP);
+    BigDecimal val1 = new BigDecimal(1.0);
+    Unit kWh = new Unit("Kilowatt Hour", "kWh");
+    Property prop1 = new Property(key1, value1);
+    Measurement meas1 = new Measurement(timestamp1, val1, kWh, prop1);
+    String result = "Measurement [timestamp=" + timestamp1 + ", value=1, unit=" + kWh + 
+        ", properties=[Property [key=" + key1 + ", value=" + value1 + "]]]";
+    assertEquals("Measurement toString did not return expected result: " + meas1.toString(), 
+        result, meas1.toString());
+  }
+
+  /**
+   * Tests the toXML() method of Property.
+   * @throws Exception 
+   */
+  @Test
+  public void testToXML() throws Exception {
+    String key1 = "foo-key", value1 = "foo";
+    XMLGregorianCalendar timestamp1 = Tstamp.makeTimestamp(DEFAULT_TIMESTAMP);
+    BigDecimal val1 = new BigDecimal(1.0);
+    Unit kWh = new Unit("Kilowatt Hour", "kWh");
+    Property prop1 = new Property(key1, value1);
+    Properties props1 = new Properties();
+    props1.getProperty().add(prop1);
+    Measurement meas1 = new Measurement(timestamp1, val1, kWh, props1);
+    String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Measurement>" +
+        "<Timestamp>" + timestamp1 + "</Timestamp><MeasValue>1</MeasValue><Unit><Name>" + 
+        kWh.getName()  + "</Name><Abbr>" + kWh.getAbbr() + "</Abbr></Unit><Properties><Property>" +
+        "<Key>" + key1 + "</Key><PropertyValue>" + value1 + "</PropertyValue></Property>" +
+        "</Properties></Measurement>";
+    assertEquals("Measurement toXML did not return expected result: " + meas1.toXML(), result,
+        meas1.toXML());
+  }
+
+  /**
+   * Tests the toJson() method of Property.
+   * @throws Exception 
+   */
+  @Test
+  public void testToJSON() throws Exception {
+    String key1 = "foo-key", value1 = "foo";
+    XMLGregorianCalendar timestamp1 = Tstamp.makeTimestamp(DEFAULT_TIMESTAMP);
+    BigDecimal val1 = new BigDecimal(1.0);
+    Unit kWh = new Unit("Kilowatt Hour", "kWh");
+    Property prop1 = new Property(key1, value1);
+    Measurement meas1 = new Measurement(timestamp1, val1, kWh, prop1);
+    String result = "{\"Measurement\":{\"MeasValue\":1,\"Unit\":{\"Name\":\"Kilowatt Hour\"," +
+        "\"Abbr\":\"kWh\"},\"Timestamp\":\"" + timestamp1 + "\",\"Properties\":{\"Property\":{" +
+        "\"Key\":\"" + key1 + "\",\"PropertyValue\":\"foo\"}}}}";
+    assertEquals("Measurements toJson did not return expected result: " + meas1.toJson(), result,
+        meas1.toJson());
+  }
+
+  
 }

@@ -8,20 +8,12 @@
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
 
 /**
  * <p>

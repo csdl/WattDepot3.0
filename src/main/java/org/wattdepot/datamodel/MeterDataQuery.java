@@ -8,6 +8,7 @@
 package org.wattdepot.datamodel;
 
 import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,7 +45,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "uri", "location", "meterModel", "sensor", "properties" })
 @XmlRootElement(name = "MeterDataQuery")
-public class MeterDataQuery implements Serializable {
+public class MeterDataQuery extends DataModel implements Serializable {
 
   private final static long serialVersionUID = 12343L;
   @XmlElement(name = "URI", required = true)
@@ -58,6 +59,46 @@ public class MeterDataQuery implements Serializable {
   protected Sensor sensor;
   @XmlElement(name = "Properties")
   protected Properties properties;
+
+  /** Default constructor.*/
+  public MeterDataQuery() {
+    // JAXB needs default constructor.
+  }
+  
+  /**
+   * @param uri
+   * @param location
+   * @param meterModel
+   * @param sensor
+   * @param properties
+   */
+  public MeterDataQuery(String uri, Location location, MeterModel meterModel, Sensor sensor,
+      Properties properties) {
+    super();
+    this.uri = uri;
+    this.location = location;
+    this.meterModel = meterModel;
+    this.sensor = sensor;
+    this.properties = properties;
+  }
+
+  /**
+   * @param uri
+   * @param location
+   * @param meterModel
+   * @param sensor
+   * @param property
+   */
+  public MeterDataQuery(String uri, Location location, MeterModel meterModel, Sensor sensor,
+      Property property) {
+    super();
+    this.uri = uri;
+    this.location = location;
+    this.meterModel = meterModel;
+    this.sensor = sensor;
+    this.properties = new Properties();
+    this.properties.getProperty().add(property);
+  }
 
   /**
    * Gets the value of the uri property.
@@ -182,6 +223,75 @@ public class MeterDataQuery implements Serializable {
 
   public boolean isSetProperties() {
     return (this.properties != null);
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((location == null) ? 0 : location.hashCode());
+    result = prime * result + ((meterModel == null) ? 0 : meterModel.hashCode());
+    result = prime * result + ((properties == null) ? 0 : properties.hashCode());
+    result = prime * result + ((sensor == null) ? 0 : sensor.hashCode());
+    result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+    return result;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    MeterDataQuery other = (MeterDataQuery) obj;
+    if (location == null) {
+      if (other.location != null)
+        return false;
+    }
+    else if (!location.equals(other.location))
+      return false;
+    if (meterModel == null) {
+      if (other.meterModel != null)
+        return false;
+    }
+    else if (!meterModel.equals(other.meterModel))
+      return false;
+    if (properties == null) {
+      if (other.properties != null)
+        return false;
+    }
+    else if (!properties.equals(other.properties))
+      return false;
+    if (sensor == null) {
+      if (other.sensor != null)
+        return false;
+    }
+    else if (!sensor.equals(other.sensor))
+      return false;
+    if (uri == null) {
+      if (other.uri != null)
+        return false;
+    }
+    else if (!uri.equals(other.uri))
+      return false;
+    return true;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "MeterDataQuery [uri=" + uri + ", location=" + location + ", meterModel=" + meterModel
+        + ", sensor=" + sensor + ", properties=" + properties + "]";
   }
 
 }
