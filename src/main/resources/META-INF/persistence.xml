@@ -1,0 +1,43 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+    <persistence-unit name="org.wattdepot.datamodel.jpa">
+        <description>
+            Persistence unit for WattDepot
+        </description>
+
+        <class>org.wattdepot.datamodel.CounterMeasurement</class>
+        <class>org.wattdepot.datamodel.WattSecondMeasurement</class>
+        <class>org.wattdepot.datamodel.Location</class>
+        <class>org.wattdepot.datamodel.Meter</class>
+        <class>org.wattdepot.datamodel.MeterModel</class>
+        <class>org.wattdepot.datamodel.PointMeasurement</class>
+        <class>org.wattdepot.datamodel.WattMeasurement</class>
+        <class>org.wattdepot.datamodel.Property</class>
+        <class>org.wattdepot.datamodel.CelsiusMeasurement</class>
+        <class>org.wattdepot.datamodel.LiterMeasurement</class>
+        <class>org.wattdepot.datamodel.VirtualMeter</class>
+        <class>org.wattdepot.datamodel.VirtualCounterMeasurement</class>
+        <class>org.wattdepot.datamodel.VirtualWattSecondMeasurement</class>
+        <class>org.wattdepot.datamodel.VirtualLiterMeasurement</class>
+        <class>org.wattdepot.datamodel.VirtualPointMeasurement</class>
+        <class>org.wattdepot.datamodel.VirtualWattMeasurement</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver"
+                value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url"
+                value="jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password"
+                value="" />
+            <property name="javax.persistence.jdbc.password"
+                value="" />
+
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+
+        </properties>
+    </persistence-unit>
+</persistence>

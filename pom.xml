@@ -16,16 +16,18 @@
 		<targetJdk>1.7</targetJdk>
 
 		<!-- Dependency Versions -->
-		<berkeleydb.version>5.0.73</berkeleydb.version>
 		<commons-cli.version>1.2</commons-cli.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-logging.version>1.1.3</commons-logging.version>
 		<concurrent.version>1.0</concurrent.version>
 		<dbcp.version>1.4</dbcp.version>
 		<tomcat.jdbc.version>7.0.42</tomcat.jdbc.version>
-		<derby.version>10.10.1.1</derby.version>
 		<google-collections.version>1.0-rc2</google-collections.version>
 		<google-visualization-java.version>1.0.2</google-visualization-java.version>
+        <h2.version>1.2.145</h2.version>
+        <hibernate.version>3.2.6.ga</hibernate.version>
+        <hibernate-annotations.version>3.3.1.GA</hibernate-annotations.version>
+        <hibernate-core.version>4.2.4.Final</hibernate-core.version>
 		<httpunit.version>1.7</httpunit.version>
 		<icu4j.version>51.2</icu4j.version>
 		<jcs.version>1.3</jcs.version>
@@ -34,11 +36,7 @@
 		<modbus-jamod.version>1.2</modbus-jamod.version>
 		<opencsv.version>2.3</opencsv.version>
 		<pool.version>1.6</pool.version>
-		<postgres.version>9.1-901-1.jdbc4</postgres.version>
-		<!-- Restlet 2.1.1 is the most recent version that does not run very slowly 
-			with static content from SPA. 2.1.2 has the slowness problem. -->
 		<restlet.version>2.1.2</restlet.version>
-		<!-- <spymemcached.version>2.8.9</spymemcached.version> -->
 
 		<!-- Maven Plugin Versions -->
 		<antrun.plugin.version>1.7</antrun.plugin.version>
@@ -57,125 +55,113 @@
 		<checkstyle.filter.file>${config.dir}/checkstyle.xml</checkstyle.filter.file>
 	</properties>
 	<dependencies>
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${dbcp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons-logging.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
 			<version>${pool.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>${dbcp.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>${google-collections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.visualization</groupId>
+            <artifactId>visualization-datasource</artifactId>
+            <version>${google-visualization-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${icu4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>httpunit</groupId>
+            <artifactId>httpunit</artifactId>
+            <version>${httpunit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>${opencsv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.wimpi.modbus</groupId>
+            <artifactId>jamod</artifactId>
+            <version>${modbus-jamod.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jcs</groupId>
+            <artifactId>jcs</artifactId>
+            <version>${jcs.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>${tomcat.jdbc.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-cli</groupId>
-			<artifactId>commons-cli</artifactId>
-			<version>${commons-cli.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>${commons-logging.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>${opencsv.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.ibm.icu</groupId>
-			<artifactId>icu4j</artifactId>
-			<version>${icu4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.collections</groupId>
-			<artifactId>google-collections</artifactId>
-			<version>${google-collections.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sleepycat</groupId>
-			<artifactId>je</artifactId>
-			<version>${berkeleydb.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.visualization</groupId>
-			<artifactId>visualization-datasource</artifactId>
-			<version>${google-visualization-java.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>       
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet</artifactId>
+            <version>${restlet.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.restlet.jse</groupId>
 			<artifactId>org.restlet.ext.httpclient</artifactId>
 			<version>${restlet.version}</version>
 		</dependency>
-		<!-- Trying to use the Jetty connector -->
 		<dependency>
 			<groupId>org.restlet.jse</groupId>
 			<artifactId>org.restlet.ext.jetty</artifactId>
 			<version>${restlet.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.restlet.jse</groupId>
-			<artifactId>org.restlet</artifactId>
-			<version>${restlet.version}</version>
-		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.restlet.jse</groupId> -->
-		<!-- <artifactId>org.restlet.ext.simple</artifactId> -->
-		<!-- <version>${restlet.version}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <artifactId>org.restlet.ext.net</artifactId> -->
-		<!-- <version>${restlet.version}</version> -->
-		<!-- </dependency> -->
-		<dependency>
-			<groupId>net.wimpi.modbus</groupId>
-			<artifactId>jamod</artifactId>
-			<version>${modbus-jamod.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgres.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>httpunit</groupId>
-			<artifactId>httpunit</artifactId>
-			<version>${httpunit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>${json.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.jcs</groupId>
-			<artifactId>jcs</artifactId>
-			<version>${jcs.version}</version>
-		</dependency>
-		<!-- <dependency> <groupId>spy</groupId> <artifactId>spymemcached</artifactId> 
-			<version>${spymemcached.version}</version> <scope>provided</scope> </dependency> -->
 	</dependencies>
 	<repositories>
 		<repository>
@@ -192,16 +178,11 @@
 			<name>Public online Restlet repository</name>
 			<url>http://maven.restlet.org</url>
 		</repository>
-		<!--<repository> <id>artifactory</id> <name>Repository that contains modbus</name> 
-			<url>http://maven.etl.luc.edu/artifactory/repo</url> </repository> -->
 		<repository>
 			<id>local-repo</id>
 			<name>Local repository that contains modbus</name>
 			<url>file://${project.basedir}/repository</url>
 		</repository>
-		<!-- <repository> <id>spy</id> <name>Spy Repository</name> <layout>default</layout> 
-			<url>http://files.couchbase.com/maven2/</url> <snapshots> <enabled>false</enabled> 
-			</snapshots> </repository> -->
 	</repositories>
 	<reporting>
 		<plugins>
