@@ -315,18 +315,24 @@ public class EnergyMeasurementRepository {
    *          The EnergyMeasurement to store.
    */
   public void putMeasurement(EnergyMeasurement meas) {
-    EntityManager entityManager = Server.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(meas);
-    entityManager.persist(meas.getMeter());
-    for (Property p : meas.getMeter().getProperties()) {
-      entityManager.persist(p);
+    if (getMeasurements(meas.getMeter(), meas.getTimestamp(), meas.getTimestamp()).size() == 0) {
+      EntityManager entityManager = Server.getInstance().getEntityManager();
+      entityManager.getTransaction().begin();
+      entityManager.persist(meas);
+      entityManager.persist(meas.getMeter());
+      for (Property p : meas.getMeter().getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.persist(meas.getMeter().getLocation());
+      entityManager.persist(meas.getMeter().getModel());
+      for (Property p : meas.getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.getTransaction().commit();      
     }
-    entityManager.persist(meas.getMeter().getLocation());
-    entityManager.persist(meas.getMeter().getModel());
-    for (Property p : meas.getProperties()) {
-      entityManager.persist(p);
-    }
-    entityManager.getTransaction().commit();
+//    else {
+//      // already have an energy measurement for that meter at that time.
+//      // what should we do?
+//    }
   }
 }

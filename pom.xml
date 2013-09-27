@@ -201,8 +201,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<!-- Run JUnit tests during "test" phase -->
@@ -212,111 +212,9 @@
 				<version>${surefire.plugin.version}</version>
 				<configuration>
 					<excludes>
-						<exclude>**/tinker/**</exclude>
 						<exclude>**/TestDb*.java</exclude>
-						<exclude>**/TestDerbyStorageImplementation.java</exclude>
-						<exclude>**/TestBerkeleyDbImplementation.java</exclude>
-						<exclude>**/TestPostgresStorageImplementation.java</exclude>
-						<exclude>**/StressTest.java</exclude>
-						<exclude>**/TestDatabaseResource.java</exclude>
 					</excludes>
 				</configuration>
-				<executions>
-					<execution>
-						<id>Memory-Storage-Implementation tests</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<systemPropertyVariables>
-								<wattdepot-server.db.impl>org.wattdepot.server.db.memory.MemoryStorageImplementation</wattdepot-server.db.impl>
-							</systemPropertyVariables>
-							<includes>
-								<include>**/TestDb*.java</include>
-								<include>**/TestDatabaseResource.java</include>
-							</includes>
-							<excludes>
-								<exclude>**/tinker/**</exclude>
-								<exclude>**/TestDerbyStorageImplementation.java</exclude>
-								<exclude>**/TestBerkeleyDbImplementation.java</exclude>
-								<exclude>**/TestPostgresStorageImplementation.java</exclude>
-								<exclude>**/StressTest.java</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Derby-Storage-Implementation tests</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<systemPropertyVariables>
-								<wattdepot-server.db.impl>org.wattdepot.server.db.derby.DerbyStorageImplementation</wattdepot-server.db.impl>
-							</systemPropertyVariables>
-							<includes>
-								<include>**/TestDb*.java</include>
-								<include>**/TestDerbyStorageImplementation.java</include>
-								<include>**/TestDatabaseResource.java</include>
-							</includes>
-							<excludes>
-								<exclude>**/tinker/**</exclude>
-								<exclude>**/TestBerkeleyDbImplementation.java</exclude>
-								<exclude>**/TestPostgresStorageImplementation.java</exclude>
-								<exclude>**/StressTest.java</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Berkeley-DB-Implementation tests</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<systemPropertyVariables>
-								<wattdepot-server.db.impl>org.wattdepot.server.db.berkeleydb.BerkeleyDbImplementation</wattdepot-server.db.impl>
-							</systemPropertyVariables>
-							<includes>
-								<include>**/TestDb*.java</include>
-								<include>**/TestBerkeleyDbImplementation.java</include>
-								<include>**/TestDatabaseResource.java</include>
-							</includes>
-							<excludes>
-								<exclude>**/tinker/**</exclude>
-								<exclude>**/TestDerbyStorageImplementation.java</exclude>
-								<exclude>**/TestPostgresStorageImplementation.java</exclude>
-								<exclude>**/StressTest.java</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>Postgres-Implementation tests</id>
-						<phase>test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-						<configuration>
-							<systemPropertyVariables>
-								<wattdepot-server.db.impl>org.wattdepot.server.db.postgres.PostgresStorageImplementation</wattdepot-server.db.impl>
-							</systemPropertyVariables>
-							<includes>
-								<include>**/TestDb*.java</include>
-								<include>**/TestPostgresStorageImplementation.java</include>
-							</includes>
-							<excludes>
-								<exclude>**/tinker/**</exclude>
-								<exclude>**/TestDerbyStorageImplementation.java</exclude>
-								<exclude>**/TestBerkeleyDbImplementation.java</exclude>
-								<exclude>**/StressTest.java</exclude>
-								<!-- snapshot doesn't work with Postgres -->
-								<exclude>**/TestDbManagerSnapshot.java</exclude>
-								<exclude>**/TestDatabaseResource.java</exclude>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<!-- Run QA tools during "test" phase -->
 			<plugin>

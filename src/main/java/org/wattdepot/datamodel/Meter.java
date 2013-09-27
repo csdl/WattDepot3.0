@@ -216,7 +216,7 @@ public class Meter {
         return false;
       }
     }
-    else if (!properties.equals(other.properties)) {
+    else if (!propertyEquals(other.properties)) {
       return false;
     }
     if (uri == null) {
@@ -238,5 +238,22 @@ public class Meter {
     return "Meter [uri=" + uri + ", location=" + location + ", model=" + model + ", properties="
         + properties + "]";
   }
- 
+
+  /**
+   * @param obj The List to check.
+   * @return true if the list is the same as the properties, false otherwise.
+   */
+  private boolean propertyEquals(List<?> obj) {
+    for (Property p : properties) {
+      if (!obj.contains(p)) {
+        return false;
+      }
+    }
+    for (Object o : obj) {
+      if (!properties.contains(o)) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
