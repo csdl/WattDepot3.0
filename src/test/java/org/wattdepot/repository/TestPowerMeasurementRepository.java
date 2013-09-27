@@ -7,7 +7,6 @@ package org.wattdepot.repository;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -29,9 +28,10 @@ public class TestPowerMeasurementRepository {
 
   /**
    * Test for PowerMeasurementRepository.
+   * @throws NoMeasurementException if there are issues with the measurements.
    */
   @Test
-  public void test() {
+  public void test() throws NoMeasurementException {
     Location l = new Location(new Double(21.294642), new Double(-157.812727), new Double(30),
         "Hale Aloha Ilima residence hall 6th floor");
     MeterModel mm = new MeterModel("protocol", "type", "1.0");
@@ -43,18 +43,17 @@ public class TestPowerMeasurementRepository {
     Long after = measTime.getTime() + 500;
     Date aDate = new Date(after);
     PowerMeasurement aMeas = new PowerMeasurement(aDate, new Double(200), m, false);
-    PowerMeasurementRepository repo = PowerMeasurementRepository.getInstance(m);
-    repo.storePowerMeasurement(bMeas);
-    repo.storePowerMeasurement(aMeas);
-    PowerMeasurement pOut = repo.getPowerMeasurement(aDate);
-    assertNotNull("Didn't get measurement for " + aDate, pOut);
-    assertSame("Didn't get the same measurement", pOut, aMeas);
-    pOut = repo.getPowerMeasurement(bDate);
-    assertNotNull("Didn't get measurement for " + bDate, pOut);
-    assertSame("Didn't get the same measurement", pOut, bMeas);
-    pOut = repo.getPowerMeasurement(measTime);
-    assertEquals("Didn't get the right interpolated value", pOut.getValue(), new Double(175));
-    assertTrue("Didn't get the right interpolated flag", pOut.isInterpolated());
+    PowerMeasurementRepository repo = new PowerMeasurementRepository();
+    repo.putPowerMeasurement(bMeas);
+    repo.putPowerMeasurement(aMeas);
+    Double power = repo.getPower(m, aDate);
+    assertNotNull("Didn't get measurement for " + aDate, power);
+    assertSame("Didn't get the same measurement", power, aMeas.getValue());
+    power = repo.getPower(m, bDate);
+    assertNotNull("Didn't get measurement for " + bDate, power);
+    assertSame("Didn't get the same measurement", power, bMeas.getValue());
+    power = repo.getPower(m, measTime);
+    assertEquals("Didn't get the right interpolated value", power, new Double(175));
     
   }
 

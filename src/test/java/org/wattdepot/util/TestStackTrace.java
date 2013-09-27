@@ -20,7 +20,8 @@ public class TestStackTrace {
     String trace;
     try {
       throw new Exception("Test Exception");
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       trace = StackTrace.toString(e);
     }
     assertTrue("Check trace", trace.startsWith("java.lang.Exception"));
