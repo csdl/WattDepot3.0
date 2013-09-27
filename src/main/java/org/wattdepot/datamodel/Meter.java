@@ -179,6 +179,7 @@ public class Meter {
     result = prime * result + ((uri == null) ? 0 : uri.hashCode());
     return result;
   }
+  
   /* (non-Javadoc)
    * @see java.lang.Object#equals(java.lang.Object)
    */
@@ -228,6 +229,7 @@ public class Meter {
     }
     return true;
   }
+  
   /* (non-Javadoc)
    * @see java.lang.Object#toString()
    */

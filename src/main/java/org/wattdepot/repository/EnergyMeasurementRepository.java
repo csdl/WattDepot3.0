@@ -111,7 +111,7 @@ public class EnergyMeasurementRepository {
     EntityManager entityManager = Server.getInstance().getEntityManager();
     entityManager.getTransaction().begin();
     List<EnergyMeasurement> result = entityManager
-        .createQuery("FROM EnergyMeasurement WHERE timestamp => :start AND timestamp <= :end",
+        .createQuery("FROM EnergyMeasurement WHERE timestamp >= :start AND timestamp <= :end",
             EnergyMeasurement.class).setParameter("start", start).setParameter("end", end)
         .getResultList();
     entityManager.getTransaction().commit();
