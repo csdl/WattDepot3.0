@@ -126,20 +126,23 @@ public class TemperatureMeasurementRepository {
    * @param meas
    *          The TemperatureMeasurement to store.
    */
-  public void putTemperatureMeasurement(TemperatureMeasurement meas) {
-    EntityManager entityManager = Server.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(meas);
-    entityManager.persist(meas.getMeter());
-    for (Property p : meas.getMeter().getProperties()) {
-      entityManager.persist(p);
+  public void putMeasurement(TemperatureMeasurement meas) {
+    if (getMeasurements(meas.getMeter(), meas.getTimestamp(), meas.getTimestamp()).size() == 0) {
+      EntityManager entityManager = Server.getInstance().getEntityManager();
+      entityManager.getTransaction().begin();
+      entityManager.persist(meas);
+      entityManager.persist(meas.getMeter());
+      for (Property p : meas.getMeter().getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.persist(meas.getMeter().getLocation());
+      entityManager.persist(meas.getMeter().getModel());
+      for (Property p : meas.getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.flush();
+      entityManager.getTransaction().commit();
     }
-    entityManager.persist(meas.getMeter().getLocation());
-    entityManager.persist(meas.getMeter().getModel());
-    for (Property p : meas.getProperties()) {
-      entityManager.persist(p);
-    }
-    entityManager.getTransaction().commit();
   }
 
   /**

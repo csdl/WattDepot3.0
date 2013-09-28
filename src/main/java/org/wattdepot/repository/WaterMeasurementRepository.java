@@ -6,6 +6,7 @@ package org.wattdepot.repository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -20,6 +21,22 @@ import org.wattdepot.server.Server;
  * @author Cam Moore
  */
 public class WaterMeasurementRepository {
+  /**
+   * Key for setting the EnergyMeasurement's unit.
+   */
+  public static final String WATER_UNIT_KEY = "wattdepot.water.unit";
+
+  private static String unit = "Gallon";
+
+  static {
+    Map<String, String> systemProps = System.getenv();
+    for (Map.Entry<String, String> prop : systemProps.entrySet()) {
+      if (prop.getKey().equals(WATER_UNIT_KEY)) {
+        WaterMeasurementRepository.unit = prop.getValue();
+      }
+    }
+  }
+
   /**
    * Hide the default constructor.
    */
@@ -45,7 +62,7 @@ public class WaterMeasurementRepository {
     EntityManager entityManager = Server.getInstance().getEntityManager();
     entityManager.getTransaction().begin();
     List<WaterMeasurement> result = entityManager
-        .createQuery("FROM WaterMeasurement WHERE timestamp => :start AND timestamp <= :end",
+        .createQuery("FROM WaterMeasurement WHERE timestamp >= :start AND timestamp <= :end",
             WaterMeasurement.class).setParameter("start", start).setParameter("end", end)
         .getResultList();
     entityManager.getTransaction().commit();
@@ -291,18 +308,29 @@ public class WaterMeasurementRepository {
    *          The PowerMeasurement to store.
    */
   public void putMeasurement(WaterMeasurement meas) {
-    EntityManager entityManager = Server.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(meas);
-    entityManager.persist(meas.getMeter());
-    for (Property p : meas.getMeter().getProperties()) {
-      entityManager.persist(p);
+    if (getMeasurements(meas.getMeter(), meas.getTimestamp(), meas.getTimestamp()).size() == 0) {
+      EntityManager entityManager = Server.getInstance().getEntityManager();
+      entityManager.getTransaction().begin();
+      entityManager.persist(meas);
+      entityManager.persist(meas.getMeter());
+      for (Property p : meas.getMeter().getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.persist(meas.getMeter().getLocation());
+      entityManager.persist(meas.getMeter().getModel());
+      for (Property p : meas.getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.flush();      
+      entityManager.getTransaction().commit();
     }
-    entityManager.persist(meas.getMeter().getLocation());
-    entityManager.persist(meas.getMeter().getModel());
-    for (Property p : meas.getProperties()) {
-      entityManager.persist(p);
-    }
-    entityManager.getTransaction().commit();
   }
+
+  /**
+   * @return the unit of measurement for this repository.
+   */
+  public String getUnit() {
+    return unit;
+  }
+
 }

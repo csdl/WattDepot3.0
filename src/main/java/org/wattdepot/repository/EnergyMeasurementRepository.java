@@ -328,6 +328,7 @@ public class EnergyMeasurementRepository {
       for (Property p : meas.getProperties()) {
         entityManager.persist(p);
       }
+      entityManager.flush();
       entityManager.getTransaction().commit();      
     }
 //    else {

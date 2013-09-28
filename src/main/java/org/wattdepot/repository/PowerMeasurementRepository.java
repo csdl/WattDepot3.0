@@ -58,7 +58,7 @@ public class PowerMeasurementRepository {
     EntityManager entityManager = Server.getInstance().getEntityManager();
     entityManager.getTransaction().begin();
     List<PowerMeasurement> result = entityManager
-        .createQuery("FROM PowerMeasurement WHERE timestamp => :start AND timestamp <= :end",
+        .createQuery("FROM PowerMeasurement WHERE timestamp >= :start AND timestamp <= :end",
             PowerMeasurement.class).setParameter("start", start).setParameter("end", end)
         .getResultList();
     entityManager.getTransaction().commit();
@@ -295,20 +295,23 @@ public class PowerMeasurementRepository {
    * @param meas
    *          The PowerMeasurement to store.
    */
-  public void putPowerMeasurement(PowerMeasurement meas) {
-    EntityManager entityManager = Server.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(meas);
-    entityManager.persist(meas.getMeter());
-    for (Property p : meas.getMeter().getProperties()) {
-      entityManager.persist(p);
+  public void putMeasurement(PowerMeasurement meas) {
+    if (getMeasurements(meas.getMeter(), meas.getTimestamp(), meas.getTimestamp()).size() == 0) {
+      EntityManager entityManager = Server.getInstance().getEntityManager();
+      entityManager.getTransaction().begin();
+      entityManager.persist(meas);
+      entityManager.persist(meas.getMeter());
+      for (Property p : meas.getMeter().getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.persist(meas.getMeter().getLocation());
+      entityManager.persist(meas.getMeter().getModel());
+      for (Property p : meas.getProperties()) {
+        entityManager.persist(p);
+      }
+      entityManager.flush();
+      entityManager.getTransaction().commit();
     }
-    entityManager.persist(meas.getMeter().getLocation());
-    entityManager.persist(meas.getMeter().getModel());
-    for (Property p : meas.getProperties()) {
-      entityManager.persist(p);
-    }
-    entityManager.getTransaction().commit();
   }
 
 }
