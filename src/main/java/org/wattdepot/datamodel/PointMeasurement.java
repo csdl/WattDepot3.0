@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table( name = "POINT_MEASUREMENTS" )
-public class PointMeasurement {
+public class PointMeasurement implements IMeasurement {
   /**
    * ID for persistence.
    */

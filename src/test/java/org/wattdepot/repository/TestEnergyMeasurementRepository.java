@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.wattdepot.datamodel.EnergyMeasurement;
+import org.wattdepot.datamodel.Meter;
 
 /**
  * Tests for the EnergyMeasurementRepository.
@@ -86,6 +87,8 @@ public class TestEnergyMeasurementRepository {
     Date end = new Date(TestUtils.aDate.getTime() + 5000);
     List<EnergyMeasurement> val = repo.getMeasurements(TestUtils.meter, start, end);
     assertTrue("Expecting 2 measurments got " + val.size() + ": " + val, 2 == val.size());
+    List<Meter> meters = repo.getMeters();
+    assertTrue("Expecting 1 meter got " + meters.size(), 1 == meters.size());
   }
 
   /**

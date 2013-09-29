@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 /**
@@ -20,7 +19,6 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table( name = "METERS" )
 public class Meter {
   /**
    * ID for persistence.

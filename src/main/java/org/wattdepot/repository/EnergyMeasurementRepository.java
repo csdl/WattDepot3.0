@@ -124,6 +124,17 @@ public class EnergyMeasurementRepository {
   }
 
   /**
+   * @return A List of the meters in the repository.
+   */
+  public List<Meter> getMeters() {
+    EntityManager entityManager = Server.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    List<Meter> result = entityManager.createQuery("from Meter", Meter.class).getResultList();
+    entityManager.getTransaction().commit();
+    return result;
+  }
+  
+  /**
    * @return The energy units as a string.
    */
   public String getUnit() {
@@ -319,10 +330,10 @@ public class EnergyMeasurementRepository {
       EntityManager entityManager = Server.getInstance().getEntityManager();
       entityManager.getTransaction().begin();
       entityManager.persist(meas);
-      entityManager.persist(meas.getMeter());
       for (Property p : meas.getMeter().getProperties()) {
         entityManager.persist(p);
       }
+      entityManager.persist(meas.getMeter());
       entityManager.persist(meas.getMeter().getLocation());
       entityManager.persist(meas.getMeter().getModel());
       for (Property p : meas.getProperties()) {

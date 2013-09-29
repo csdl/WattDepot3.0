@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table( name = "COUNTER_MEASUREMENTS" )
-public class CounterMeasurement {
+public class CounterMeasurement implements IMeasurement {
   /**
    * ID for persistence.
    */
