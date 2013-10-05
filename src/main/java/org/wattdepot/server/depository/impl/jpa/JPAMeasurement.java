@@ -22,6 +22,22 @@ import org.wattdepot.server.datamodel.Measurement;
 public class JPAMeasurement extends Measurement {
   /** The database id. */
   private Long id;
+  private String depository;
+
+  /**
+   * Hide the default constructor.
+   */
+  protected JPAMeasurement() {
+    
+  }
+  /**
+   * @param meas the Measurement to clone.
+   * @param name The name of the depository storing the measurement.
+   */
+  public JPAMeasurement(Measurement meas, String name) {
+    super(new JPASensor(meas.getSensor()), meas.getTimestamp(), meas.getValue(), meas.getMeasurementType());
+    this.depository = name;
+  }
 
   /**
    * @return the id
@@ -40,4 +56,17 @@ public class JPAMeasurement extends Measurement {
     this.id = id;
   }
 
+  /**
+   * @return the depository
+   */
+  public String getDepository() {
+    return depository;
+  }
+
+  /**
+   * @param depository the depository to set
+   */
+  public void setDepository(String depository) {
+    this.depository = depository;
+  }
 }
