@@ -6,24 +6,13 @@
         <description>
             Persistence unit for WattDepot
         </description>
-
-        <class>org.wattdepot.datamodel.CounterMeasurement</class>
-        <class>org.wattdepot.datamodel.EnergyMeasurement</class>
-        <class>org.wattdepot.datamodel.Location</class>
-        <class>org.wattdepot.datamodel.Meter</class>
-        <class>org.wattdepot.datamodel.MeterModel</class>
-        <class>org.wattdepot.datamodel.PointMeasurement</class>
-        <class>org.wattdepot.datamodel.PowerMeasurement</class>
-        <class>org.wattdepot.datamodel.Property</class>
-        <class>org.wattdepot.datamodel.TemperatureMeasurement</class>
-        <class>org.wattdepot.datamodel.WaterMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualMeter</class>
-        <class>org.wattdepot.datamodel.VirtualCounterMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualEnergyMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualWaterMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualPointMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualPowerMeasurement</class>
-        <class>org.wattdepot.datamodel.VirtualTemperatureMeasurement</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPALocation</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPAMeasurement</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPAProperty</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPASensor</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPASensorGroup</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPASensorModel</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPAWattDepositoryDescription</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver"
