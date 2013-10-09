@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>WattDepot HTML API</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
-  </head>
-  <body>
-    <h1>WattDepot3 HTML API</h1>
+<head>
+<title>WattDepot HTML API</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+</head>
+<body>
+	<h1>WattDepot3 HTML API</h1>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-1"><span class="label label-primary">GET</span></div>
-            <div class="col-md-5"><span class="label label-info">/wattdepot/health</span></div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1">
+				<span class="label label-primary">GET</span>
+			</div>
+			<div class="col-md-5">
+				<span class="label label-info">/wattdepot/locations</span>
+			</div>
+			<div class="col-md-6">Returns all the known locations.</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<span class="label label-primary">GET</span>
+			</div>
+			<div class="col-md-5">
+				<span class="label label-info">/wattdepot/location/{location_name}</span>
+			</div>
+			<div class="col-md-6">Returns the location with the given name.</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<span class="label label-primary">PUT</span>
+			</div>
+			<div class="col-md-5">
+				<span class="label label-info">/wattdepot/location/{location_name}</span>
+			</div>
+			<div class="col-md-6">Adds the location with the given name.</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<span class="label label-primary">DELETE</span>
+			</div>
+			<div class="col-md-5">
+				<span class="label label-info">/wattdepot/location/{location_name}</span>
+			</div>
+			<div class="col-md-6">Removes the location with the given name.</div>
+		</div>
+	</div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-  </body>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="//code.jquery.com/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<!-- Latest compiled and minified JavaScript -->
+	<script
+		src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
 </html>
