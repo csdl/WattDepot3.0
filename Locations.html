@@ -44,10 +44,10 @@
 								<b>/wattdepot/location/<span class="token">{location-name}</span></b>
 								<span class="description">Get the Location with the given
 									name.</span> </a></li>
-						<li><a href="#"><span class="request-type">POST</span> <b>/wattdepot/locations</b>
+						<li><a href="#post_location"><span class="request-type">POST</span> <b>/wattdepot/locations</b>
 								<span class="description">Create a new Location. It must
 									have a unique name.</span> </a></li>
-						<li><a href="#"><span class="request-type">DEL</span> <b>/wattdepot/locations/<span
+						<li><a href="#del_location"><span class="request-type">DEL</span> <b>/wattdepot/locations/<span
 									class="token">{location-name}</span></b> <span class="description">Remove
 									a Location.</span> </a></li>
 					</ul>
@@ -97,16 +97,16 @@
                     <section id="get_location">
                         <header>
                             <h2>
-                                <span class="big-type">GET</span> /wattdepot/location<span>{location_id}</span>
+                                <span class="big-type">GET</span> /wattdepot/location/<span>{location_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
                             http://server.wattdepot.org/wattdepot/location/ilima-6th <a
                                 class="btn
                  right"
-                                onclick="$('#get_locations_response').slideToggle()"><b>Response</b></a>
+                                onclick="$('#get_location_response').slideToggle()"><b>Response</b></a>
                         </div>
-                        <div class="card-info-more" id="get_locations_response"
+                        <div class="card-info-more" id="get_location_response"
                             display="none">
                             <pre>
               <code>
@@ -122,6 +122,64 @@
                         </div>
                         <div class="card-description">
                             <p>Get the Location with the given location_id.</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="card">
+                    <section id="post_location">
+                        <header>
+                            <h2>
+                                <span class="big-type">PUT</span> /wattdepot/location/<span>{location_id}</span>
+                            </h2>
+                        </header>
+                        <div class="card-info">
+                            http://server.wattdepot.org/wattdepot/location/ilima-6th <a
+                                class="btn
+                 right"
+                                onclick="$('#put_location_response').slideToggle()"><b>Response</b></a>
+                        </div>
+                        <div class="card-info-more" id="put_location_response"
+                            display="none">
+                            <pre>
+              <code>
+<span>{</span>
+   <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
+   <span>&quot;message&quot;</span><span>:</span> <span>&quot;OK&quot;</span>
+<span class="p">}</span>
+              </code>
+            </pre>
+                        </div>
+                        <div class="card-description">
+                            <p>Add the Location. Will return the status. Error status if duplicate unique id.</p>
+                        </div>
+                    </section>
+                </div>
+                <div class="card">
+                    <section id="post_location">
+                        <header>
+                            <h2>
+                                <span class="big-type">DEL</span> /wattdepot/location/<span>{location_id}</span>
+                            </h2>
+                        </header>
+                        <div class="card-info">
+                            http://server.wattdepot.org/wattdepot/location/ilima-6th <a
+                                class="btn
+                 right"
+                                onclick="$('#del_location_response').slideToggle()"><b>Response</b></a>
+                        </div>
+                        <div class="card-info-more" id="del_location_response"
+                            display="none">
+                            <pre>
+              <code>
+<span>{</span>
+   <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
+   <span>&quot;message&quot;</span><span>:</span> <span>&quot;OK&quot;</span>
+<span class="p">}</span>
+              </code>
+            </pre>
+                        </div>
+                        <div class="card-description">
+                            <p>Deletes the Location with the given location_id. Will return the status. Error status if duplicate unique id.</p>
                         </div>
                     </section>
                 </div>
