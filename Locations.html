@@ -133,7 +133,7 @@
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/location/ilima-6th <a
+                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"uniqueId":"loc1"}' http://server.wattdepot.org/wattdepot/location/ilima-6th <a
                                 class="btn
                  right"
                                 onclick="$('#put_location_response').slideToggle()"><b>Response</b></a>
@@ -155,14 +155,14 @@
                     </section>
                 </div>
                 <div class="card">
-                    <section id="post_location">
+                    <section id="del_location">
                         <header>
                             <h2>
                                 <span class="big-type">DEL</span> /wattdepot/location/<span>{location_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/location/ilima-6th <a
+                            curl -X DELETE http://server.wattdepot.org/wattdepot/location/ilima-6th <a
                                 class="btn
                  right"
                                 onclick="$('#del_location_response').slideToggle()"><b>Response</b></a>
