@@ -46,9 +46,9 @@
 							http://server.wattdepot.org/wattdepot/sensors <a
 								class="btn
 			     right"
-								onclick="$('#get_sensors_response').slideToggle()"><b>Response</b></a>
+								onclick="$('#get_sensors_response_long').slideToggle()"><b>Response</b></a>
 						</div>
-						<div class="card-info-more" id="get_sensors_response"
+						<div class="card-info-more" id="get_sensors_response_long"
 							display="none">
 							<pre>
 		      <code>
@@ -151,7 +151,14 @@
 <span>{</span>
    <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
    <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
-   <span>&quot;locationId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+   <span>&quot;locationId&quot;</span><span>:</span>
+            <span>{</span>
+               <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 6th floor&quot;,</span>
+               <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
+               <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
+               <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
+               <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
+            <span class="p">},</span>      
    <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
    <span>[]</span>
 <span class="p">}</span>
@@ -163,6 +170,38 @@
 						</div>
 					</section>
 				</div>
+                <div class="card">
+                    <section id="get_sensor_short">
+                        <header>
+                            <h2>
+                                <span class="big-type">GET</span> /wattdepot/sensor/<span>{sensor_id}?short=true</span>
+                            </h2>
+                        </header>
+                        <div class="card-info">
+                            http://server.wattdepot.org/wattdepot/sensor/ilima-6-telco?short=true <a
+                                class="btn
+                 right"
+                                onclick="$('#get_sensor_response_short').slideToggle()"><b>Response</b></a>
+                        </div>
+                        <div class="card-info-more" id="get_sensor_response_short"
+                            display="none">
+                            <pre>
+              <code>
+<span>{</span>
+   <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
+   <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
+   <span>&quot;locationId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+   <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
+   <span>[]</span>
+<span class="p">}</span>
+              </code>
+            </pre>
+                        </div>
+                        <div class="card-description">
+                            <p>Get the Sensor with the given sensor_id.</p>
+                        </div>
+                    </section>
+                </div>
 				<div class="card">
 					<section id="post_sensor">
 						<header>
