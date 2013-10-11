@@ -35,23 +35,6 @@
 			</div>
 			<div class="col-xs-12 col-sm-9">
 				<header> </header>
-				<div class="page-nav">
-					<ul>
-						<li><a href="#get_locations"><span class="request-type">GET</span>
-								<b>/wattdepot/locations</b> <span class="description">Get
-									a full list of the defined Locations.</span> </a></li>
-						<li><a href="#get-location"><span class="request-type">GET</span>
-								<b>/wattdepot/location/<span class="token">{location_id}</span></b>
-								<span class="description">Get the Location with the given
-									name.</span> </a></li>
-						<li><a href="#post_location"><span class="request-type">POST</span> <b>/wattdepot/locations</b>
-								<span class="description">Create a new Location. It must
-									have a unique name.</span> </a></li>
-						<li><a href="#del_location"><span class="request-type">DEL</span> <b>/wattdepot/locations/<span
-									class="token">{location_id}</span></b> <span class="description">Remove
-									a Location.</span> </a></li>
-					</ul>
-				</div>
 				<div class="card">
 					<section id="get_locations">
 						<header>
@@ -75,14 +58,14 @@
       <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
       <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
       <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
-      <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
    <span class="p">},</span>
    <span>{</span>
       <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 7th floor&quot;,</span>
       <span>&quot;altitude&quot;</span><span>:</span> <span>35,</span>
       <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
       <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
-      <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-7th&quot;</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-7th&quot;</span>
    <span class="p">}</span>
 <span class="p">]</span>
 		      </code>
@@ -115,7 +98,7 @@
    <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
    <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
    <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
-   <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
+   <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
 <span class="p">}</span>
               </code>
             </pre>
@@ -133,7 +116,7 @@
                             </h2>
                         </header>
                         <div class="card-info">
-                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"uniqueId":"loc1"}' http://server.wattdepot.org/wattdepot/location/ <a
+                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"loc1"}' http://server.wattdepot.org/wattdepot/location/ <a
                                 class="btn
                  right"
                                 onclick="$('#put_location_response').slideToggle()"><b>Response</b></a>

@@ -35,23 +35,6 @@
 			</div>
 			<div class="col-xs-12 col-sm-9">
 				<header> </header>
-				<div class="page-nav">
-					<ul>
-						<li><a href="#get_sensors"><span class="request-type">GET</span>
-								<b>/wattdepot/sensors</b> <span class="description">Get
-									a full list of the defined Sensors.</span> </a></li>
-						<li><a href="#get-sensor"><span class="request-type">GET</span>
-								<b>/wattdepot/sensor/<span class="token">{sensor_id}</span></b>
-								<span class="description">Get the Sensor with the given
-									name.</span> </a></li>
-						<li><a href="#post_sensor"><span class="request-type">POST</span> <b>/wattdepot/sensors</b>
-								<span class="description">Create a new Sensor. It must
-									have a unique name.</span> </a></li>
-						<li><a href="#del_sensor"><span class="request-type">DEL</span> <b>/wattdepot/sensors/<span
-									class="token">{sensor_id}</span></b> <span class="description">Remove
-									a Sensor.</span> </a></li>
-					</ul>
-				</div>
 				<div class="card">
 					<section id="get_sensors">
 						<header>
@@ -71,16 +54,30 @@
 		      <code>
 <span>[</span>
    <span>{</span>
-      <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
       <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
-      <span>&quot;location&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+      <span>&quot;location&quot;</span><span>:</span>
+            <span>{</span>
+               <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 6th floor&quot;,</span>
+               <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
+               <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
+               <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
+               <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
+            <span class="p">},</span>
       <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
       <span>[]</span>
    <span class="p">},</span>
    <span>{</span>
-      <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-6-elect&quot;,</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-elect&quot;,</span>
       <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-elect&quot;,</span>
-      <span>&quot;location&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+      <span>&quot;location&quot;</span><span>:</span> 
+            <span>{</span>
+               <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 6th floor&quot;,</span>
+               <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
+               <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
+               <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
+               <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
+            <span class="p">},</span>      
       <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
       <span>[]</span>
    <span class="p">}</span>
@@ -93,54 +90,96 @@
 						</div>
 					</section>
 				</div>
-                <div class="card">
-                    <section id="get_sensor">
-                        <header>
-                            <h2>
-                                <span class="big-type">GET</span> /wattdepot/sensor/<span>{sensor_id}</span>
-                            </h2>
-                        </header>
-                        <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensor/ilima-6-telco <a
-                                class="btn
+				<div class="card">
+					<section id="get_sensors_short">
+						<header>
+							<h2>
+								<span class="big-type">GET</span> /wattdepot/sensors?short=true
+							</h2>
+						</header>
+						<div class="card-info">
+							http://server.wattdepot.org/wattdepot/sensors <a
+								class="btn
                  right"
-                                onclick="$('#get_sensor_response').slideToggle()"><b>Response</b></a>
-                        </div>
-                        <div class="card-info-more" id="get_sensor_response"
-                            display="none">
-                            <pre>
+								onclick="$('#get_sensors_response').slideToggle()"><b>Response</b></a>
+						</div>
+						<div class="card-info-more" id="get_sensors_response"
+							display="none">
+							<pre>
+              <code>
+<span>[</span>
+   <span>{</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
+      <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
+      <span>&quot;locationId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+      <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
+      <span>[]</span>
+   <span class="p">},</span>
+   <span>{</span>
+      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-elect&quot;,</span>
+      <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-elect&quot;,</span>
+      <span>&quot;locationId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+      <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
+      <span>[]</span>
+   <span class="p">}</span>
+<span class="p">]</span>
+              </code>
+            </pre>
+						</div>
+						<div class="card-description">
+							<p>Get a full list of defined Sensors.</p>
+						</div>
+					</section>
+				</div>
+				<div class="card">
+					<section id="get_sensor">
+						<header>
+							<h2>
+								<span class="big-type">GET</span> /wattdepot/sensor/<span>{sensor_id}</span>
+							</h2>
+						</header>
+						<div class="card-info">
+							http://server.wattdepot.org/wattdepot/sensor/ilima-6-telco <a
+								class="btn
+                 right"
+								onclick="$('#get_sensor_response').slideToggle()"><b>Response</b></a>
+						</div>
+						<div class="card-info-more" id="get_sensor_response"
+							display="none">
+							<pre>
               <code>
 <span>{</span>
-   <span>&quot;uniqueId&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
+   <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
    <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
-   <span>&quot;location&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
+   <span>&quot;locationId&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;,</span>
    <span>&quot;model&quot;</span><span>:</span> <span>&quot;eguage1.0&quot;,</span>
    <span>[]</span>
 <span class="p">}</span>
               </code>
             </pre>
-                        </div>
-                        <div class="card-description">
-                            <p>Get the Sensor with the given sensor_id.</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="card">
-                    <section id="post_sensor">
-                        <header>
-                            <h2>
-                                <span class="big-type">PUT</span> /wattdepot/sensor/
-                            </h2>
-                        </header>
-                        <div class="card-info">
-                            curl -F '{uniqueId: "sensor1", uri: "http://foo.com", location: "loc2", model: "sm1", []}' http://server.wattdepot.org/wattdepot/sensor/ <a
-                                class="btn
+						</div>
+						<div class="card-description">
+							<p>Get the Sensor with the given sensor_id.</p>
+						</div>
+					</section>
+				</div>
+				<div class="card">
+					<section id="post_sensor">
+						<header>
+							<h2>
+								<span class="big-type">PUT</span> /wattdepot/sensor/
+							</h2>
+						</header>
+						<div class="card-info">
+							curl -F '{id: "sensor1", uri: "http://foo.com", location: "loc2",
+							model: "sm1", []}' http://server.wattdepot.org/wattdepot/sensor/
+							<a class="btn
                  right"
-                                onclick="$('#put_sensor_response').slideToggle()"><b>Response</b></a>
-                        </div>
-                        <div class="card-info-more" id="put_sensor_response"
-                            display="none">
-                            <pre>
+								onclick="$('#put_sensor_response').slideToggle()"><b>Response</b></a>
+						</div>
+						<div class="card-info-more" id="put_sensor_response"
+							display="none">
+							<pre>
               <code>
 <span>{</span>
    <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
@@ -148,28 +187,30 @@
 <span class="p">}</span>
               </code>
             </pre>
-                        </div>
-                        <div class="card-description">
-                            <p>Add the Sensor. Will return the status. Error status if duplicate unique id.</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="card">
-                    <section id="del_sensor">
-                        <header>
-                            <h2>
-                                <span class="big-type">DEL</span> /wattdepot/sensor/<span>{sensor_id}</span>
-                            </h2>
-                        </header>
-                        <div class="card-info">
-                            curl -X DELETE http://server.wattdepot.org/wattdepot/sensor/ilima-6th <a
-                                class="btn
+						</div>
+						<div class="card-description">
+							<p>Add the Sensor. Will return the status. Error status if
+								duplicate unique id.</p>
+						</div>
+					</section>
+				</div>
+				<div class="card">
+					<section id="del_sensor">
+						<header>
+							<h2>
+								<span class="big-type">DEL</span> /wattdepot/sensor/<span>{sensor_id}</span>
+							</h2>
+						</header>
+						<div class="card-info">
+							curl -X DELETE
+							http://server.wattdepot.org/wattdepot/sensor/ilima-6th <a
+								class="btn
                  right"
-                                onclick="$('#del_sensor_response').slideToggle()"><b>Response</b></a>
-                        </div>
-                        <div class="card-info-more" id="del_sensor_response"
-                            display="none">
-                            <pre>
+								onclick="$('#del_sensor_response').slideToggle()"><b>Response</b></a>
+						</div>
+						<div class="card-info-more" id="del_sensor_response"
+							display="none">
+							<pre>
               <code>
 <span>{</span>
    <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
@@ -177,12 +218,13 @@
 <span class="p">}</span>
               </code>
             </pre>
-                        </div>
-                        <div class="card-description">
-                            <p>Deletes the Sensor with the given sensor_id. Will return the status. Error status if duplicate unique id.</p>
-                        </div>
-                    </section>
-                </div>
+						</div>
+						<div class="card-description">
+							<p>Deletes the Sensor with the given sensor_id. Will return
+								the status. Error status if duplicate unique id.</p>
+						</div>
+					</section>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -192,7 +234,6 @@
 	<script src="//code.jquery.com/jquery.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="dist/js/bootstrap.min.js"></script>
+	<script src="dist/js/bootstrap.min.js"></script>
 </body>
 </html>
