@@ -14,16 +14,21 @@
 </style>
 </head>
 <body>
-	<header class="top-bar">
-		<h1>WattDepot3 HTML API</h1>
-	</header>
-	<div class="container">
+    <div class="container">
+        <div class="jumbotron">
+            <header class="top-bar">
+                <h2>
+                    <span><img alt="WattDepot logo" src="wattdepot-logo.png">
+                        WattDepot3 HTML API: Locations</span>
+                </h2>
+            </header>
+        </div>
 		<div class="row row-offcanvas row-offcanvas-left">
 			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
 				role="navigation">
 				<div class="well sidebar-nav">
 					<ul class="nav nav-pills nav-stacked">
-						<li><a href="#">Home</a></li>
+						<li><a href="HtmlApi.html">Home</a></li>
 						<li class="active"><a href="Locations.html">Locations</a>
 						<li><a href="Sensors.html">Sensors</a>
 						<li><a href="SensorModels.html">Sensor Models</a>
@@ -116,7 +121,7 @@
                             </h2>
                         </header>
                         <div class="card-info">
-                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"loc1"}' http://server.wattdepot.org/wattdepot/location/ <a
+                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"ilima-6th"}' http://server.wattdepot.org/wattdepot/location/ <a
                                 class="btn dropdown-toggle
                  right"
                                 onclick="$('#put_location_response').slideToggle()"><b>Response</b></a>
