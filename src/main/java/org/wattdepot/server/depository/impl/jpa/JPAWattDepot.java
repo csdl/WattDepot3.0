@@ -17,6 +17,7 @@ import org.wattdepot.server.datamodel.Location;
 import org.wattdepot.server.datamodel.Sensor;
 import org.wattdepot.server.datamodel.SensorGroup;
 import org.wattdepot.server.datamodel.SensorModel;
+import org.wattdepot.server.datamodel.SensorProcess;
 import org.wattdepot.server.depository.WattDepository;
 
 /**
@@ -30,6 +31,7 @@ public class JPAWattDepot extends WattDepot {
   private Map<String, JPASensorGroup> sensorGroups;
   private Map<String, JPASensor> sensors;
   private Map<String, JPASensorModel> sensorModels;
+  private Map<String, JPASensorProcess> sensorProcesses;
   private Map<String, JPALocation> locations;
 
   /** Default constructor. */
@@ -38,6 +40,7 @@ public class JPAWattDepot extends WattDepot {
     this.locations = new HashMap<String, JPALocation>();
     this.sensorGroups = new HashMap<String, JPASensorGroup>();
     this.sensorModels = new HashMap<String, JPASensorModel>();
+    this.sensorProcesses = new HashMap<String, JPASensorProcess>();
     this.sensors = new HashMap<String, JPASensor>();
 
     // Initialize the hash tables from the persistent store.
@@ -74,6 +77,14 @@ public class JPAWattDepot extends WattDepot {
         JPASensorModel.class).getResultList();
     for (JPASensorModel sm : sms) {
       sensorModels.put(sm.id(), sm);
+    }
+    entityManager.getTransaction().commit();
+    // sensor processes
+    entityManager.getTransaction().begin();
+    List<JPASensorProcess> sps = entityManager.createQuery("from JPASensorProcess",
+        JPASensorProcess.class).getResultList();
+    for (JPASensorProcess sp : sps) {
+      sensorProcesses.put(sp.id(), sp);
     }
     entityManager.getTransaction().commit();
     // locations
@@ -409,5 +420,42 @@ public class JPAWattDepot extends WattDepot {
     }
     return ret;
   }
+
+/* (non-Javadoc)
+ * @see org.wattdepot.server.WattDepot#defineSensorProcess(java.lang.String, org.wattdepot.server.datamodel.Sensor, java.lang.Long)
+ */
+@Override
+public SensorProcess defineSensorProcess(String id, Sensor sensor,
+		Long pollingInterval) throws UniqueIdException {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+/* (non-Javadoc)
+ * @see org.wattdepot.server.WattDepot#deleteSensorProcess(java.lang.String)
+ */
+@Override
+public void deleteSensorProcess(String id) throws IdNotFoundException {
+	// TODO Auto-generated method stub
+	
+}
+
+/* (non-Javadoc)
+ * @see org.wattdepot.server.WattDepot#getSensorProcess(java.lang.String)
+ */
+@Override
+public SensorProcess getSensorProcess(String id) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+/* (non-Javadoc)
+ * @see org.wattdepot.server.WattDepot#getSensorProcesses()
+ */
+@Override
+public List<SensorProcess> getSensorProcesses() {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 }

@@ -12,6 +12,7 @@
         <class>org.wattdepot.server.depository.impl.jpa.JPASensor</class>
         <class>org.wattdepot.server.depository.impl.jpa.JPASensorGroup</class>
         <class>org.wattdepot.server.depository.impl.jpa.JPASensorModel</class>
+        <class>org.wattdepot.server.depository.impl.jpa.JPASensorProcess</class>
         <class>org.wattdepot.server.depository.impl.jpa.JPAWattDepositoryDescription</class>
 
         <properties>
