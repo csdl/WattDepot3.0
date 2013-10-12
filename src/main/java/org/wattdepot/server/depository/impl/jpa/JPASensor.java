@@ -46,20 +46,20 @@ public class JPASensor extends Sensor {
   }
 
   /**
-   * @param s The Sensor to clone.
+   * @param s
+   *          The Sensor to clone.
    */
   protected JPASensor(Sensor s) {
-    super();
-    uniqueId = s.getUniqueId();
-    uri = s.getUri();
+    super(s.id(), s.getUri(), s.getLocation(), s.getModel());
     location = new JPALocation(s.getLocation());
     model = new JPASensorModel(s.getModel());
     for (Property p : s.getProperties()) {
       properties.add(new JPAProperty(p));
     }
   }
+
   /**
-   * @return the id
+   * @return the id.
    */
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,7 +69,7 @@ public class JPASensor extends Sensor {
 
   /**
    * @param id
-   *          the id to set
+   *          the id to set.
    */
   public void setId(Long id) {
     this.id = id;

@@ -16,11 +16,20 @@ import org.wattdepot.server.datamodel.Sensor;
  * 
  */
 public abstract class WattDepository {
+  /** The unique id for the WattDepository.  */
+  protected String id;
   /** The name. */
   protected String name;
   /** The type of measurement this depository holds. */
   protected String measurementType;
 
+  /**
+   * @return The id of this WattDepository.
+   */
+  public String id() {
+    return id;
+  }
+  
   /**
    * Returns a List of the Measurements for the given sensor and time interval.
    * 

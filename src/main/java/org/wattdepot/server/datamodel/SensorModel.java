@@ -11,7 +11,7 @@ package org.wattdepot.server.datamodel;
  */
 public class SensorModel {
   /** A unique id for the sensor. */
-  private String uniqueId;
+  private String id;
   /** The protocol this meter uses. */
   private String protocol;
   /** The type of the meter. */
@@ -35,7 +35,7 @@ public class SensorModel {
    */
   public SensorModel(String uniqueId, String protocol, String type, String version) {
     super();
-    this.uniqueId = uniqueId;
+    this.id = uniqueId;
     this.protocol = protocol;
     this.type = type;
     this.version = version;
@@ -44,8 +44,8 @@ public class SensorModel {
   /**
    * @return the uniqueId
    */
-  public String getUniqueId() {
-    return uniqueId;
+  public String id() {
+    return id;
   }
 
 
@@ -161,5 +161,23 @@ public class SensorModel {
   @Override
   public String toString() {
     return "MeterModel [protocol=" + protocol + ", type=" + type + ", version=" + version + "]";
+  }
+  
+  /**
+   * @return The JSON String representation of this SensorModel.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{id :\"");
+    buf.append(this.id);
+    buf.append("\", \"protocol\": \"");
+    buf.append(this.protocol);
+    buf.append("\", \"type\": \"");
+    buf.append(this.type);
+    buf.append("\", \"version\": \"");
+    buf.append(this.version);
+    buf.append("\"}");
+    
+    return buf.toString();
   }
 }

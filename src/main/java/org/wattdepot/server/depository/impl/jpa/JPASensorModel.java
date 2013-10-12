@@ -44,7 +44,7 @@ public class JPASensorModel extends SensorModel {
    * @param sm The SensorModel to clone.
    */
   protected JPASensorModel(SensorModel sm) {
-    super(sm.getUniqueId(), sm.getProtocol(), sm.getType(), sm.getVersion());
+    super(sm.id(), sm.getProtocol(), sm.getType(), sm.getVersion());
   }
 
   /**

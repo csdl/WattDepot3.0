@@ -25,12 +25,15 @@ import org.wattdepot.server.depository.WattDepository;
 public class JPAWattDepository extends WattDepository {
 
   /**
+   * @param id
+   *          The id.
    * @param name
    *          The name of the Depository.
    * @param measurementType
    *          The type of measurement this Depository handles.
    */
-  protected JPAWattDepository(String name, String measurementType) {
+  protected JPAWattDepository(String id, String name, String measurementType) {
+    this.id = id;
     this.name = name;
     this.measurementType = measurementType;
   }
@@ -301,7 +304,7 @@ public class JPAWattDepository extends WattDepository {
       entityManager.persist(m.getSensor().getLocation());
       entityManager.persist(m.getSensor().getModel());
       entityManager.flush();
-      entityManager.getTransaction().commit();      
-    } 
+      entityManager.getTransaction().commit();
+    }
   }
 }

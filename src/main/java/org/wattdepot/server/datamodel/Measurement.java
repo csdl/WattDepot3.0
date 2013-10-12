@@ -148,4 +148,38 @@ public class Measurement {
         + ", measurementType=" + measurementType + "]";
   }
 
+  /**
+   * @return The JSON representation of this Measurement.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{\"sensor\": ");
+    buf.append(sensor.toJSON());
+    buf.append(", \"timestamp\": ");
+    buf.append(timestamp);
+    buf.append(", \"value\": ");
+    buf.append(value);
+    buf.append(", \"measurementType\": \"");
+    buf.append(timestamp);
+    buf.append("\"}");
+    
+    return buf.toString();
+  }
+
+  /**
+   * @return The JSON representation of this Measurement with Sensor Id instead of embedded Sensor.
+   */
+  public String toShortJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{\"sensorId\": \"");
+    buf.append(sensor.id());
+    buf.append("\", \"timestamp\": ");
+    buf.append(timestamp);
+    buf.append(", \"value\": ");
+    buf.append(value);
+    buf.append(", \"measurementType\": \"");
+    buf.append(timestamp);
+    buf.append("\"}");    
+    return buf.toString();
+  }
 }

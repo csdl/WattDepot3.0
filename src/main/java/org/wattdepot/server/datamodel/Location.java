@@ -11,7 +11,7 @@ package org.wattdepot.server.datamodel;
  */
 public class Location {
   /** A unique id for the location.  */
-  private String uniqueId;
+  private String id;
   
   /**
    * The Location's decimal Latitude.
@@ -45,7 +45,7 @@ public class Location {
    */
   public Location(String uniqueId, Double latitude, Double longitude, Double altitude, String description) {
     super();
-    this.uniqueId = uniqueId;
+    this.id = uniqueId;
     this.latitude = latitude;
     this.longitude = longitude;
     this.altitude = altitude;
@@ -55,8 +55,8 @@ public class Location {
   /**
    * @return the uniqueId
    */
-  public String getUniqueId() {
-    return uniqueId;
+  public String id() {
+    return id;
   }
 
   /**
@@ -179,6 +179,25 @@ public class Location {
   public String toString() {
     return "Location [latitude=" + latitude + ", longitude=" + longitude + ", altitude=" + altitude
         + ", description=" + description + "]";
+  }
+  
+  /**
+   * @return The JSON String representation of this Location.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{id :\"");
+    buf.append(this.id);
+    buf.append("\", \"latitude\": ");
+    buf.append(this.latitude);
+    buf.append(", \"longitude\": ");
+    buf.append(this.longitude);
+    buf.append(", \"altitude\": ");
+    buf.append(this.altitude);
+    buf.append(", \"description\": \"");
+    buf.append(this.altitude);
+    buf.append("\"}");
+    return buf.toString();
   }
 
 }

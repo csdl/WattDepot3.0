@@ -19,7 +19,7 @@ import org.wattdepot.server.datamodel.Location;
 @Entity
 public class JPALocation extends Location {
   /** The database id. */
-  private Long id;
+  private Long dbId;
 
   /** Default constructor. */
   protected JPALocation() {
@@ -47,25 +47,25 @@ public class JPALocation extends Location {
    * @param location The Location to clone.
    */
   protected JPALocation(Location location) {
-    super(location.getUniqueId(), location.getLatitude(), location.getLongitude(), location
+    super(location.id(), location.getLatitude(), location.getLongitude(), location
         .getAltitude(), location.getDescription());
   }
 
   /**
-   * @return the id
+   * @return the id.
    */
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  public Long getId() {
-    return id;
+  public Long getDBId() {
+    return dbId;
   }
 
   /**
    * @param id
-   *          the id to set
+   *          the id to set.
    */
-  public void setId(Long id) {
-    this.id = id;
+  public void setDBId(Long id) {
+    this.dbId = id;
   }
 
 }

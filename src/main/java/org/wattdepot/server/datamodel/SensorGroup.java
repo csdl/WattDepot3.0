@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class SensorGroup {
   /** A unique id for the sensor. */
-  private String uniqueId;
+  private String id;
 
   /** The List of sensors the compose this group. */
   private List<Sensor> sensors;
@@ -34,15 +34,15 @@ public class SensorGroup {
    *          The unique id.
    */
   public SensorGroup(String uniqueId) {
-    this.uniqueId = uniqueId;
+    this.id = uniqueId;
     this.sensors = new ArrayList<Sensor>();
   }
 
   /**
    * @return the uniqueId
    */
-  public String getUniqueId() {
-    return uniqueId;
+  public String id() {
+    return id;
   }
 
   /*
@@ -55,7 +55,7 @@ public class SensorGroup {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((sensors == null) ? 0 : sensors.hashCode());
-    result = prime * result + ((uniqueId == null) ? 0 : uniqueId.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     return result;
   }
 
@@ -84,12 +84,12 @@ public class SensorGroup {
     else if (!sensors.equals(other.sensors)) {
       return false;
     }
-    if (uniqueId == null) {
-      if (other.uniqueId != null) {
+    if (id == null) {
+      if (other.id != null) {
         return false;
       }
     }
-    else if (!uniqueId.equals(other.uniqueId)) {
+    else if (!id.equals(other.id)) {
       return false;
     }
     return true;
@@ -102,7 +102,7 @@ public class SensorGroup {
    */
   @Override
   public String toString() {
-    return "SensorGroup [uniqueId=" + uniqueId + ", sensors=" + sensors + "]";
+    return "SensorGroup [uniqueId=" + id + ", sensors=" + sensors + "]";
   }
 
   /**
@@ -124,4 +124,43 @@ public class SensorGroup {
     return sensors.remove(o);
   }
 
+  /**
+   * @return The JSON version of this Sensor with IDs.
+   */
+  public String toShortJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{id: \"");
+    buf.append(this.id);
+    buf.append("\", \"sensorIds\": [");
+    for (Sensor s: sensors) {
+      buf.append(s.id());
+      buf.append(",");
+    }
+    if (sensors.size() > 0) {
+      // remove trailing ,
+      buf.deleteCharAt(buf.length() - 1);
+    }
+    buf.append("]}");    
+    return buf.toString();
+  }
+  
+  /**
+   * @return The JSON String representation of this SensorGroup.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{id :\"");
+    buf.append(this.id);
+    buf.append("\", \"sensors\": [");
+    for (Sensor s: sensors) {
+      buf.append(s.toJSON());
+      buf.append(",");
+    }
+    if (sensors.size() > 0) {
+      // remove trailing ,
+      buf.deleteCharAt(buf.length() - 1);
+    }
+    buf.append("]}");
+    return buf.toString();
+  }
 }

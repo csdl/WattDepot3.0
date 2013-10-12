@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.wattdepot.server.IdNotFoundException;
 import org.wattdepot.server.UniqueIdException;
 import org.wattdepot.server.WattDepot;
 import org.wattdepot.server.datamodel.Location;
@@ -46,31 +47,33 @@ public class JPAWattDepot extends WattDepot {
     List<JPAWattDepositoryDescription> wdds = entityManager.createQuery(
         "from JPAWattDepositoryDescription", JPAWattDepositoryDescription.class).getResultList();
     for (JPAWattDepositoryDescription wdd : wdds) {
-      JPAWattDepository depo = new JPAWattDepository(wdd.getName(), wdd.getMeasurementType());
+      JPAWattDepository depo = new JPAWattDepository(wdd.id(), wdd.getName(),
+          wdd.getMeasurementType());
       depositories.put(depo.getName(), depo);
     }
     entityManager.getTransaction().commit();
     // sensor groups
     entityManager.getTransaction().begin();
-    List<JPASensorGroup> sgs = entityManager.createQuery("from JPASensorGroup", JPASensorGroup.class)
-        .getResultList();
+    List<JPASensorGroup> sgs = entityManager.createQuery("from JPASensorGroup",
+        JPASensorGroup.class).getResultList();
     for (JPASensorGroup sg : sgs) {
-      sensorGroups.put(sg.getUniqueId(), sg);
+      sensorGroups.put(sg.id(), sg);
     }
     entityManager.getTransaction().commit();
     // sensors
     entityManager.getTransaction().begin();
-    List<JPASensor> ss = entityManager.createQuery("from JPASensor", JPASensor.class).getResultList();
+    List<JPASensor> ss = entityManager.createQuery("from JPASensor", JPASensor.class)
+        .getResultList();
     for (JPASensor s : ss) {
-      sensors.put(s.getUniqueId(), s);
+      sensors.put(s.id(), s);
     }
     entityManager.getTransaction().commit();
     // sensor models
     entityManager.getTransaction().begin();
-    List<JPASensorModel> sms = entityManager.createQuery("from JPASensorModel", JPASensorModel.class)
-        .getResultList();
+    List<JPASensorModel> sms = entityManager.createQuery("from JPASensorModel",
+        JPASensorModel.class).getResultList();
     for (JPASensorModel sm : sms) {
-      sensorModels.put(sm.getUniqueId(), sm);
+      sensorModels.put(sm.id(), sm);
     }
     entityManager.getTransaction().commit();
     // locations
@@ -78,7 +81,7 @@ public class JPAWattDepot extends WattDepot {
     List<JPALocation> locs = entityManager.createQuery("from JPALocation", JPALocation.class)
         .getResultList();
     for (JPALocation l : locs) {
-      locations.put(l.getUniqueId(), l);
+      locations.put(l.id(), l);
     }
     entityManager.getTransaction().commit();
   }
@@ -86,97 +89,215 @@ public class JPAWattDepot extends WattDepot {
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#getWattDepositories()
+   * @see org.wattdepot.server.WattDepot#defineLocation(java.lang.String,
+   * java.lang.Double, java.lang.Double, java.lang.Double, java.lang.String)
    */
   @Override
-  public List<WattDepository> getWattDepositories() {
-    ArrayList<WattDepository> ret = new ArrayList<WattDepository>();
-    for (JPAWattDepository d : depositories.values()) {
-      ret.add(d);
+  public Location defineLocation(String id, Double latitude, Double longitude, Double altitude,
+      String description) throws UniqueIdException {
+    if (locations.containsKey(id)) {
+      throw new UniqueIdException(id + " is already a Location unique id.");
     }
-    return ret;
+    JPALocation loc = new JPALocation(id, latitude, longitude, altitude, description);
+    locations.put(loc.id(), loc);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.persist(loc);
+    entityManager.getTransaction().commit();
+    return loc;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#getWattDeposiory(java.lang.String)
+   * @see org.wattdepot.server.WattDepot#defineSensor(java.lang.String,
+   * java.lang.String, org.wattdepot.server.datamodel.Location,
+   * org.wattdepot.server.datamodel.SensorModel)
    */
   @Override
-  public WattDepository getWattDeposiory(String id) {
-    return depositories.get(id);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot.server.WattDepot#getSensorGroups()
-   */
-  @Override
-  public List<SensorGroup> getSensorGroups() {
-    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
-    for (JPASensorGroup s : sensorGroups.values()) {
-      ret.add(s);
+  public Sensor defineSensor(String id, String uri, Location l, SensorModel sm)
+      throws UniqueIdException {
+    if (sensors.containsKey(id)) {
+      throw new UniqueIdException(id + " is already a Sensor unique id.");
     }
-    return ret;
+    JPASensor s = new JPASensor(id, uri, new JPALocation(l), new JPASensorModel(sm));
+    sensors.put(s.id(), s);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.persist(s);
+    entityManager.getTransaction().commit();
+    return s;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#getSensorGroup(java.lang.String)
+   * @see org.wattdepot.server.WattDepot#defineSensorGroup(java.lang.String,
+   * org.wattdepot.server.datamodel.Sensor[])
    */
   @Override
-  public SensorGroup getSensorGroup(String id) {
-    return sensorGroups.get(id);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot.server.WattDepot#getSensors()
-   */
-  @Override
-  public List<Sensor> getSensors() {
-    ArrayList<Sensor> ret = new ArrayList<Sensor>();
-    for (JPASensor s : sensors.values()) {
-      ret.add(s);
+  public SensorGroup defineSensorGroup(String id, Sensor... ss) throws UniqueIdException {
+    if (sensorGroups.containsKey(id)) {
+      throw new UniqueIdException(id + " is aready a SensorGroup unique id.");
     }
-    return ret;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot.server.WattDepot#getSensor(java.lang.String)
-   */
-  @Override
-  public Sensor getSensor(String id) {
-    return sensors.get(id);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot.server.WattDepot#getSensorModels()
-   */
-  @Override
-  public List<SensorModel> getSensorModels() {
-    ArrayList<SensorModel> ret = new ArrayList<SensorModel>();
-    for (JPASensorModel s : sensorModels.values()) {
-      ret.add(s);
+    JPASensorGroup sg = new JPASensorGroup(id);
+    for (Sensor s : ss) {
+      sg.add(new JPASensor(s));
     }
-    return ret;
+    sensorGroups.put(sg.id(), sg);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.persist(sg);
+    entityManager.getTransaction().commit();
+    return sg;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#getSensorModel(java.lang.String)
+   * @see org.wattdepot.server.WattDepot#defineSensorModel(java.lang.String,
+   * java.lang.String, java.lang.String, java.lang.String)
    */
   @Override
-  public SensorModel getSensorModel(String id) {
-    return sensorModels.get(id);
+  public SensorModel defineSensorModel(String id, String protocol, String type, String version)
+      throws UniqueIdException {
+    if (sensorModels.containsKey(id)) {
+      throw new UniqueIdException(id + " is already a SensorModel unique id.");
+    }
+    JPASensorModel sm = new JPASensorModel(id, protocol, type, version);
+    sensorModels.put(sm.id(), sm);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.persist(sm);
+    entityManager.getTransaction().commit();
+    return sm;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#defineWattDepository(java.lang.String,
+   * java.lang.String, java.lang.String)
+   */
+  @Override
+  public WattDepository defineWattDepository(String id, String name, String measurementType)
+      throws UniqueIdException {
+    if (depositories.containsKey(id)) {
+      throw new UniqueIdException(id + " is already a WattDepository unique id.");
+    }
+    JPAWattDepositoryDescription wdd = new JPAWattDepositoryDescription(id, name, measurementType);
+    JPAWattDepository wd = new JPAWattDepository(id, name, measurementType);
+    depositories.put(wd.id(), wd);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.persist(wdd);
+    entityManager.getTransaction().commit();
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#deleteLocation(java.lang.String)
+   */
+  @Override
+  public void deleteLocation(String id) throws IdNotFoundException {
+    Location loc = locations.get(id);
+    if (loc == null) {
+      throw new IdNotFoundException(id + " is not a defined location id.");
+    }
+    locations.remove(id);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.remove(loc);
+    entityManager.getTransaction().commit();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#deleteSensor(java.lang.String)
+   */
+  @Override
+  public void deleteSensor(String id) throws IdNotFoundException {
+    Sensor s = sensors.get(id);
+    if (s == null) {
+      throw new IdNotFoundException(id + " is not a defined sensor id.");
+    }
+    sensors.remove(id);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.remove(s);
+    entityManager.getTransaction().commit();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#deleteSensorGroup(java.lang.String)
+   */
+  @Override
+  public void deleteSensorGroup(String id) throws IdNotFoundException {
+    SensorGroup s = sensorGroups.get(id);
+    if (s == null) {
+      throw new IdNotFoundException(id + " is not a defined sensor group id.");
+    }
+    sensorGroups.remove(id);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.remove(s);
+    entityManager.getTransaction().commit();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#deleteSensorModel(java.lang.String)
+   */
+  @Override
+  public void deleteSensorModel(String id) throws IdNotFoundException {
+    SensorModel s = sensorModels.get(id);
+    if (s == null) {
+      throw new IdNotFoundException(id + " is not a defined sensor model id.");
+    }
+    sensorModels.remove(id);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    entityManager.remove(s);
+    entityManager.getTransaction().commit();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#deleteWattDepository(java.lang.String)
+   */
+  @Override
+  public void deleteWattDepository(String id) throws IdNotFoundException {
+    WattDepository wd = depositories.get(id);
+    if (wd == null) {
+      throw new IdNotFoundException(id + " is not a defined WattDepository id.");
+    }
+    depositories.remove(id);
+    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
+    entityManager.getTransaction().begin();
+    List<JPAWattDepositoryDescription> wdds = entityManager
+        .createQuery("from JPAWattDepositoryDescription where idStr = :id",
+            JPAWattDepositoryDescription.class).setParameter("idStr", id).getResultList();
+    for (JPAWattDepositoryDescription wdd : wdds) {
+      entityManager.remove(wdd);
+    }
+    entityManager.getTransaction().commit();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#getLocation(java.lang.String)
+   */
+  @Override
+  public Location getLocation(String id) {
+    return locations.get(id);
   }
 
   /*
@@ -196,98 +317,97 @@ public class JPAWattDepot extends WattDepot {
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#getLocation(java.lang.String)
+   * @see org.wattdepot.server.WattDepot#getSensor(java.lang.String)
    */
   @Override
-  public Location getLocation(String id) {
-    return locations.get(id);
+  public Sensor getSensor(String id) {
+    return sensors.get(id);
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#defineLocation(java.lang.String,
-   * java.lang.Double, java.lang.Double, java.lang.Double, java.lang.String)
+   * @see org.wattdepot.server.WattDepot#getSensorGroup(java.lang.String)
    */
   @Override
-  public Location defineLocation(String id, Double latitude, Double longitude, Double altitude,
-      String description) throws UniqueIdException {
-    if (locations.containsKey(id)) {
-      throw new UniqueIdException(id + " is already a Location unique id.");
-    }
-    JPALocation loc = new JPALocation(id, latitude, longitude, altitude, description);
-    locations.put(loc.getUniqueId(), loc);
-    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(loc);
-    entityManager.getTransaction().commit();
-    return loc;
+  public SensorGroup getSensorGroup(String id) {
+    return sensorGroups.get(id);
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#defineSensorModel(java.lang.String,
-   * java.lang.String, java.lang.String, java.lang.String)
+   * @see org.wattdepot.server.WattDepot#getSensorGroups()
    */
   @Override
-  public SensorModel defineSensorModel(String id, String protocol, String type, String version)
-      throws UniqueIdException {
-    if (sensorModels.containsKey(id)) {
-      throw new UniqueIdException(id + " is already a SensorModel unique id.");
+  public List<SensorGroup> getSensorGroups() {
+    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
+    for (JPASensorGroup s : sensorGroups.values()) {
+      ret.add(s);
     }
-    JPASensorModel sm = new JPASensorModel(id, protocol, type, version);
-    sensorModels.put(sm.getUniqueId(), sm);
-    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(sm);
-    entityManager.getTransaction().commit();
-    return sm;
+    return ret;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#defineSensorGroup(java.lang.String,
-   * org.wattdepot.server.datamodel.Sensor[])
+   * @see org.wattdepot.server.WattDepot#getSensorModel(java.lang.String)
    */
   @Override
-  public SensorGroup defineSensorGroup(String id, Sensor... ss) throws UniqueIdException {
-    if (sensorGroups.containsKey(id)) {
-      throw new UniqueIdException(id + " is aready a SensorGroup unique id.");
-    }
-    JPASensorGroup sg = new JPASensorGroup(id);
-    for (Sensor s : ss) {
-      sg.add(new JPASensor(s));
-    }
-    sensorGroups.put(sg.getUniqueId(), sg);
-    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(sg);
-    entityManager.getTransaction().commit();
-    return sg;
+  public SensorModel getSensorModel(String id) {
+    return sensorModels.get(id);
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.server.WattDepot#defineSensor(java.lang.String,
-   * java.lang.String, org.wattdepot.server.datamodel.Location,
-   * org.wattdepot.server.datamodel.SensorModel)
+   * @see org.wattdepot.server.WattDepot#getSensorModels()
    */
   @Override
-  public Sensor defineSensor(String id, String uri, Location l, SensorModel sm)
-      throws UniqueIdException {
-    if (sensors.containsKey(id)) {
-      throw new UniqueIdException(id + " is already a Sensor unique id.");
+  public List<SensorModel> getSensorModels() {
+    ArrayList<SensorModel> ret = new ArrayList<SensorModel>();
+    for (JPASensorModel s : sensorModels.values()) {
+      ret.add(s);
     }
-    JPASensor s = new JPASensor(id, uri, new JPALocation(l), new JPASensorModel(sm));
-    sensors.put(s.getUniqueId(), s);
-    EntityManager entityManager = JPAManager.getInstance().getEntityManager();
-    entityManager.getTransaction().begin();
-    entityManager.persist(s);
-    entityManager.getTransaction().commit();
-    return s;
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#getSensors()
+   */
+  @Override
+  public List<Sensor> getSensors() {
+    ArrayList<Sensor> ret = new ArrayList<Sensor>();
+    for (JPASensor s : sensors.values()) {
+      ret.add(s);
+    }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#getWattDeposiory(java.lang.String)
+   */
+  @Override
+  public WattDepository getWattDeposiory(String id) {
+    return depositories.get(id);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot.server.WattDepot#getWattDepositories()
+   */
+  @Override
+  public List<WattDepository> getWattDepositories() {
+    ArrayList<WattDepository> ret = new ArrayList<WattDepository>();
+    for (JPAWattDepository d : depositories.values()) {
+      ret.add(d);
+    }
+    return ret;
   }
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Sensor {
   /** A unique id for the sensor. */
-  protected String uniqueId;
+  protected String id;
   /** The URI to the sensor. */
   protected String uri;
   /** The location of the sensor. */
@@ -42,7 +42,7 @@ public class Sensor {
    */
   public Sensor(String uniqueId, String uri, Location location, SensorModel model) {
     super();
-    this.uniqueId = uniqueId;
+    this.id = uniqueId;
     this.uri = uri;
     this.location = location;
     this.model = model;
@@ -52,8 +52,8 @@ public class Sensor {
   /**
    * @return the uniqueId
    */
-  public String getUniqueId() {
-    return uniqueId;
+  public String id() {
+    return id;
   }
 
   /**
@@ -229,8 +229,57 @@ public class Sensor {
    */
   @Override
   public String toString() {
-    return "Meter [uri=" + uri + ", location=" + location + ", model=" + model + ", properties="
-        + properties + "]";
+    return "Sensor [uniqueId=" + id + ", uri=" + uri + ", location=" + location + ", model="
+        + model + ", properties=" + properties + "]";
   }
 
+  /**
+   * @return The JSON version of this Sensor with IDs.
+   */
+  public String toShortJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{\"id\": \"");
+    buf.append(this.id);
+    buf.append("\", \"uri\": \"");
+    buf.append(this.uri);
+    buf.append("\", \"locationId\": \"");
+    buf.append(this.location.id());
+    buf.append("\", \"modelId\": \"");
+    buf.append(this.model.id());
+    buf.append("\", [");
+    for (Property p : this.properties) {
+      buf.append("{\"key\": \"" + p.getKey() + "\" \"value\": \"" + p.getValue() + "\"},");
+    }
+    if (properties.size() > 0) {
+      // remove trailing ,
+      buf.deleteCharAt(buf.length() - 1);
+    }
+    buf.append("]}");
+    return buf.toString();
+  }
+  
+  /**
+   * @return The JSON version of this Sensor with full representation of Location and SensorModel.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("{\"id\": \"");
+    buf.append(this.id);
+    buf.append("\", \"uri\": \"");
+    buf.append(this.uri);
+    buf.append("\", \"location\": ");
+    buf.append(this.location.toJSON());
+    buf.append(", \"model\": ");
+    buf.append(this.model.toJSON());
+    buf.append(", [");
+    for (Property p : this.properties) {
+      buf.append("{\"key\": \"" + p.getKey() + "\" \"value\": \"" + p.getValue() + "\"},");
+    }
+    if (properties.size() > 0) {
+      // remove trailing ,
+      buf.deleteCharAt(buf.length() - 1);
+    }
+    buf.append("]}");
+    return buf.toString();
+  }
 }
