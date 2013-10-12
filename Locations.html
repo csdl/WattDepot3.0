@@ -18,44 +18,49 @@
         <div class="jumbotron">
             <header class="top-bar">
                 <h2>
-                    <span><img alt="WattDepot logo" src="wattdepot-logo.png">
-                        WattDepot3 HTML API: Locations</span>
+                    <span><img alt="WattDepot logo"
+                        src="wattdepot-logo.png"> WattDepot3 HTML
+                        API: Locations</span>
                 </h2>
             </header>
         </div>
-		<div class="row row-offcanvas row-offcanvas-left">
-			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar"
-				role="navigation">
-				<div class="well sidebar-nav">
-					<ul class="nav nav-pills nav-stacked">
-						<li><a href="HtmlApi.html">Home</a></li>
-						<li class="active"><a href="Locations.html">Locations</a>
-						<li><a href="Sensors.html">Sensors</a>
-						<li><a href="SensorModels.html">Sensor Models</a>
-						<li><a href="SensorGroups.html">Sensor Groups</a>
-						<li><a href="WattDepositories.html">WattDepositories</a></li>
-						<li><a href="Measurements.html">Measurements</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-9">
-				<header> </header>
-				<div class="card">
-					<section id="get_locations">
-						<header>
-							<h2>
-								<span class="big-type">GET</span> /wattdepot/locations
-							</h2>
-						</header>
-						<div class="card-info">
-							http://server.wattdepot.org/wattdepot/locations <a
-								class="btn dropdown-toggle
-			     right"
-								onclick="$('#get_locations_response').slideToggle()"><b>Response</b></a>
-						</div>
-						<div class="card-info-more" id="get_locations_response"
-							display="none">
-							<pre>
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas"
+                id="sidebar" role="navigation">
+                <div class="well sidebar-nav">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li> <a href="index.html">Home</a></li>
+                        <li><a href="HtmlApi.html">Overview</a></li>
+                        <li class="active"><a href="Locations.html">Locations</a>
+                        <li><a href="Sensors.html">Sensors</a>
+                        <li><a href="SensorGroups.html">Sensor
+                                Groups</a>
+                        <li><a href="SensorModels.html">Sensor
+                                Models</a>
+                         <li><a href="SensorProcesses.html">Sensor
+                                Processes</a>
+                        <li><a href="WattDepositories.html">WattDepositories</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                <header> </header>
+                <div class="card">
+                    <section id="get_locations">
+                        <header>
+                            <h2>
+                                <span class="big-type">GET</span>
+                                /wattdepot/locations
+                            </h2>
+                        </header>
+                        <div class="card-info">
+                            http://server.wattdepot.org/wattdepot/locations
+                            <a class="btn right"
+                                onclick="$('#get_locations_response').slideToggle()"><b>Response</b></a>
+                        </div>
+                        <div class="card-info-more"
+                            id="get_locations_response" display="none">
+                            <pre>
 		      <code>
 <span>[</span>
    <span>{</span>
@@ -75,27 +80,27 @@
 <span class="p">]</span>
 		      </code>
 		    </pre>
-						</div>
-						<div class="card-description">
-							<p>Get a full list of defined Locations.</p>
-						</div>
-					</section>
-				</div>
+                        </div>
+                        <div class="card-description">
+                            <p>Get a full list of defined Locations.</p>
+                        </div>
+                    </section>
+                </div>
                 <div class="card">
                     <section id="get_location">
                         <header>
                             <h2>
-                                <span class="big-type">GET</span> /wattdepot/location/<span>{location_id}</span>
+                                <span class="big-type">GET</span>
+                                /wattdepot/location/<span>{location_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/location/ilima-6th <a
-                                class="btn dropdown-toggle
-                 right"
+                            http://server.wattdepot.org/wattdepot/location/ilima-6th
+                            <a class="btn right"
                                 onclick="$('#get_location_response').slideToggle()"><b>Response</b></a>
                         </div>
-                        <div class="card-info-more" id="get_location_response"
-                            display="none">
+                        <div class="card-info-more"
+                            id="get_location_response" display="none">
                             <pre>
               <code>
 <span>{</span>
@@ -109,7 +114,8 @@
             </pre>
                         </div>
                         <div class="card-description">
-                            <p>Get the Location with the given location_id.</p>
+                            <p>Get the Location with the given
+                                location_id.</p>
                         </div>
                     </section>
                 </div>
@@ -117,17 +123,20 @@
                     <section id="post_location">
                         <header>
                             <h2>
-                                <span class="big-type">PUT</span> /wattdepot/location/
+                                <span class="big-type">PUT</span>
+                                /wattdepot/location/
                             </h2>
                         </header>
                         <div class="card-info">
-                            curl -F '{"description":"Hale Aloha Ilima residence hall 6th floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"ilima-6th"}' http://server.wattdepot.org/wattdepot/location/ <a
-                                class="btn dropdown-toggle
-                 right"
+                            curl -F '{"description":"Hale Aloha Ilima
+                            residence hall 6th
+                            floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"ilima-6th"}'
+                            http://server.wattdepot.org/wattdepot/location/
+                            <a class="btn right"
                                 onclick="$('#put_location_response').slideToggle()"><b>Response</b></a>
                         </div>
-                        <div class="card-info-more" id="put_location_response"
-                            display="none">
+                        <div class="card-info-more"
+                            id="put_location_response" display="none">
                             <pre>
               <code>
 <span>{</span>
@@ -138,7 +147,9 @@
             </pre>
                         </div>
                         <div class="card-description">
-                            <p>Add the Location. Will return the status. Error status if duplicate unique id.</p>
+                            <p>Add the Location. Will return the
+                                status. Error status if duplicate unique
+                                id.</p>
                         </div>
                     </section>
                 </div>
@@ -146,17 +157,18 @@
                     <section id="del_location">
                         <header>
                             <h2>
-                                <span class="big-type">DEL</span> /wattdepot/location/<span>{location_id}</span>
+                                <span class="big-type">DEL</span>
+                                /wattdepot/location/<span>{location_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            curl -X DELETE http://server.wattdepot.org/wattdepot/location/ilima-6th <a
-                                class="btn dropdown-toggle
-                 right"
+                            curl -X DELETE
+                            http://server.wattdepot.org/wattdepot/location/ilima-6th
+                            <a class="btn right"
                                 onclick="$('#del_location_response').slideToggle()"><b>Response</b></a>
                         </div>
-                        <div class="card-info-more" id="del_location_response"
-                            display="none">
+                        <div class="card-info-more"
+                            id="del_location_response" display="none">
                             <pre>
               <code>
 <span>{</span>
@@ -167,20 +179,23 @@
             </pre>
                         </div>
                         <div class="card-description">
-                            <p>Deletes the Location with the given location_id. Will return the status. Error status if duplicate unique id.</p>
+                            <p>Deletes the Location with the given
+                                location_id. Will return the status.
+                                Error status if the location_id is not
+                                defined.</p>
                         </div>
                     </section>
                 </div>
-			</div>
-		</div>
-	</div>
-	<div class="main"></div>
+            </div>
+        </div>
+    </div>
+    <div class="main"></div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="//code.jquery.com/jquery.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+        src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
