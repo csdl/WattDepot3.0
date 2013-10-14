@@ -238,11 +238,11 @@
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/<span>{sensor_id}</span>/value/<span>{timestamp}</span>
+                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/value/<span>{timestamp}</span>
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/ilima-6-telco/value/2013-07-28T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/value/2013-07-28T09:00:00.000-10:00
                             <a class="btn right"
                                 onclick="$('#get_wattdepository_response_sensor_value').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -277,11 +277,11 @@
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/<span>{sensor_id}</span>/value?start={timestamp},end={timestamp}</span>
+                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/value?start={timestamp},end={timestamp}</span>
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/ilima-6-telco/value?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/value?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
                             <a class="btn right"
                                 onclick="$('#get_wattdepository_response_sensor_value2').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -318,11 +318,11 @@
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/<span>{sensor_id}</span>/measurements?start={timestamp},end={timestamp}</span>
+                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/measurements?start={timestamp},end={timestamp}</span>
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/ilima-6-telco/measurements?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/measurements?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
                             <a class="btn right"
                                 onclick="$('#get_wattdepository_response_sensor_measurements').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -366,15 +366,15 @@
                     <section id="post_wattdepository">
                         <header>
                             <h2>
-                                <span class="big-type">PUT</span>
-                                /wattdepot/wattdepositorie/
+                                <span class="big-type">POST</span>
+                                /wattdepot/wattdepositories/
                             </h2>
                         </header>
                         <div class="card-info">
                             curl -F '{"id": "wattdepositorie1", "name":
                             "Ilima energy consumption",
                             "measurementType": "energy"}'
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/
+                            http://server.wattdepot.org/wattdepot/wattdepositories/
                             <a
                                 class="btn dropdown-toggle
                  right"
@@ -405,8 +405,8 @@
                     <section id="post_wattdepository_measurement">
                         <header>
                             <h2>
-                                <span class="big-type">PUT</span>
-                                /wattdepot/wattdepositorie/{wattdepository_id}
+                                <span class="big-type">POST</span>
+                                /wattdepot/wattdepositories/{wattdepository_id}
                             </h2>
                         </header>
                         <div class="card-info">
