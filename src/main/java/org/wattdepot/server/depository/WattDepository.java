@@ -16,7 +16,7 @@ import org.wattdepot.server.datamodel.Sensor;
  * 
  */
 public abstract class WattDepository {
-  /** The unique id for the WattDepository.  */
+  /** The unique id for the WattDepository. */
   protected String id;
   /** The name. */
   protected String name;
@@ -29,7 +29,7 @@ public abstract class WattDepository {
   public String id() {
     return id;
   }
-  
+
   /**
    * Returns a List of the Measurements for the given sensor and time interval.
    * 
@@ -137,4 +137,19 @@ public abstract class WattDepository {
    *           measurementType.
    */
   public abstract void putMeasurement(Measurement meas) throws MeasurementTypeException;
+
+  /**
+   * @return The JSON representation of this WattDepository.
+   */
+  public String toJSON() {
+    StringBuffer buf = new StringBuffer();
+    buf.append("\"id\": \"");
+    buf.append(id);
+    buf.append("\", \"name\": ");
+    buf.append(name);
+    buf.append("\", \"measurementType\": ");
+    buf.append(measurementType);
+    buf.append("}");
+    return buf.toString();
+  }
 }
