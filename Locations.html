@@ -29,7 +29,7 @@
                 id="sidebar" role="navigation">
                 <div class="well sidebar-nav">
                     <ul class="nav nav-pills nav-stacked">
-                        <li> <a href="index.html">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="HtmlApi.html">Overview</a></li>
                         <li class="active"><a href="Locations.html">Locations</a>
                         <li><a href="Sensors.html">Sensors</a>
@@ -37,7 +37,7 @@
                                 Groups</a>
                         <li><a href="SensorModels.html">Sensor
                                 Models</a>
-                         <li><a href="SensorProcesses.html">Sensor
+                        <li><a href="SensorProcesses.html">Sensor
                                 Processes</a>
                         <li><a href="WattDepositories.html">WattDepositories</a></li>
                     </ul>
@@ -50,11 +50,11 @@
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/locations
+                                /wattdepot/locations/
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/locations
+                            http://server.wattdepot.org/wattdepot/locations/
                             <a class="btn right"
                                 onclick="$('#get_locations_response').slideToggle()"><b>Response</b></a>
                         </div>
@@ -128,8 +128,9 @@
                             </h2>
                         </header>
                         <div class="card-info">
-                            curl -F '{"description":"Hale Aloha Ilima
-                            residence hall 6th
+                            curl -X PUT -H "ContentType:
+                            application/json" -d '{"description":"Hale
+                            Aloha Ilima residence hall 6th
                             floor","altitude":30,"longitude":-157.812727,"latitude":21.294642,"id":"ilima-6th"}'
                             http://server.wattdepot.org/wattdepot/location/
                             <a class="btn right"
