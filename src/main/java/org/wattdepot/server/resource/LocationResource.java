@@ -16,7 +16,7 @@ import org.wattdepot.server.datamodel.Location;
  * 
  */
 public class LocationResource extends ServerResource {
-	
+
 	@Get
 	public Location retrieve() {
 
