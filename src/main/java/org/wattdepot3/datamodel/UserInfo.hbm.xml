@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 28, 2013 2:55:11 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.wattdepot3.datamodel.UserInfo" table="USERINFO">
+        <id name="id" type="java.lang.String">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="firstName" type="java.lang.String">
+            <column name="FIRSTNAME" />
+        </property>
+        <property name="lastName" type="java.lang.String">
+            <column name="LASTNAME" />
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="EMAIL" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PASSWORD" />
+        </property>
+        <property name="admin" type="java.lang.Boolean">
+            <column name="ADMIN" />
+        </property>
+        <set name="properties" table="PROPERTY" inverse="false" lazy="true">
+            <key>
+                <column name="USER_ID" />
+            </key>
+            <one-to-many class="org.wattdepot3.datamodel.Property" />
+        </set>
+    </class>
+</hibernate-mapping>
