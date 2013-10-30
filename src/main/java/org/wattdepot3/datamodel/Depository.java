@@ -7,9 +7,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.wattdepot.server.depository.MeasurementGapException;
-import org.wattdepot.server.depository.MeasurementTypeException;
-import org.wattdepot.server.depository.NoMeasurementException;
+import org.wattdepot3.exception.MeasurementGapException;
+import org.wattdepot3.exception.MeasurementTypeException;
+import org.wattdepot3.exception.NoMeasurementException;
 
 /**
  * Depository - Stores measurements from Sensors of the matching measurement
@@ -203,6 +203,23 @@ public class Depository {
     result = prime * result + ((measurementType == null) ? 0 : measurementType.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     return result;
+  }
+
+  /**
+   * Determines if the given group is the owner of this location.
+   * 
+   * @param group
+   *          the UserGroup to check.
+   * @return True if the group owns the Location or the group is the
+   *         ADMIN_GROUP.
+   */
+  public boolean isOwner(UserGroup group) {
+    if (owner != null) {
+      if (owner.equals(group) || group.equals(UserGroup.ADMIN_GROUP)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

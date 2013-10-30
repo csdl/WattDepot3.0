@@ -8,19 +8,19 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import org.wattdepot.server.restlet.DepositoriesServerResource;
-import org.wattdepot.server.restlet.DepositoryMeasurementsServerResource;
-import org.wattdepot.server.restlet.DepositoryServerResource;
-import org.wattdepot.server.restlet.LocationServerResource;
-import org.wattdepot.server.restlet.LocationsServerResource;
-import org.wattdepot.server.restlet.SensorGroupServerResource;
-import org.wattdepot.server.restlet.SensorGroupsServerResource;
-import org.wattdepot.server.restlet.SensorModelServerResource;
-import org.wattdepot.server.restlet.SensorModelsServerResource;
-import org.wattdepot.server.restlet.SensorProcessServerResource;
-import org.wattdepot.server.restlet.SensorProcessesServerResource;
-import org.wattdepot.server.restlet.SensorServerResource;
-import org.wattdepot.server.restlet.SensorsServerResource;
+import org.wattdepot3.server.restlet.DepositoriesServerResource;
+import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
+import org.wattdepot3.server.restlet.DepositoryServerResource;
+import org.wattdepot3.server.restlet.LocationServerResource;
+import org.wattdepot3.server.restlet.LocationsServerResource;
+import org.wattdepot3.server.restlet.SensorGroupServerResource;
+import org.wattdepot3.server.restlet.SensorGroupsServerResource;
+import org.wattdepot3.server.restlet.SensorModelServerResource;
+import org.wattdepot3.server.restlet.SensorModelsServerResource;
+import org.wattdepot3.server.restlet.SensorProcessServerResource;
+import org.wattdepot3.server.restlet.SensorProcessesServerResource;
+import org.wattdepot3.server.restlet.SensorServerResource;
+import org.wattdepot3.server.restlet.SensorsServerResource;
 
 /**
  * UserServerApplication Server app.

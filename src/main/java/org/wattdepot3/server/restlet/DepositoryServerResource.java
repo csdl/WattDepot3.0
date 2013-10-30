@@ -5,8 +5,9 @@ package org.wattdepot3.server.restlet;
 
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Depository;
-import org.wattdepot.core.restlet.DepositoryResource;
+import org.wattdepot3.datamodel.Depository;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.restlet.DepositoryResource;
 
 /**
  * DepositoryServerResource - WattDepot 3 Depository Resource handles Depository
@@ -38,12 +39,12 @@ public class DepositoryServerResource extends ServerResource implements Deposito
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.DepositoryResource#retrieve()
+   * @see org.wattdepot3.restlet.DepositoryResource#retrieve()
    */
   @Override
   public Depository retrieve() {
     System.out.println("GET /wattdepot/depository/{" + depositoryId + "}");
-    Depository depo = new Depository("depo1", "First depository", "energy");
+    Depository depo = new Depository("First depository", "energy", UserGroup.ADMIN_GROUP);
     return depo;
   }
 
@@ -51,7 +52,7 @@ public class DepositoryServerResource extends ServerResource implements Deposito
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot.core.restlet.DepositoryResource#store(org.wattdepot.core.
+   * org.wattdepot3.restlet.DepositoryResource#store(org.wattdepot3.
    * datamodel.Depository)
    */
   @Override
@@ -62,7 +63,7 @@ public class DepositoryServerResource extends ServerResource implements Deposito
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.DepositoryResource#remove()
+   * @see org.wattdepot3.restlet.DepositoryResource#remove()
    */
   @Override
   public void remove() {

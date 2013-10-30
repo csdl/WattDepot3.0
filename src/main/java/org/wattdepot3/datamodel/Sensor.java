@@ -43,7 +43,7 @@ public class Sensor {
    * @param model
    *          The meter's model.
    * @param owner
-   *          the owner of the location.
+   *          the owner of the sensor.
    */
   public Sensor(String uniqueId, String uri, Location location, SensorModel model, UserGroup owner) {
     this.id = uniqueId;
@@ -204,6 +204,23 @@ public class Sensor {
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     result = prime * result + ((uri == null) ? 0 : uri.hashCode());
     return result;
+  }
+
+  /**
+   * Determines if the given group is the owner of this location.
+   * 
+   * @param group
+   *          the UserGroup to check.
+   * @return True if the group owns the Location or the group is the
+   *         ADMIN_GROUP.
+   */
+  public boolean isOwner(UserGroup group) {
+    if (owner != null) {
+      if (owner.equals(group) || group.equals(UserGroup.ADMIN_GROUP)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

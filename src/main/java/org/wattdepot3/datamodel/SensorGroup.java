@@ -61,76 +61,6 @@ public class SensorGroup {
     return sensors.contains(o);
   }
 
-  /**
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * @return the owner
-   */
-  public UserGroup getOwner() {
-    return owner;
-  }
-
-  /**
-   * @return the sensors
-   */
-  public ArrayList<Sensor> getSensors() {
-    return sensors;
-  }
-
-  /**
-   * @param o
-   *          The Sensor to remove.
-   * @return true if successful.
-   * @see java.util.List#remove(java.lang.Object)
-   */
-  public boolean remove(Object o) {
-    return sensors.remove(o);
-  }
-
-  /**
-   * @param id
-   *          the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
-   * @param owner
-   *          the owner to set
-   */
-  public void setOwner(UserGroup owner) {
-    this.owner = owner;
-  }
-
-  /**
-   * @param sensors
-   *          the sensors to set
-   */
-  public void setSensors(ArrayList<Sensor> sensors) {
-    this.sensors = sensors;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#hashCode()
-   */
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-    result = prime * result + ((sensors == null) ? 0 : sensors.hashCode());
-    return result;
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -173,6 +103,93 @@ public class SensorGroup {
       return false;
     }
     return true;
+  }
+
+  /**
+   * @return the id
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * @return the owner
+   */
+  public UserGroup getOwner() {
+    return owner;
+  }
+
+  /**
+   * @return the sensors
+   */
+  public ArrayList<Sensor> getSensors() {
+    return sensors;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    result = prime * result + ((owner == null) ? 0 : owner.hashCode());
+    result = prime * result + ((sensors == null) ? 0 : sensors.hashCode());
+    return result;
+  }
+
+  /**
+   * Determines if the given group is the owner of this location.
+   * 
+   * @param group
+   *          the UserGroup to check.
+   * @return True if the group owns the Location or the group is the
+   *         ADMIN_GROUP.
+   */
+  public boolean isOwner(UserGroup group) {
+    if (owner != null) {
+      if (owner.equals(group) || group.equals(UserGroup.ADMIN_GROUP)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * @param o
+   *          The Sensor to remove.
+   * @return true if successful.
+   * @see java.util.List#remove(java.lang.Object)
+   */
+  public boolean remove(Object o) {
+    return sensors.remove(o);
+  }
+
+  /**
+   * @param id
+   *          the id to set
+   */
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
+   * @param owner
+   *          the owner to set
+   */
+  public void setOwner(UserGroup owner) {
+    this.owner = owner;
+  }
+
+  /**
+   * @param sensors
+   *          the sensors to set
+   */
+  public void setSensors(ArrayList<Sensor> sensors) {
+    this.sensors = sensors;
   }
 
   /*

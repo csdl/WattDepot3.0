@@ -4,15 +4,20 @@
 package org.wattdepot3.server;
 
 import java.util.List;
+import java.util.Set;
 
-import org.wattdepot.core.datamodel.Location;
-import org.wattdepot.core.datamodel.Sensor;
-import org.wattdepot.core.datamodel.SensorGroup;
-import org.wattdepot.core.datamodel.SensorModel;
-import org.wattdepot.core.datamodel.SensorProcess;
-import org.wattdepot.core.datamodel.Depository;
-import org.wattdepot.core.datamodel.UserGroup;
-import org.wattdepot.core.datamodel.UserInfo;
+import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.Property;
+import org.wattdepot3.datamodel.Sensor;
+import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.Depository;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.exception.MissMatchedOwnerException;
+import org.wattdepot3.exception.UniqueIdException;
 
 /**
  * WattDepot abstract interface.
@@ -35,12 +40,14 @@ public abstract class WattDepot {
    *          The altitude in meters w.r.t. MSL.
    * @param description
    *          A String description of the Location.
+   * @param owner
+   *          The owner of the Location.
    * @return the defined Location.
    * @throws UniqueIdException
    *           if the id is already used for another Location.
    */
   public abstract Location defineLocation(String id, Double latitude, Double longitude,
-      Double altitude, String description) throws UniqueIdException;
+      Double altitude, String description, UserGroup owner) throws UniqueIdException;
 
   /**
    * @param id
@@ -51,24 +58,33 @@ public abstract class WattDepot {
    *          The location of the sensor
    * @param sm
    *          The SensorModel.
+   * @param owner
+   *          the owner of the Sensor.
    * @return the defined Sensor.
    * @throws UniqueIdException
    *           if the id is already used for another Sensor.
+   * @throws MissMatchedOwnerException
+   *           if the given owner doesn't match the owners of the Location or
+   *           SensorModel.
    */
-  public abstract Sensor defineSensor(String id, String uri, Location l, SensorModel sm)
-      throws UniqueIdException;
+  public abstract Sensor defineSensor(String id, String uri, Location l, SensorModel sm,
+      UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
 
   /**
    * @param id
    *          The unique id.
    * @param sensors
-   *          one or more Sensors that make up the SensorGroup
+   *          A list of the Sensors that make up the SensorGroup
+   * @param owner
+   *          the owner of the SensorGroup.
    * @return the defined SensorGroup.
    * @throws UniqueIdException
    *           if the id is already used for another SensorGroup.
+   * @throws MissMatchedOwnerException
+   *           if the given owner doesn't match the owners of the Sensors.
    */
-  public abstract SensorGroup defineSensorGroup(String id, Sensor... sensors)
-      throws UniqueIdException;
+  public abstract SensorGroup defineSensorGroup(String id, List<Sensor> sensors, UserGroup owner)
+      throws UniqueIdException, MissMatchedOwnerException;
 
   /**
    * Defines a new SensorModel in WattDepot.
@@ -81,12 +97,14 @@ public abstract class WattDepot {
    *          The type of the meter.
    * @param version
    *          The version the meter is using.
+   * @param owner
+   *          the owner of the SensorModel.
    * @return the defined SensorModel.
    * @throws UniqueIdException
    *           if the id is already used for another SensorModel.
    */
   public abstract SensorModel defineSensorModel(String id, String protocol, String type,
-      String version) throws UniqueIdException;
+      String version, UserGroup owner) throws UniqueIdException;
 
   /**
    * Defines a new SensorProcess. This does not start any processes.
@@ -99,12 +117,29 @@ public abstract class WattDepot {
    *          The polling interval.
    * @param depositoryId
    *          The id of the depository to use.
+   * @param owner
+   *          the owner of the SensorProcess.
    * @return The defined SensorProcess.
    * @throws UniqueIdException
    *           if the id is already used for another SensorProcess.
+   * @throws MissMatchedOwnerException
+   *           if the given owner doesn't match the owners of the Sensor or
+   *           Depository.
    */
   public abstract SensorProcess defineSensorProcess(String id, Sensor sensor, Long pollingInterval,
-      String depositoryId) throws UniqueIdException;
+      String depositoryId, UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
+
+  /**
+   * @param id
+   *          The unique id.
+   * @param users
+   *          The members of the group.
+   * @return The defined UserGroup.
+   * @throws UniqueIdException
+   *           If the id is already used for another UserGroup.
+   */
+  public abstract UserGroup defineUserGroup(String id, List<UserInfo> users)
+      throws UniqueIdException;
 
   /**
    * Defines a new UserInfo with the given information.
@@ -121,23 +156,15 @@ public abstract class WattDepot {
    *          The user's password.
    * @param admin
    *          True if they are an admin.
+   * @param properties
+   *          The additional properties of the user.
    * @return The defined UserInfo.
    * @throws UniqueIdException
    *           if the id is already used for another UserInfo.
    */
   public abstract UserInfo defineUserInfo(String id, String firstName, String lastName,
-      String email, String password, Boolean admin) throws UniqueIdException;
-
-  /**
-   * @param id
-   *          The unique id.
-   * @param users
-   *          The members of the group.
-   * @return The defined UserGroup.
-   * @throws UniqueIdException
-   *           If the id is already used for another UserGroup.
-   */
-  public abstract UserGroup defineUserGroup(String id, UserInfo... users) throws UniqueIdException;
+      String email, String password, Boolean admin, Set<Property> properties)
+      throws UniqueIdException;
 
   /**
    * Defines a new WattDepository in WattDepot.
@@ -148,12 +175,14 @@ public abstract class WattDepot {
    *          The name.
    * @param measurementType
    *          the Measurement Type.
+   * @param owner
+   *          the owner of the WattDepository.
    * @return the defined WattDepository.
    * @throws UniqueIdException
    *           if the id is already used for another WattDepository.
    */
-  public abstract Depository defineWattDepository(String id, String name, String measurementType)
-      throws UniqueIdException;
+  public abstract Depository defineWattDepository(String id, String name, String measurementType,
+      UserGroup owner) throws UniqueIdException;
 
   /**
    * Deletes the given location.
@@ -297,6 +326,18 @@ public abstract class WattDepot {
    * @return The UserInfo with the given id.
    */
   public abstract UserInfo getUser(String id);
+
+  /**
+   * @param id
+   *          the unique id for the UserGroup.
+   * @return The UserGroup with the given id.
+   */
+  public abstract UserGroup getUserGroup(String id);
+
+  /**
+   * @return The known/defined UserGroups.
+   */
+  public abstract List<UserGroup> getUserGroups();
 
   /**
    * @return The known/defined UserInfos.

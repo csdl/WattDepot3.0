@@ -4,25 +4,20 @@
 package org.wattdepot3.server.restlet;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.Date;
 
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Location;
-import org.wattdepot.core.datamodel.Measurement;
-import org.wattdepot.core.datamodel.Sensor;
-import org.wattdepot.core.datamodel.SensorModel;
-import org.wattdepot.core.restlet.DepositoryMeasurementsResource;
-import org.wattdepot.core.util.tstamp.Tstamp;
+import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.Sensor;
+import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 
 /**
- * DepositoryMeasurementsServerResource
+ * DepositoryMeasurementsServerResource - Server Resource that returns the Measurements.
  * 
  * @author Cam Moore
  * 
@@ -50,7 +45,7 @@ public class DepositoryMeasurementsServerResource extends ServerResource impleme
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.DepositoryMeasurementsResource#retrieve()
+   * @see org.wattdepot3.restlet.DepositoryMeasurementsResource#retrieve()
    */
   @Override
   public ArrayList<Measurement> retrieve() {
@@ -61,8 +56,8 @@ public class DepositoryMeasurementsServerResource extends ServerResource impleme
       // have start and end so build the list of measurements.
       Sensor s = new Sensor(sensorId, "http://foo.com", new Location("ilima-3", new Double(
           21.294642), new Double(-157.812727), new Double(40),
-          "Hale Aloha Ilima residence hall 7th floor"), new SensorModel("sm1", "Hammer", "hammer",
-          "1.0"));
+          "Hale Aloha Ilima residence hall 7th floor", UserGroup.ADMIN_GROUP), new SensorModel(
+          "sm1", "Hammer", "hammer", "1.0", UserGroup.ADMIN_GROUP), UserGroup.ADMIN_GROUP);
 
       Timestamp now = new Timestamp(new Date().getTime());
       ret.add(new Measurement(s, now, new Double(102.3), "energy"));

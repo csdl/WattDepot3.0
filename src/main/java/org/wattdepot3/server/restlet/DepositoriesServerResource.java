@@ -5,16 +5,16 @@ package org.wattdepot3.server.restlet;
 
 import java.util.ArrayList;
 
-import org.restlet.Application;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Depository;
-import org.wattdepot.core.restlet.DepositoriesResource;
-import org.wattdepot.server.WattDepot;
-import org.wattdepot.server.WattDepotApplication;
+import org.wattdepot3.server.WattDepot;
+import org.wattdepot3.datamodel.Depository;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.restlet.DepositoriesResource;
+import org.wattdepot3.server.WattDepotApplication;
 
 /**
- * DepositorysServerResource
+ * DepositorysServerResource - ServerResource that handles Depositories.
  * 
  * @author Cam Moore
  * 
@@ -40,14 +40,14 @@ public class DepositoriesServerResource extends ServerResource implements Deposi
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.DepositorysResource#retrieve()
+   * @see org.wattdepot3.restlet.DepositorysResource#retrieve()
    */
   @Override
   public ArrayList<Depository> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depositories/");
     ArrayList<Depository> ret = new ArrayList<Depository>();
     depot.getWattDepositories();
-    ret.add(new Depository("ilima-energy1", "Ilima energy consumption", "energy"));
+    ret.add(new Depository("Ilima energy consumption", "energy",UserGroup.ADMIN_GROUP));
     return ret;
   }
 

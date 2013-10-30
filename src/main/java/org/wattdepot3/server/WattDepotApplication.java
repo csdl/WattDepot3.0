@@ -6,27 +6,25 @@ package org.wattdepot3.server;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.data.ChallengeScheme;
-import org.restlet.ext.crypto.DigestAuthenticator;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import org.restlet.security.ChallengeAuthenticator;
-import org.wattdepot.server.depository.impl.jpa.JPAWattDepot;
-import org.wattdepot.server.restlet.AdminServerResource;
-import org.wattdepot.server.restlet.DepositoriesServerResource;
-import org.wattdepot.server.restlet.DepositoryMeasurementsServerResource;
-import org.wattdepot.server.restlet.DepositoryServerResource;
-import org.wattdepot.server.restlet.DepositoryValueServerResource;
-import org.wattdepot.server.restlet.LocationServerResource;
-import org.wattdepot.server.restlet.LocationsServerResource;
-import org.wattdepot.server.restlet.SensorGroupServerResource;
-import org.wattdepot.server.restlet.SensorGroupsServerResource;
-import org.wattdepot.server.restlet.SensorModelServerResource;
-import org.wattdepot.server.restlet.SensorModelsServerResource;
-import org.wattdepot.server.restlet.SensorProcessServerResource;
-import org.wattdepot.server.restlet.SensorProcessesServerResource;
-import org.wattdepot.server.restlet.SensorServerResource;
-import org.wattdepot.server.restlet.SensorsServerResource;
-import org.wattdepot.server.restlet.UserInfoServerResource;
+import org.wattdepot3.server.restlet.AdminServerResource;
+import org.wattdepot3.server.restlet.DepositoriesServerResource;
+import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
+import org.wattdepot3.server.restlet.DepositoryServerResource;
+import org.wattdepot3.server.restlet.DepositoryValueServerResource;
+import org.wattdepot3.server.restlet.LocationServerResource;
+import org.wattdepot3.server.restlet.LocationsServerResource;
+import org.wattdepot3.server.restlet.SensorGroupServerResource;
+import org.wattdepot3.server.restlet.SensorGroupsServerResource;
+import org.wattdepot3.server.restlet.SensorModelServerResource;
+import org.wattdepot3.server.restlet.SensorModelsServerResource;
+import org.wattdepot3.server.restlet.SensorProcessServerResource;
+import org.wattdepot3.server.restlet.SensorProcessesServerResource;
+import org.wattdepot3.server.restlet.SensorServerResource;
+import org.wattdepot3.server.restlet.SensorsServerResource;
+import org.wattdepot3.server.restlet.UserInfoServerResource;
 
 /**
  * UserServerApplication Server app.
@@ -38,12 +36,15 @@ public class WattDepotApplication extends Application {
 
   private WattDepot depot;
   
+  /**
+   * Default constructor.
+   */
   public WattDepotApplication() {
     setName("WattDepot Application");
     setDescription("WattDepot HTTP API implementation");
     setAuthor("Cam Moore");
     // Use settings to instantiate the right WattDepot instance.
-    depot = new JPAWattDepot();
+//    depot = new JPAWattDepot();
   }
   
   

@@ -3,16 +3,16 @@
  */
 package org.wattdepot3.server.restlet;
 
-import org.restlet.data.MediaType;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Location;
-import org.wattdepot.core.restlet.LocationResource;
+import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.restlet.LocationResource;
 
 /**
  * LocationResource - WattDepot 3 Location Resource handles the Location HTTP
- * API.
+ * API ("/wattdepot/{group_id}/location/" and "/wattdepot/{group_id}/location/{location_id}").
  * 
  * @author Cam Moore
  * 
@@ -40,20 +40,20 @@ public class LocationServerResource extends ServerResource implements LocationRe
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.LocationResource#retrieve()
+   * @see org.wattdepot3.restlet.LocationResource#retrieve()
    */
   @Override
   public Location retrieve() {
     System.out.println("GET /wattdepot/location/{" + locationId + "}");
     return new Location(locationId, new Double(21.294642), new Double(-157.812727), new Double(
-        30), "Hale Aloha Ilima residence hall 6th floor");
+        30), "Hale Aloha Ilima residence hall 6th floor", UserGroup.ADMIN_GROUP);
   }
 
   /*
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot.core.restlet.LocationResource#store(org.wattdepot.core.datamodel
+   * org.wattdepot3.restlet.LocationResource#store(org.wattdepot3.datamodel
    * .Location)
    */
   @Override
@@ -67,7 +67,7 @@ public class LocationServerResource extends ServerResource implements LocationRe
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.LocationResource#remove()
+   * @see org.wattdepot3.restlet.LocationResource#remove()
    */
   @Override
   public void remove() {

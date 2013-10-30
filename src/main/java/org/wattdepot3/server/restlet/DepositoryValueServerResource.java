@@ -4,20 +4,23 @@
 package org.wattdepot3.server.restlet;
 
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.MeasuredValue;
-import org.wattdepot.core.restlet.DepositoryValueResource;
+import org.wattdepot3.datamodel.MeasuredValue;
+import org.wattdepot3.restlet.DepositoryValueResource;
 
 /**
- * DepositoryValueServerResource
- *
+ * DepositoryValueServerResource - ServerResouce that handles the GET
+ * /wattdepot/{group_id}/depository/{depository_id}/value/ response.
+ * 
  * @author Cam Moore
- *
+ * 
  */
 public class DepositoryValueServerResource extends ServerResource implements
     DepositoryValueResource {
 
-  /* (non-Javadoc)
-   * @see org.wattdepot.core.restlet.DepositoryValueResource#retrieve()
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.restlet.DepositoryValueResource#retrieve()
    */
   @Override
   public MeasuredValue retrieve() {

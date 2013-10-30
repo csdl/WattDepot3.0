@@ -15,12 +15,14 @@ import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.UserInfo;
-import org.wattdepot.server.WattDepot;
-import org.wattdepot.server.WattDepotApplication;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.server.WattDepot;
+import org.wattdepot3.server.WattDepotApplication;
 
 /**
- * AdministratorServerResource
+ * AdministratorServerResource - Administrative interface for WattDepot. It
+ * handles the URI "/wattdepot/{group_id}/".
  * 
  * @author Cam Moore
  * 
@@ -44,16 +46,23 @@ public class AdminServerResource extends ServerResource {
     this.groupId = getAttribute("group_id");
   }
 
+  /**
+   * @return The admin user interface as an HTML Representation.
+   */
   @Get()
   public Representation toHtml() {
 
     Map<String, Object> dataModel = new HashMap<String, Object>();
     // get some stuff from the database
     List<UserInfo> users = depot.getUsers();
+    List<UserGroup> groups = depot.getUserGroups();
     dataModel.put("users", users);
+    dataModel.put("groups", groups);
+    System.out.println("Defined users = " + users);
+    System.out.println("Defined groups = " + groups);
     Representation rep = new ClientResource(LocalReference.createClapReference(getClass()
         .getPackage()) + "/Admin.ftl").get();
-    
+
     return new TemplateRepresentation(rep, dataModel, MediaType.TEXT_HTML);
   }
 }

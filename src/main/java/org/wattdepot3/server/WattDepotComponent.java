@@ -8,10 +8,10 @@ import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.security.MemoryRealm;
 import org.restlet.security.User;
-import org.wattdepot.core.datamodel.UserInfo;
+import org.wattdepot3.datamodel.UserInfo;
 
 /**
- * WattDepotComponent
+ * WattDepotComponent - Main class to start the WattDepot3 Server.
  * 
  * @author Cam Moore
  * 
@@ -53,7 +53,7 @@ public class WattDepotComponent extends Component {
     
     // Configure the log service
     getLogService().setLoggerName("WattDepot3.AccessLog");
-    getLogService().setLogPropertiesRef("clap://system/org/wattdepot/server/log.properties");
+    getLogService().setLogPropertiesRef("clap://system/org/wattdepot3/server/log.properties");
   }
 
   /**
