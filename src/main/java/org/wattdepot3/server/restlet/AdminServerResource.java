@@ -14,6 +14,7 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
+import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 
@@ -46,8 +47,11 @@ public class AdminServerResource extends WattDepotServerResource {
     // get some stuff from the database
     List<UserInfo> users = depot.getUsers();
     List<UserGroup> groups = depot.getUserGroups();
+    List<Depository> depos = depot.getWattDepositories(groupId);
     dataModel.put("users", users);
     dataModel.put("groups", groups);
+    dataModel.put("groupId", groupId);
+    dataModel.put("depositories", depos);
     System.out.println("Defined users = " + users);
     System.out.println("Defined groups = " + groups);
     Representation rep = new ClientResource(LocalReference.createClapReference(getClass()

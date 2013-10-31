@@ -3,6 +3,7 @@
  */
 package org.wattdepot3.server.depository.impl.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -505,10 +506,22 @@ public class WattDepotImpl extends WattDepot {
    * 
    * @see org.wattdepot3.server.WattDepot#getWattDepositories(java.lang.String)
    */
+  @SuppressWarnings("unchecked")
   @Override
   public List<Depository> getWattDepositories(String groupId) {
-    // TODO Auto-generated method stub
-    return null;
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    @SuppressWarnings("rawtypes")
+    List result = session.createQuery("from Depository").list();
+    session.getTransaction().commit();
+    session.close();
+    ArrayList<Depository> ret = new ArrayList<Depository>();
+    for (Depository d : (List<Depository>) result) {
+      if (groupId.equals("admin") || groupId.equals(d.getOwner().getId())) {
+        ret.add(d);
+      }
+    }
+    return ret;
   }
 
   /* (non-Javadoc)

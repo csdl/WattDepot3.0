@@ -12,45 +12,91 @@
 </head>
 <body>
   <div class="container">
-    <div class="well">
-      <table class="table">
-        <thead>
-          <tr><th colspan="5"><h3>Users</h3></th></tr>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Admin?</th>
-            <th style="width: 15px;"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <#list users as u>
-            <tr><td>${u.firstName!}</td><td>${u.lastName!}</td><td>${u.id}</td><td>${u.email!}</td><td><#if u.admin>Yes</#if></td>
-              <td>
-                <span class="glyphicon glyphicon-remove" onclick="delete_dialog(event, '${u.id}');"></span>
-              </td>
-            </tr>
-          </#list>
-        </tbody>
-      </table>
-      <a data-toggle="modal" href="#addUserModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add User</a>
-    </div>       
-    <div class="well">
-      <table class="table">
-        <thead>
-          <tr>
-            <th colspan="2"><h3>Groups</h3></th>
-          </tr>
-        </thead>
-        <tbody>
-          <#list groups as g>
-            <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td>
-          </#list>
-        </tbody>
-      </table>
-    </div>
+  <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <#if groupId == "admin">
+        <li><a href="#users" data-toggle="tab">Users</a></li>
+        </#if>
+        <li><a href="#depositories" data-toggle="tab">Depositories</a></li>
+        <li><a href="#locations" data-toggle="tab">Locations</a></li>
+        <li><a href="#sensors" data-toggle="tab">Sensors</a></li>
+        <li><a href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
+        <li><a href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
+        <li><a href="#sensorprocesses" data-toggle="tab">Sensor Processes</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane <#if groupId == "admin">active</#if>" id="users">
+            <div class="well">
+                <table class="table">
+                    <thead>
+                      <tr><th colspan="5"><h3>Users</h3></th></tr>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Admin?</th>
+                            <th style="width: 15px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <#list users as u>
+                        <tr><td>${u.firstName!}</td><td>${u.lastName!}</td><td>${u.id}</td><td>${u.email!}</td><td><#if u.admin>Yes</#if></td>
+                            <td>
+                                <span class="glyphicon glyphicon-remove" onclick="delete_dialog(event, '${u.id}');"></span>
+                            </td>
+                        </tr>
+                    </#list>
+                    </tbody>
+                </table>
+                <a data-toggle="modal" href="#addUserModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add User</a>
+            </div>       
+            <div class="well">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"><h3>Groups</h3></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <#list groups as g>
+                        <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td>
+                    </#list>
+                    </tbody>
+                </table>
+            </div>        
+        </div>
+        <div class="tab-pane <#if groupId != "admin">active</#if>" id="depositories">
+            <div class="well">
+                <table class="table">
+                    <thead>
+                      <tr><th colspan="5"><h3>Depositories</h3></th></tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Measurement Type</th>
+                            <th style="width: 15px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <#list depositories as d>
+                        <tr><td>${d.name}</td><td>${d.measurementType}</td>
+                            <td>
+                                <span class="glyphicon glyphicon-remove" onclick="delete_dialog(event, '${u.id}');"></span>
+                            </td>
+                        </tr>
+                    </#list>
+                    </tbody>
+                </table>
+                <a data-toggle="modal" href="#depsitoryModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Depository</a>
+            </div>       
+        </div>
+        <div class="tab-pane" id="locations">...</div>
+        <div class="tab-pane" id="sensors">...</div>
+        <div class="tab-pane" id="sensorgroups">...</div>
+        <div class="tab-pane" id="sensormodels">...</div>
+        <div class="tab-pane" id="sensorprocesses">...</div>
+    </div>  
   <!-- Modal -->
   <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -120,7 +166,7 @@
        
         </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
     <script src="/webroot/dist/js/bootstrap.min.js"></script>
     <script>
     function putNewUser() {
