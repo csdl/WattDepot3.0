@@ -34,12 +34,23 @@ public class UserGroup {
 
   /**
    * @param id
-   *          The unique id for this group. It must also be unique from any
-   *          User's id.
+   *          The id of the UserGroup.
    */
   public UserGroup(String id) {
     this.id = id;
     this.users = new HashSet<UserInfo>();
+  }
+
+  /**
+   * @param id
+   *          The unique id for this group. It must also be unique from any
+   *          User's id.
+   * @param users
+   *          The Users in the group.
+   */
+  public UserGroup(String id, Set<UserInfo> users) {
+    this.id = id;
+    this.users = users;
   }
 
   /**

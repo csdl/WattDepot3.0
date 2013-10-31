@@ -138,7 +138,7 @@ public abstract class WattDepot {
    * @throws UniqueIdException
    *           If the id is already used for another UserGroup.
    */
-  public abstract UserGroup defineUserGroup(String id, List<UserInfo> users)
+  public abstract UserGroup defineUserGroup(String id, Set<UserInfo> users)
       throws UniqueIdException;
 
   /**
@@ -189,50 +189,75 @@ public abstract class WattDepot {
    * 
    * @param id
    *          The unique id of the location to delete.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the location.
    */
-  public abstract void deleteLocation(String id) throws IdNotFoundException;
+  public abstract void deleteLocation(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * Deletes the given Sensor.
    * 
    * @param id
    *          The unique id of the Sensor.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor.
    */
-  public abstract void deleteSensor(String id) throws IdNotFoundException;
+  public abstract void deleteSensor(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * Deletes the given SensorGroup.
    * 
    * @param id
    *          The unique id of the SensorGroup.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor group.
    */
-  public abstract void deleteSensorGroup(String id) throws IdNotFoundException;
+  public abstract void deleteSensorGroup(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * Deletes the given SensorModel.
    * 
    * @param id
    *          The unique id of the SensorModel.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor model.
    */
-  public abstract void deleteSensorModel(String id) throws IdNotFoundException;
+  public abstract void deleteSensorModel(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * Deletes the given SensorProcess.
    * 
    * @param id
    *          The unique id of the SensorProcess.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
    */
-  public abstract void deleteSensorProcess(String id) throws IdNotFoundException;
+  public abstract void deleteSensorProcess(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * @param id
@@ -255,70 +280,108 @@ public abstract class WattDepot {
    * 
    * @param id
    *          The unique id of the WattDepository.
+   * @param groupId
+   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
    */
-  public abstract void deleteWattDepository(String id) throws IdNotFoundException;
+  public abstract void deleteWattDepository(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * @param id
    *          The unique id for the Location.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The Location with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the location.
    */
-  public abstract Location getLocation(String id);
+  public abstract Location getLocation(String id, String groupId) throws MissMatchedOwnerException;
 
   /**
-   * @return The known/defined Locations.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined Locations owned by the given group id.
    */
-  public abstract List<Location> getLocations();
+  public abstract List<Location> getLocations(String groupId);
 
   /**
    * @param id
    *          The unique id for the Sensor.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The Sensor with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor.
    */
-  public abstract Sensor getSensor(String id);
+  public abstract Sensor getSensor(String id, String groupId) throws MissMatchedOwnerException;
 
   /**
    * @param id
    *          The unique id for the SensorGroup.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The SensorGroup with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor group.
    */
-  public abstract SensorGroup getSensorGroup(String id);
+  public abstract SensorGroup getSensorGroup(String id, String groupId)
+      throws MissMatchedOwnerException;
 
   /**
-   * @return The known/defined SensorGroups.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined SensorGroups owned by the given group id.
    */
-  public abstract List<SensorGroup> getSensorGroups();
+  public abstract List<SensorGroup> getSensorGroups(String groupId);
 
   /**
    * @param id
    *          The unique id for the SensorModel.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The SensorModel with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor model.
    */
-  public abstract SensorModel getSensorModel(String id);
+  public abstract SensorModel getSensorModel(String id, String groupId)
+      throws MissMatchedOwnerException;
 
   /**
-   * @return The known/defined SensorModels.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined SensorModels owned by the given group id.
    */
-  public abstract List<SensorModel> getSensorModels();
+  public abstract List<SensorModel> getSensorModels(String groupId);
 
   /**
    * @param id
    *          The unique id for the SensorProcess.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The SensorProcess with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
    */
-  public abstract SensorProcess getSensorProcess(String id);
+  public abstract SensorProcess getSensorProcess(String id, String groupId)
+      throws MissMatchedOwnerException;
 
   /**
-   * @return The known/defined SensorProcesses.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined SensorProcesses owned by the given group id.
    */
-  public abstract List<SensorProcess> getSensorProcesses();
+  public abstract List<SensorProcess> getSensorProcesses(String groupId);
 
   /**
-   * @return The known/defined Sensors.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined Sensors owned by the given group id.
    */
-  public abstract List<Sensor> getSensors();
+  public abstract List<Sensor> getSensors(String groupId);
 
   /**
    * @param id
@@ -347,12 +410,26 @@ public abstract class WattDepot {
   /**
    * @param id
    *          The unique id for the WattDepository to get.
+   * @param groupId
+   *          the group id of the user making the request.
    * @return The WattDepository with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
    */
-  public abstract Depository getWattDeposiory(String id);
+  public abstract Depository getWattDeposiory(String id, String groupId)
+      throws MissMatchedOwnerException;
 
   /**
-   * @return The known/defined WattDepositories.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined WattDepositories owned by the given group id.
    */
-  public abstract List<Depository> getWattDepositories();
+  public abstract List<Depository> getWattDepositories(String groupId);
+
+  /**
+   * @param group
+   *          The updated Usergroup.
+   * @return The updated group from persistence.
+   */
+  public abstract UserGroup updateUserGroup(UserGroup group);
 }

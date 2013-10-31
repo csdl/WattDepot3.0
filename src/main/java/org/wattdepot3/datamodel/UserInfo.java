@@ -14,7 +14,8 @@ import java.util.Set;
  */
 public class UserInfo {
   /** The admin user. */
-  public static final UserInfo ADMIN = new UserInfo("admin", "admin", null, null, "admin", true);
+  public static final UserInfo ADMIN = new UserInfo("admin", "admin", null, null, "admin", true,
+      new HashSet<Property>());
 
   /** A unique id for the User. */
   private String id;
@@ -60,16 +61,18 @@ public class UserInfo {
    *          The user's password.
    * @param admin
    *          True if they are an admin.
+   * @param properties
+   *          The additional properties for the user.
    */
   public UserInfo(String id, String firstName, String lastName, String email, String password,
-      Boolean admin) {
+      Boolean admin, Set<Property> properties) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.password = password;
     this.admin = admin;
-    this.properties = new HashSet<Property>();
+    this.properties = properties;
   }
 
   /**
@@ -257,7 +260,8 @@ public class UserInfo {
   }
 
   /**
-   * @param id the id to set
+   * @param id
+   *          the id to set
    */
   public void setId(String id) {
     this.id = id;
@@ -280,7 +284,8 @@ public class UserInfo {
   }
 
   /**
-   * @param properties the properties to set
+   * @param properties
+   *          the properties to set
    */
   public void setProperties(Set<Property> properties) {
     this.properties = properties;
@@ -296,5 +301,5 @@ public class UserInfo {
     return "User [id=" + id + ", first name=" + firstName + ", password=" + password + ", admin="
         + admin + ", properties=" + properties + "]";
   }
-  
+
 }

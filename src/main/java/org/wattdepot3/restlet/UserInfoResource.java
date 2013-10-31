@@ -30,7 +30,7 @@ public interface UserInfoResource {
    * @param user
    *          The User to store.
    */
-  @Put
+  @Put()
   public void store(UserInfo user);
 
   /**

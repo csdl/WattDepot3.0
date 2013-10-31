@@ -5,40 +5,26 @@ package org.wattdepot3.server.restlet;
 
 import java.util.ArrayList;
 
-import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Location;
-import org.wattdepot.core.datamodel.Sensor;
-import org.wattdepot.core.datamodel.SensorModel;
-import org.wattdepot.core.restlet.SensorsResouce;
+import org.wattdepot3.datamodel.Sensor;
+import org.wattdepot3.restlet.SensorsResouce;
 
 /**
- * SensorsServerResource
+ * SensorsServerResource - Handles the Sensors HTTP API
+ * ("/wattdepot/{group_id}/sensors/").
  * 
  * @author Cam Moore
  * 
  */
-public class SensorsServerResource extends ServerResource implements SensorsResouce {
+public class SensorsServerResource extends WattDepotServerResource implements SensorsResouce {
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.SensorsResouce#retrieve()
+   * @see org.wattdepot3.restlet.SensorsResouce#retrieve()
    */
   @Override
   public ArrayList<Sensor> retrieve() {
-    System.out.println("GET /wattdepot/sensormodels/");
-    Sensor s1 = new Sensor("sensor1", "http://foo.com", new Location("ilima-3", new Double(
-        21.294642), new Double(-157.812727), new Double(40),
-        "Hale Aloha Ilima residence hall 7th floor"), new SensorModel("sm1", "Hammer", "hammer",
-        "1.0"));
-    Sensor s2 = new Sensor("sensor2", "http://foo.com", new Location("ilima-3", new Double(
-        21.294642), new Double(-157.812727), new Double(40),
-        "Hale Aloha Ilima residence hall 7th floor"), new SensorModel("sm1", "Hammer", "hammer",
-        "1.0"));
-
-    ArrayList<Sensor> list = new ArrayList<Sensor>();
-    list.add(s1);
-    list.add(s2);
-    return list;
+    System.out.println("GET /wattdepot/{" + groupId + "}/sensormodels/");
+    return null;
   }
 }

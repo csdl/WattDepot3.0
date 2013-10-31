@@ -3,38 +3,32 @@
  */
 package org.wattdepot3.server.restlet;
 
-import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.restlet.LocationResource;
 
 /**
  * LocationResource - WattDepot 3 Location Resource handles the Location HTTP
- * API ("/wattdepot/{group_id}/location/" and "/wattdepot/{group_id}/location/{location_id}").
+ * API ("/wattdepot/{group_id}/location/" and
+ * "/wattdepot/{group_id}/location/{location_id}").
  * 
  * @author Cam Moore
  * 
  */
-public class LocationServerResource extends ServerResource implements LocationResource {
+public class LocationServerResource extends WattDepotServerResource implements LocationResource {
 
   private String locationId;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.restlet.resource.Resource#doInit()
    */
   @Override
   protected void doInit() throws ResourceException {
-    for (Variant v : getVariants()) {
-      System.out.println(v);
-    }
-    // first try GET/POST with data
-    this.locationId = getQuery().getValues("location_id");
-    if (locationId == null) {
-      // Then part of the URL
-      this.locationId = getAttribute("location_id");
-    }
+    super.doInit();
+    this.locationId = getAttribute("location_id");
   }
 
   /*
@@ -44,24 +38,20 @@ public class LocationServerResource extends ServerResource implements LocationRe
    */
   @Override
   public Location retrieve() {
-    System.out.println("GET /wattdepot/location/{" + locationId + "}");
-    return new Location(locationId, new Double(21.294642), new Double(-157.812727), new Double(
-        30), "Hale Aloha Ilima residence hall 6th floor", UserGroup.ADMIN_GROUP);
+    System.out.println("GET /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
+    return new Location(locationId, new Double(21.294642), new Double(-157.812727), new Double(30),
+        "Hale Aloha Ilima residence hall 6th floor", UserGroup.ADMIN_GROUP);
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.wattdepot3.restlet.LocationResource#store(org.wattdepot3.datamodel
+   * @see org.wattdepot3.restlet.LocationResource#store(org.wattdepot3.datamodel
    * .Location)
    */
   @Override
   public void store(Location location) {
-    for (Variant v : getVariants()) {
-      System.out.println(v);
-    }
-    System.out.println("PUT /wattdepot/location/ with " + location);
+    System.out.println("PUT /wattdepot/{" + groupId + "}/location/ with " + location);
   }
 
   /*
@@ -71,10 +61,7 @@ public class LocationServerResource extends ServerResource implements LocationRe
    */
   @Override
   public void remove() {
-    for (Variant v : getVariants()) {
-      System.out.println(v);
-    }
-    System.out.println("DEL /wattdepot/location/{" + locationId + "}");
+    System.out.println("DEL /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
   }
 
 }

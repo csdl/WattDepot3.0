@@ -5,25 +5,23 @@ package org.wattdepot3.server.restlet;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.UserInfo;
-import org.wattdepot.core.restlet.UserInfoResource;
-import org.wattdepot.server.UniqueIdException;
-import org.wattdepot.server.WattDepot;
-import org.wattdepot.server.WattDepotApplication;
+import org.restlet.security.MemoryRealm;
+import org.restlet.security.User;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.exception.UniqueIdException;
+import org.wattdepot3.restlet.UserInfoResource;
+import org.wattdepot3.server.WattDepotApplication;
 
 /**
- * UserInfoServerResource
+ * UserInfoServerResource - Handles the UserInfo HTTP API
+ * ("/wattdepot/{group_id}/user/{user_id}").
  * 
  * @author Cam Moore
  * 
  */
-public class UserInfoServerResource extends ServerResource implements UserInfoResource {
-  /** The WattDepot instance. */
-  private WattDepot depot;
-
-  /** The group that manipulating the UserInfo. */
-  private String groupId;
+public class UserInfoServerResource extends WattDepotServerResource implements UserInfoResource {
   private String userId;
 
   /*
@@ -33,28 +31,29 @@ public class UserInfoServerResource extends ServerResource implements UserInfoRe
    */
   @Override
   protected void doInit() throws ResourceException {
-    WattDepotApplication app = (WattDepotApplication) getApplication();
-    this.depot = app.getDepot();
-    this.groupId = getAttribute("group_id");
+    super.doInit();
     this.userId = getAttribute("user_id");
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.UserInfoResource#retrieve()
+   * @see org.wattdepot3.restlet.UserInfoResource#retrieve()
    */
   @Override
   public UserInfo retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/user/{" + userId + "}");
-    return depot.getUser(userId);
+    UserInfo user = depot.getUser(userId);
+    if (user == null) {
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "User " + userId + " is not defined.");
+    }
+    return user;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.wattdepot.core.restlet.UserInfoResource#store(org.wattdepot.core.datamodel
+   * @see org.wattdepot3.restlet.UserInfoResource#store(org.wattdepot3.datamodel
    * .UserInfo)
    */
   @Override
@@ -62,8 +61,19 @@ public class UserInfoServerResource extends ServerResource implements UserInfoRe
     System.out.println("PUT /wattdepot/{" + groupId + "}/user/ with " + user);
     if (!depot.getUsers().contains(user)) {
       try {
-        depot.defineUserInfo(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail(),
-            user.getPassword(), user.getAdmin());
+        UserInfo defined = depot.defineUserInfo(user.getId(), user.getFirstName(),
+            user.getLastName(), user.getEmail(), user.getPassword(), user.getAdmin(),
+            user.getProperties());
+        WattDepotApplication app = (WattDepotApplication) getApplication();
+        MemoryRealm realm = (MemoryRealm) app.getComponent().getRealm("WattDepot Security");
+        User newUser = new User(user.getId(), user.getPassword(), user.getFirstName(),
+            user.getLastName(), user.getEmail());
+        realm.getUsers().add(newUser);
+        realm.map(newUser, app.getRole("User"));
+        if (user.getAdmin()) {
+          UserGroup.ADMIN_GROUP.add(defined);
+          depot.updateUserGroup(UserGroup.ADMIN_GROUP);
+        }
       }
       catch (UniqueIdException e) {
         setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
@@ -74,12 +84,17 @@ public class UserInfoServerResource extends ServerResource implements UserInfoRe
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.UserInfoResource#remove()
+   * @see org.wattdepot3.restlet.UserInfoResource#remove()
    */
   @Override
   public void remove() {
     System.out.println("DEL /wattdepot/{" + groupId + "}/user/{" + userId + "}");
-    
+    try {
+      depot.deleteUser(userId);
+    }
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, e.getMessage());
+    }
   }
 
 }

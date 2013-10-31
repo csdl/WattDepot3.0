@@ -8,17 +8,24 @@
     <session-factory>
 
         <!-- Database connection settings -->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/wattdepot3</property>
+        <property name="connection.username">wattdepot</property>
+        <property name="connection.password">topedttaw</property>
+<!--
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="connection.url">jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</property>
         <property name="connection.username">sa</property>
         <property name="connection.password" />
-
+ -->
         <!-- JDBC connection pool (use the built-in) -->
         <property name="connection.pool_size">1</property>
 
         <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+<!-- 
         <property name="dialect">org.hibernate.dialect.H2Dialect</property>
-
+ -->
         <!-- Disable the second-level cache -->
         <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
 
@@ -35,6 +42,7 @@
         <mapping resource="org/wattdepot3/datamodel/Sensor.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/SensorGroup.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/SensorModel.hbm.xml" />
+        <mapping resource="org/wattdepot3/datamodel/SensorProcess.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/UserGroup.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/UserInfo.hbm.xml" />
 

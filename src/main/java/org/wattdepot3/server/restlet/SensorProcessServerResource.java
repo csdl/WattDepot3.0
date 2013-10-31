@@ -4,20 +4,19 @@
 package org.wattdepot3.server.restlet;
 
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.Location;
-import org.wattdepot.core.datamodel.Sensor;
-import org.wattdepot.core.datamodel.SensorModel;
-import org.wattdepot.core.datamodel.SensorProcess;
-import org.wattdepot.core.restlet.SensorProcessResource;
+import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.restlet.SensorProcessResource;
 
 /**
- * SensorProcessServerResource
+ * SensorProcessServerResource - Handles the SensorProcess HTTP API
+ * (("/wattdepot/{group_id}/sensorprocess/",
+ * "/wattdepot/{group_id}/sensorprocess/{sensorprocess_id}").
  * 
  * @author Cam Moore
  * 
  */
-public class SensorProcessServerResource extends ServerResource implements SensorProcessResource {
+public class SensorProcessServerResource extends WattDepotServerResource implements
+    SensorProcessResource {
 
   /** The sensorprocess_id from the request. */
   private String sensorProcessId;
@@ -29,51 +28,40 @@ public class SensorProcessServerResource extends ServerResource implements Senso
    */
   @Override
   protected void doInit() throws ResourceException {
-    // first try GET/POST with data
-    this.sensorProcessId = getQuery().getValues("sensorprocess_id");
-    if (sensorProcessId == null) {
-      // Then part of the URL
-      this.sensorProcessId = getAttribute("sensorprocess_id");
-    }
+    this.sensorProcessId = getAttribute("sensorprocess_id");
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.SensorProcessResource#retrieve()
+   * @see org.wattdepot3.restlet.SensorProcessResource#retrieve()
    */
   @Override
   public SensorProcess retrieve() {
-    System.out.println("GET /wattdepot/sensorprocess/{" + sensorProcessId + "}");
-    Sensor s = new Sensor("sensor1", "http://foo.com", new Location("ilima-3",
-        new Double(21.294642), new Double(-157.812727), new Double(40),
-        "Hale Aloha Ilima residence hall 7th floor"), new SensorModel("sm1", "Hammer", "hammer",
-        "1.0"));
-    SensorProcess process = new SensorProcess(sensorProcessId, s, 10L, "ilima-energy-depository");
-    return process;
+    System.out.println("GET /wattdepot/{" + groupId + "}/sensorprocess/{" + sensorProcessId + "}");
+    return null;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.wattdepot.core.restlet.SensorProcessResource#store(org.wattdepot.core
+   * @see org.wattdepot3.restlet.SensorProcessResource#store(org.wattdepot3
    * .datamodel.SensorProcess)
    */
   @Override
   public void store(SensorProcess sensorprocess) {
-    System.out.println("PUT /wattdepot/sensorprocess/ with " + sensorprocess);
+    System.out.println("PUT /wattdepot/{" + groupId + "}/sensorprocess/ with " + sensorprocess);
 
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.SensorProcessResource#remove()
+   * @see org.wattdepot3.restlet.SensorProcessResource#remove()
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/sensorprocess/{" + sensorProcessId + "}");
+    System.out.println("DEL /wattdepot/{" + groupId + "}/sensorprocess/{" + sensorProcessId + "}");
   }
 
 }

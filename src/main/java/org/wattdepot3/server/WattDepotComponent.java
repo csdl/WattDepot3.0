@@ -35,6 +35,7 @@ public class WattDepotComponent extends Component {
 
     WattDepotApplication app = new WattDepotApplication();
     getDefaultHost().attachDefault(app);
+    app.setComponent(this);
 
     // Set up the security realm
     MemoryRealm realm = new MemoryRealm();

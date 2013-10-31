@@ -9,6 +9,7 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import org.restlet.security.ChallengeAuthenticator;
+import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
 import org.wattdepot3.server.restlet.AdminServerResource;
 import org.wattdepot3.server.restlet.DepositoriesServerResource;
 import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
@@ -24,6 +25,7 @@ import org.wattdepot3.server.restlet.SensorProcessServerResource;
 import org.wattdepot3.server.restlet.SensorProcessesServerResource;
 import org.wattdepot3.server.restlet.SensorServerResource;
 import org.wattdepot3.server.restlet.SensorsServerResource;
+import org.wattdepot3.server.restlet.UserGroupsServerResource;
 import org.wattdepot3.server.restlet.UserInfoServerResource;
 
 /**
@@ -35,7 +37,8 @@ import org.wattdepot3.server.restlet.UserInfoServerResource;
 public class WattDepotApplication extends Application {
 
   private WattDepot depot;
-  
+  private WattDepotComponent component;
+
   /**
    * Default constructor.
    */
@@ -44,10 +47,9 @@ public class WattDepotApplication extends Application {
     setDescription("WattDepot HTTP API implementation");
     setAuthor("Cam Moore");
     // Use settings to instantiate the right WattDepot instance.
-//    depot = new JPAWattDepot();
+    depot = new WattDepotImpl();
   }
-  
-  
+
   /**
    * @return the depot
    */
@@ -55,14 +57,28 @@ public class WattDepotApplication extends Application {
     return depot;
   }
 
-
   /**
-   * @param depot the depot to set
+   * @param depot
+   *          the depot to set
    */
   public void setDepot(WattDepot depot) {
     this.depot = depot;
   }
 
+  /**
+   * @return the component
+   */
+  public WattDepotComponent getComponent() {
+    return component;
+  }
+
+  /**
+   * @param component
+   *          the component to set
+   */
+  public void setComponent(WattDepotComponent component) {
+    this.component = component;
+  }
 
   /**
    * Creates a root Router to dispatch call to server resources.
@@ -71,7 +87,6 @@ public class WattDepotApplication extends Application {
    */
   @Override
   public Restlet createInboundRoot() {
-    System.out.println("user.dir = " + System.getProperty("user.dir"));
     Router router = new Router(getContext());
     String webRoot = "file:///" + System.getProperty("user.dir") + "/target/classes";
     Directory directory = new Directory(getContext(), webRoot);
@@ -79,7 +94,8 @@ public class WattDepotApplication extends Application {
     router.attach("/webroot/", directory);
     router.attach("/wattdepot/{group_id}/", AdminServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/", DepositoryServerResource.class);
-    router.attach("/wattdepot/{group_id}/depository/{depository_id}", DepositoryServerResource.class);
+    router.attach("/wattdepot/{group_id}/depository/{depository_id}",
+        DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurements/",
         DepositoryMeasurementsServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/value/",
@@ -89,24 +105,28 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/{group_id}/location/{location_id}", LocationServerResource.class);
     router.attach("/wattdepot/{group_id}/locations/", LocationsServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorgroup/", SensorGroupServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensorgroup/{sensorgroup_id}", SensorGroupServerResource.class);
+    router.attach("/wattdepot/{group_id}/sensorgroup/{sensorgroup_id}",
+        SensorGroupServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorgroups/", SensorGroupsServerResource.class);
     router.attach("/wattdepot/{group_id}/sensormodel/", SensorModelServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensormodel/{sensormodel_id}", SensorModelServerResource.class);
+    router.attach("/wattdepot/{group_id}/sensormodel/{sensormodel_id}",
+        SensorModelServerResource.class);
     router.attach("/wattdepot/{group_id}/sensormodels/", SensorModelsServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorprocess/", SensorProcessServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensorprocess/{sensorprocess_id}", SensorProcessServerResource.class);
+    router.attach("/wattdepot/{group_id}/sensorprocess/{sensorprocess_id}",
+        SensorProcessServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorprocesses/", SensorProcessesServerResource.class);
     router.attach("/wattdepot/{group_id}/sensor/", SensorServerResource.class);
     router.attach("/wattdepot/{group_id}/sensor/{sensor_id}", SensorServerResource.class);
     router.attach("/wattdepot/{group_id}/sensors/", SensorsServerResource.class);
     router.attach("/wattdepot/{group_id}/user/{user_id}", UserInfoServerResource.class);
+    router.attach("/wattdepot/{group_id}/usergroups/", UserGroupsServerResource.class);
 
     ChallengeAuthenticator authenticator = new ChallengeAuthenticator(getContext(),
         ChallengeScheme.HTTP_BASIC, "WattDepot Realm");
     authenticator.setNext(router);
     return authenticator;
-    
-//    return router;
+
+    // return router;
   }
 }

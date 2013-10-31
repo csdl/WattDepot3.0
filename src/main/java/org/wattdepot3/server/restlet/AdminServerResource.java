@@ -14,25 +14,17 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
-import org.wattdepot3.server.WattDepot;
-import org.wattdepot3.server.WattDepotApplication;
 
 /**
  * AdministratorServerResource - Administrative interface for WattDepot. It
- * handles the URI "/wattdepot/{group_id}/".
+ * handles the HTTP API ("/wattdepot/{group_id}/").
  * 
  * @author Cam Moore
  * 
  */
-public class AdminServerResource extends ServerResource {
-  /** The WattDepot instance. */
-  private WattDepot depot;
-
-  /** The group that is doing the administration. */
-  private String groupId;
+public class AdminServerResource extends WattDepotServerResource {
 
   /*
    * (non-Javadoc)
@@ -41,9 +33,7 @@ public class AdminServerResource extends ServerResource {
    */
   @Override
   protected void doInit() throws ResourceException {
-    WattDepotApplication app = (WattDepotApplication) getApplication();
-    this.depot = app.getDepot();
-    this.groupId = getAttribute("group_id");
+    super.doInit();
   }
 
   /**
@@ -51,7 +41,7 @@ public class AdminServerResource extends ServerResource {
    */
   @Get()
   public Representation toHtml() {
-
+    System.out.println("GET /wattdepot/{" + groupId + "}/");
     Map<String, Object> dataModel = new HashMap<String, Object>();
     // get some stuff from the database
     List<UserInfo> users = depot.getUsers();

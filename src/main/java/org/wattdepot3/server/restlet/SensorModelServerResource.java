@@ -4,17 +4,19 @@
 package org.wattdepot3.server.restlet;
 
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
-import org.wattdepot.core.datamodel.SensorModel;
-import org.wattdepot.core.restlet.SensorModelResource;
+import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.restlet.SensorModelResource;
 
 /**
- * SensorModelServerResource
+ * SensorModelServerResource - Handles the SensorModel HTTP API
+ * ("/wattdepot/{group_id}/sensormodel/",
+ * "/wattdepot/{group_id}/sensormodel/{sensormodel_id}").
  * 
  * @author Cam Moore
  * 
  */
-public class SensorModelServerResource extends ServerResource implements SensorModelResource {
+public class SensorModelServerResource extends WattDepotServerResource implements
+    SensorModelResource {
 
   /** The sensormodel_id from the request. */
   private String sensorModelId;
@@ -26,47 +28,40 @@ public class SensorModelServerResource extends ServerResource implements SensorM
    */
   @Override
   protected void doInit() throws ResourceException {
-    // first try GET/POST with data
-    this.sensorModelId = getQuery().getValues("sensormodel_id");
-    if (sensorModelId == null) {
-      // Then part of the URL
-      this.sensorModelId = getAttribute("sensormodel_id");
-    }
+    this.sensorModelId = getAttribute("sensormodel_id");
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.SensorModelResource#retrieve()
+   * @see org.wattdepot3.restlet.SensorModelResource#retrieve()
    */
   @Override
   public SensorModel retrieve() {
-    System.out.println("GET /wattdepot/sensormodel/{" + sensorModelId + "}");
-    SensorModel model = new SensorModel(sensorModelId, "protocol1", "type1", "version1");
-    return model;
+    System.out.println("GET /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
+    return null;
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.wattdepot.core.restlet.SensorModelResource#store(org.wattdepot.core
+   * @see org.wattdepot3.restlet.SensorModelResource#store(org.wattdepot3
    * .datamodel.SensorModel)
    */
   @Override
   public void store(SensorModel sensormodel) {
-    System.out.println("PUT /wattdepot/sensormodel/ with " + sensormodel);
+    System.out.println("PUT /wattdepot/{" + groupId + "}/sensormodel/ with " + sensormodel);
 
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot.core.restlet.SensorModelResource#remove()
+   * @see org.wattdepot3.restlet.SensorModelResource#remove()
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/sensormodel/{" + sensorModelId + "}");
+    System.out.println("DEL /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
   }
 
 }

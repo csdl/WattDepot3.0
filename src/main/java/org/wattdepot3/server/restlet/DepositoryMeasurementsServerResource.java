@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.Sensor;
@@ -17,12 +16,13 @@ import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 
 /**
- * DepositoryMeasurementsServerResource - Server Resource that returns the Measurements.
+ * DepositoryMeasurementsServerResource - Handles the Depository measurements
+ * HTTP API ("/wattdepot/{group_id}/depository/{depository_id}/measurements/").
  * 
  * @author Cam Moore
  * 
  */
-public class DepositoryMeasurementsServerResource extends ServerResource implements
+public class DepositoryMeasurementsServerResource extends WattDepotServerResource implements
     DepositoryMeasurementsResource {
   private String depositoryId;
   private String sensorId;
@@ -36,6 +36,7 @@ public class DepositoryMeasurementsServerResource extends ServerResource impleme
    */
   @Override
   protected void doInit() throws ResourceException {
+    super.doInit();
     this.sensorId = getQuery().getValues("sensor");
     this.start = getQuery().getValues("start");
     this.end = getQuery().getValues("end");
@@ -49,8 +50,8 @@ public class DepositoryMeasurementsServerResource extends ServerResource impleme
    */
   @Override
   public ArrayList<Measurement> retrieve() {
-    System.out.println("GET /wattdepot/depository/{" + depositoryId + "}/measurements/?sensor={"
-        + sensorId + "},start={" + start + "},end={" + end + "}");
+    System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId + "}/measurements/?sensor={"
+        + sensorId + "}&start={" + start + "}&end={" + end + "}");
     ArrayList<Measurement> ret = new ArrayList<Measurement>();
     if (sensorId != null && start != null && end != null) {
       // have start and end so build the list of measurements.

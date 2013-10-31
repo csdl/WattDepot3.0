@@ -8,9 +8,9 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
-        <set name="users" table="USERINFO" inverse="false" lazy="true">
+        <set name="users" table="USERINFO" inverse="false" lazy="false">
             <key>
-                <column name="ID" />
+                <column name="USERGROUP_ID" />
             </key>
             <one-to-many class="org.wattdepot3.datamodel.UserInfo" />
         </set>
