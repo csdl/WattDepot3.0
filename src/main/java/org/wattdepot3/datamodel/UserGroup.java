@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class UserGroup {
   /** The admin user group. */
-  public static final UserGroup ADMIN_GROUP = new UserGroup("adminGroup");
+  public static final UserGroup ADMIN_GROUP = new UserGroup("admin");
 
   /** A unique id. */
   protected String id;

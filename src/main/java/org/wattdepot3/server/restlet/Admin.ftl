@@ -79,12 +79,15 @@
                         <tr>
                             <th>Name</th>
                             <th>Measurement Type</th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
                             <th style="width: 15px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list depositories as d>
-                        <tr><td>${d.name}</td><td>${d.measurementType}</td>
+                        <tr><td>${d.name}</td><td>${d.measurementType}</td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_depository_dialog(event, '${d.name}');"></span>
                             </td>
@@ -198,7 +201,7 @@
                 </table>
                 <button data-toggle="modal" data-target="#modelModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Model</button>
             </div>       
-		</div>
+        </div>
         <div class="tab-pane" id="sensorprocesses">
             <div class="well">
                 <table class="table">
@@ -224,7 +227,7 @@
                 </table>
                 <button data-toggle="modal" data-target="#processModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process</button>
             </div>       
-		</div>
+        </div>
     </div>  
   <!-- Modal Dialogs -->
   <!-- Add User -->
@@ -240,26 +243,26 @@
                 <form>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">First Name</label>
-                        <input type="text" name="firstname" class="form-inline"><p></p>
+                        <input type="text" name="user_firstname" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                             <label class="col-md-3 col-md-offset-1">Last Name</label>
-                            <input type="text" name="lastname" class="form-inline"><p></p>
+                            <input type="text" name="user_lastname" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                             <label class="col-md-3 col-md-offset-1">Email Address</label>
-                            <input type="email" name="email" class="form-inline"><p></p>
+                            <input type="email" name="user_email" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                             <label class="col-md-3 col-md-offset-1">Username</label>
-                            <input type="text" name="id" class="form-inline"><p></p>
+                            <input type="text" name="user_id" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                             <label class="col-md-3 col-md-offset-1">Password</label>
-                            <input type="password" name="password" class="form-inline"><p></p>
+                            <input type="password" name="user_password" class="form-inline"><p></p>
                 </div>
                 <div class="row">
-                 <label class="col-md-3 col-md-offset-1"><input type="checkbox" name="admin"> is an admin?</label>
+                 <label class="col-md-3 col-md-offset-1"><input type="checkbox" name="user_admin"> is an admin?</label>
                  
                             <div class="clearfix"></div>
                 </div>
@@ -274,6 +277,27 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
 
+  <!-- Delete User -->
+  <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Delete User</h4>
+        </div>
+        <div class="modal-body">
+            <p><b>Delete User </b></p>
+            <div id="del_user_id">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteUser();">Delete User</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- / .modal -->
+    
   <!-- Add User Group -->
   <div class="modal fade" id="addUserGroupModal" tabindex="-1" role="dialog" aria-labelledby="addUserGroupModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -287,16 +311,16 @@
                 <form>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Group Name</label>
-                        <input type="text" name="usergroupname" class="form-inline"><p></p>
+                        <input type="text" name="usergroup_name" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                             <label class="col-md-3 col-md-offset-1">Users</label>
-                            <select name="groupusers" multiple>
+                            <select name="groupusers" multiple="multiple">
                             <#list users as u>
-                            	<option value="${u.id}">${u.id}</option>
+                                <option value="${u.id}">${u.id}</option>
                             </#list>
                             </select>
-				</div>
+                </div>
                 <div class="clearfix"></div>
                 </form>
             </div>                
@@ -308,6 +332,27 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
+
+  <!-- Delete User Group -->
+  <div class="modal fade" id="deleteUserGroupModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Delete User Group</h4>
+        </div>
+        <div class="modal-body">
+            <p><b>Delete User Grup </b></p>
+            <div id="del_usergroup_id">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteUserGroup();">Delete User Group</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- / .modal -->
 
   <!-- Add Depository -->
   <div class="modal fade" id="addDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="addDepositoryModalLabel" aria-hidden="true">
@@ -327,7 +372,7 @@
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Depository Measurement Type</label>
                         <input type="text" name="depositorytype" class="form-inline"><p></p>
-				</div>
+                </div>
                 <div class="clearfix"></div>
                 </form>
             </div>                
@@ -339,6 +384,28 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
+
+  <!-- Delete Depository -->
+  <div class="modal fade" id="deleteDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteDepositoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Delete Depository</h4>
+        </div>
+        <div class="modal-body">
+            <p><b>Delete Depository </b></p>
+            <div id="del_depository_id">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteDespository();">Delete Depository</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- / .modal -->
+
 
   <!-- Add Location -->
   <div class="modal fade" id="addLocationModal" tabindex="-1" role="dialog" aria-labelledby="addLocationModalLabel" aria-hidden="true">
@@ -358,19 +425,19 @@
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Latitude</label>
                         <input type="number" name="locationlatitude" class="form-inline"><p></p>
-				</div>
+                </div>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Longitude</label>
                         <input type="number" name="locationlongitude" class="form-inline"><p></p>
-				</div>
+                </div>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Altitude</label>
                         <input type="number" name="locationaltitude" class="form-inline"><p></p>
-				</div>
+                </div>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Description</label>
                         <input type="text" name="locationdescription" class="form-inline"><p></p>
-				</div>
+                </div>
                 <div class="clearfix"></div>
                 </form>
             </div>                
@@ -383,79 +450,26 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
   
-  <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete User</h4>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <p><b>Delete User </b></p>
-            <div id="user_id">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteUser();">Delete User</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
 </div>
-       
-        </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="/webroot/dist/js/bootstrap.min.js"></script>
-    <script>
-    function putNewUser() {
-        var id = $("input[name='id']").val();
-        var first = $("input[name='firstname']").val();
-        var last = $("input[name='lastname']").val();
-        var pass = $("input[name='password']").val();
-        var email = $("input[name='email']").val();
-        var admin = $("input[name='admin']").is(':checked');
-        var usr = {"id": id, "firstName": first, "lastName": last, "email": email, "password": pass, "admin": "false", "properties": []};
-        if (admin) {
-            usr['admin'] = "true";
-        }
-        $.ajax({
-            url: '/wattdepot/admin/user/temp',
-            type: 'PUT',
-            contentType:'application/json',
-            data: JSON.stringify(usr),
-            success: function() {
-            location.reload();
-            },
-         });
-        
-    };
-    
-    function delete_user_dialog(event, id) {
-        var modalElement = $('#deleteUserModal');
-           
-        modalElement.modal({
-            backdrop: true,
-            keyboard: true,
-            show: false
-        }); 
-        modalElement.find('#user_id').html(id);
-        modalElement.modal('show');
-    };
-    
-    function deleteUser() {
-        var id = $('#user_id').html();
-        console.log(id);
-        $.ajax({
-            url: '/wattdepot/admin/user/' + id,
-            type: 'DELETE',
-            contentType:'application/json',
-            success: function() {
-            location.reload();
-            },
-         });
-    
-    };
-    </script>
+    <script src="/webroot/dist/js/wattdepot-admin.js"></script>
+<script>
+var GROUPID = "${groupId}";
+var users = {};
+<#list users as u>
+users["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : []};
+</#list>
+var usergroups = {};
+<#list groups as g>
+usergroups["${g.id}"] = {"id": "${g.id}", "users": [
+<#assign j = g.users?size>
+<#list g.users as u>
+{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : []}<#if j != 1>,</#if><#assign j = j - 1>
+</#list>
+]};
+</#list>
+</script>
 </body>
 </html>

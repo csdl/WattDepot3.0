@@ -33,6 +33,10 @@ public class UserInfo {
   private Set<Property> properties;
 
   static {
+    String adminName = System.getenv("wattdepot-server.admin.name");
+    if (adminName != null) {
+      ADMIN.setId(adminName);
+    }
     String password = System.getenv("wattdepot-server.admin.password");
     if (password != null) {
       ADMIN.setPassword(password);
@@ -298,8 +302,9 @@ public class UserInfo {
    */
   @Override
   public String toString() {
-    return "User [id=" + id + ", first name=" + firstName + ", password=" + password + ", admin="
-        + admin + ", properties=" + properties + "]";
+    return "User {\"id\"=\"" + id + "\", \"firstname\"=\"" + firstName + "\", \"lastname\"=\"" + lastName
+        + "\", \"email\"=\"" + email + "\", \"password\"=\"" + password + "\", \"admin\"=" + admin
+        + ", \"properties\"=" + properties + "}";
   }
 
 }

@@ -3,9 +3,11 @@
  */
 package org.wattdepot3.server.restlet;
 
+import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.DepositoryResource;
 
 /**
@@ -53,6 +55,18 @@ public class DepositoryServerResource extends WattDepotServerResource implements
   @Override
   public void store(Depository depository) {
     System.out.println("PUT /wattdepot/{" + groupId + "}/depository/ with " + depository);
+    UserGroup owner = depot.getUserGroup(groupId);
+    if (owner != null) {
+      try {
+        depot.defineWattDepository(depository.getName(), depository.getMeasurementType(), owner);
+      }
+      catch (UniqueIdException e) {
+        setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+      }
+    }
+    else {
+      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, groupId + " does not exist.");
+    }
   }
 
   /*

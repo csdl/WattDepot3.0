@@ -169,8 +169,6 @@ public abstract class WattDepot {
   /**
    * Defines a new WattDepository in WattDepot.
    * 
-   * @param id
-   *          The unique id.
    * @param name
    *          The name.
    * @param measurementType
@@ -181,7 +179,7 @@ public abstract class WattDepot {
    * @throws UniqueIdException
    *           if the id is already used for another WattDepository.
    */
-  public abstract Depository defineWattDepository(String id, String name, String measurementType,
+  public abstract Depository defineWattDepository(String name, String measurementType,
       UserGroup owner) throws UniqueIdException;
 
   /**
@@ -432,4 +430,11 @@ public abstract class WattDepot {
    * @return The updated group from persistence.
    */
   public abstract UserGroup updateUserGroup(UserGroup group);
+
+  /**
+   * @param user
+   *          The updated UserInfo.
+   * @return The updated user from persistence.
+   */
+  public abstract UserInfo updateUserInfo(UserInfo user);
 }

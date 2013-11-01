@@ -35,7 +35,7 @@ public class SensorServerResource extends WattDepotServerResource implements Sen
    */
   @Override
   public Sensor retrieve() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
+    System.out.println("GET /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
     return null;
   }
 

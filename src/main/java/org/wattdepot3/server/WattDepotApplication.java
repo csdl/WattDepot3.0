@@ -25,6 +25,7 @@ import org.wattdepot3.server.restlet.SensorProcessServerResource;
 import org.wattdepot3.server.restlet.SensorProcessesServerResource;
 import org.wattdepot3.server.restlet.SensorServerResource;
 import org.wattdepot3.server.restlet.SensorsServerResource;
+import org.wattdepot3.server.restlet.UserGroupServerResource;
 import org.wattdepot3.server.restlet.UserGroupsServerResource;
 import org.wattdepot3.server.restlet.UserInfoServerResource;
 
@@ -120,6 +121,8 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/{group_id}/sensor/{sensor_id}", SensorServerResource.class);
     router.attach("/wattdepot/{group_id}/sensors/", SensorsServerResource.class);
     router.attach("/wattdepot/{group_id}/user/{user_id}", UserInfoServerResource.class);
+    router.attach("/wattdepot/{group_id}/usergroup/", UserGroupServerResource.class);
+    router.attach("/wattdepot/{group_id}/usergroup/{usergroup_id}", UserGroupServerResource.class);
     router.attach("/wattdepot/{group_id}/usergroups/", UserGroupsServerResource.class);
 
     ChallengeAuthenticator authenticator = new ChallengeAuthenticator(getContext(),

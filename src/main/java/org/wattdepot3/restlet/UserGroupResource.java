@@ -3,7 +3,6 @@
  */
 package org.wattdepot3.restlet;
 
-import org.restlet.representation.Representation;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
@@ -18,7 +17,7 @@ import org.wattdepot3.datamodel.UserGroup;
 public interface UserGroupResource {
 
   /**
-   * Defines GET /wattdepot/usergroup/{usergroup_id} API call.
+   * Defines GET /wattdepot/{group_id}/usergroup/{usergroup_id} API call.
    * 
    * @return The UserGroup with the given id. The id is sent in the request.
    */
@@ -26,13 +25,7 @@ public interface UserGroupResource {
   public UserGroup retrieve();
 
   /**
-   * @return The UserGroup as an HTML page.
-   */
-  @Get("xml | html")
-  public Representation toHtml();
-  
-  /**
-   * Defines the PUT /wattdepot/usergroup/ API call.
+   * Defines the PUT /wattdepot/{group_id}/usergroup/ API call.
    * 
    * @param usergroup
    *          The UserGroup to store.
@@ -41,7 +34,7 @@ public interface UserGroupResource {
   public void store(UserGroup usergroup);
 
   /**
-   * Defined the DEL /wattdepot/usergroup/{usergroup_id} API call. The id is sent in the
+   * Defined the DEL /wattdepot/{group_id}/usergroup/{usergroup_id} API call. The id is sent in the
    * request.
    */
   @Delete
