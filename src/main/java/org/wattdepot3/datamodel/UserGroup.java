@@ -13,8 +13,10 @@ import java.util.Set;
  * 
  */
 public class UserGroup {
+  /** The name of the admin group. */
+  public static final String ADMIN_GROUP_NAME = "admin";
   /** The admin user group. */
-  public static final UserGroup ADMIN_GROUP = new UserGroup("admin");
+  public static final UserGroup ADMIN_GROUP = new UserGroup(ADMIN_GROUP_NAME);
 
   /** A unique id. */
   protected String id;

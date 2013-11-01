@@ -29,6 +29,57 @@ function putNewUser() {
     });
 };
 
+function edit_user_dialog(event, id) {
+    var modalElement = $('#editUserModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var user = getKnownUser(id);
+    $("input[name='edit_user_firstname']").val(user['firstName']);
+    $("input[name='edit_user_lastname']").val(user['lastName']);
+    $("input[name='edit_user_email']").val(user['email']);
+    $("input[name='edit_user_id']").val(user['id']);
+    $("input[name='edit_user_password']").val(user['password']);
+    $("input[name='edit_user_admin']").prop('checked', user['admin']);        
+    modalElement.modal('show');
+};
+
+function editUser() {
+    var id = $("input[name='edit_user_id']").val();
+    var first = $("input[name='edit_user_firstname']").val();
+    var last = $("input[name='edit_user_lastname']").val();
+    var pass = $("input[name='edit_user_password']").val();
+    var email = $("input[name='edit_user_email']").val();
+    var admin = $("input[name='edit_user_admin']").is(':checked');
+    var usr = {
+        "id" : id,
+        "firstName" : first,
+        "lastName" : last,
+        "email" : email,
+        "password" : pass,
+        "admin" : "false",
+        "properties" : []
+    };
+    if (admin) {
+        usr['admin'] = "true";
+    }
+    console.log(users);
+    $.ajax({
+        url : '/wattdepot/admin/user/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(usr),
+        success : function() {
+            location.reload();
+        },
+    });
+
+};
+
 function delete_user_dialog(event, id) {
     var modalElement = $('#deleteUserModal');
 
@@ -54,7 +105,7 @@ function deleteUser() {
 };
 
 function getKnownUser(id) {
-    return users[id];
+    return USERS[id];
 }
 
 function putNewUserGroup() {

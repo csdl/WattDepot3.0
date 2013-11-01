@@ -37,14 +37,17 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Admin?</th>
-                            <th style="width: 15px;"></th>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list users as u>
                         <tr><td>${u.firstName!}</td><td>${u.lastName!}</td><td>${u.id}</td><td>${u.email!}</td><td><#if u.admin>Yes</#if></td>
                             <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_user_dialog(event, '${u.id}');"></span>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_user_dialog(event, '${u.id}');"></span>
+                            <td>
+                                <#if ! u.admin><span class="glyphicon glyphicon-remove" onclick="delete_user_dialog(event, '${u.id}');"></span></#if>
                             </td>
                         </tr>
                     </#list>
@@ -62,7 +65,7 @@
                     <tbody>
                     <#list groups as g>
                         <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td><td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span>
+                                <#if g.id != "admin"><span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span></#if>
                             </td>
                         </tr>
                     </#list>
@@ -229,7 +232,10 @@
             </div>       
         </div>
     </div>  
-  <!-- Modal Dialogs -->
+    
+  <!-- **************************
+   Modal Dialogs
+   ****************************** -->
   <!-- Add User -->
   <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -272,6 +278,53 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="putNewUser();">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->    
+
+  <!-- Edit User -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Edit User</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <form>
+                <div class="row">
+                        <label class="col-md-3 col-md-offset-1">First Name</label>
+                        <input type="text" name="edit_user_firstname" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Last Name</label>
+                            <input type="text" name="edit_user_lastname" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Email Address</label>
+                            <input type="email" name="edit_user_email" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Username</label>
+                            <input type="text" name="edit_user_id" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Password</label>
+                            <input type="password" name="edit_user_password" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                 <label class="col-md-3 col-md-offset-1"><input type="checkbox" name="edit_user_admin"> is an admin?</label>
+                 
+                            <div class="clearfix"></div>
+                </div>
+                </form>
+            </div>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="editUser();">Save changes</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -457,16 +510,16 @@
     <script src="/webroot/dist/js/wattdepot-admin.js"></script>
 <script>
 var GROUPID = "${groupId}";
-var users = {};
+var USERS = {};
 <#list users as u>
-users["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : []};
+USERS["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]};
 </#list>
-var usergroups = {};
+var USERGROUPS = {};
 <#list groups as g>
-usergroups["${g.id}"] = {"id": "${g.id}", "users": [
+USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 <#assign j = g.users?size>
 <#list g.users as u>
-{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : []}<#if j != 1>,</#if><#assign j = j - 1>
+{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
 </#list>
 ]};
 </#list>

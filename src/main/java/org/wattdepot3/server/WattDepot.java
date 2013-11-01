@@ -389,6 +389,58 @@ public abstract class WattDepot {
   public abstract UserInfo getUser(String id);
 
   /**
+   * @return A list of the defined user Ids.
+   */
+  public abstract List<String> getUserIds();
+
+  /**
+   * @return A list of the defined user group Ids.
+   */
+  public abstract List<String> getUserGroupIds();
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined Location Ids.
+   */
+  public abstract List<String> getLocationIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined Sensor Ids.
+   */
+  public abstract List<String> getSensorIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorGroup Ids.
+   */
+  public abstract List<String> getSensorGroupIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorModel Ids.
+   */
+  public abstract List<String> getSensorModelIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorProcess Ids.
+   */
+  public abstract List<String> getSensorProcessIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined WattDepository Ids.
+   */
+  public abstract List<String> getWattDepositoryIds(String groupId);
+
+  /**
    * @param id
    *          the unique id for the UserGroup.
    * @return The UserGroup with the given id.
@@ -423,6 +475,51 @@ public abstract class WattDepot {
    * @return The known/defined WattDepositories owned by the given group id.
    */
   public abstract List<Depository> getWattDepositories(String groupId);
+
+  /**
+   * Updates the given location in the persistent store.
+   * 
+   * @param loc
+   *          The updated Location.
+   * @return The updated location from persistence.
+   */
+  public abstract Location updateLocation(Location loc);
+
+  /**
+   * Updates the given location in the persistent store.
+   * 
+   * @param sensor
+   *          The updated Sensor.
+   * @return The updated sensor from persistence.
+   */
+  public abstract Sensor updateSensor(Sensor sensor);
+
+  /**
+   * Updates the given sensor group in the persistent store.
+   * 
+   * @param group
+   *          The updated SensorGroup.
+   * @return The updated sensor group from persistence.
+   */
+  public abstract SensorGroup updateSensorGroup(SensorGroup group);
+
+  /**
+   * Updates the given sensor model in the persistent store.
+   * 
+   * @param model
+   *          The updated SensorModel.
+   * @return The updated model from persistence.
+   */
+  public abstract SensorModel updateSensorModel(SensorModel model);
+
+  /**
+   * Updates the given sensor process in the persistent store.
+   * 
+   * @param process
+   *          The updated SensorProcess.
+   * @return The updated process from persistence.
+   */
+  public abstract SensorProcess updateSensorProcess(SensorProcess process);
 
   /**
    * @param group
