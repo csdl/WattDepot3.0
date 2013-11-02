@@ -15,14 +15,14 @@
   <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <#if groupId == "admin">
-        <li><a href="#users" data-toggle="tab">Users</a></li>
+        <li><a id="users_tab_link" href="#users" data-toggle="tab">Users</a></li>
         </#if>
-        <li><a href="#depositories" data-toggle="tab">Depositories</a></li>
-        <li><a href="#locations" data-toggle="tab">Locations</a></li>
-        <li><a href="#sensors" data-toggle="tab">Sensors</a></li>
-        <li><a href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
-        <li><a href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
-        <li><a href="#sensorprocesses" data-toggle="tab">Sensor Processes</a></li>
+        <li><a id="depositories_tab_link" href="#depositories" data-toggle="tab">Depositories</a></li>
+        <li><a id="locations_tab_link" href="#locations" data-toggle="tab">Locations</a></li>
+        <li><a id="sensors_tab_link" href="#sensors" data-toggle="tab">Sensors</a></li>
+        <li><a id="sensorgroups_tab_link" href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
+        <li><a id="sensormodels_tab_link" href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
+        <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Sensor Processes</a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -36,16 +36,16 @@
                             <th>Last Name</th>
                             <th>Username</th>
                             <th>Email</th>
-                            <th>Admin?</th>
                             <th style="width: 7px;"></th>
                             <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list users as u>
-                        <tr><td>${u.firstName!}</td><td>${u.lastName!}</td><td>${u.id}</td><td>${u.email!}</td><td><#if u.admin>Yes</#if></td>
+                        <tr><td>${u.firstName!}</td><td>${u.lastName!}</td><td>${u.id}</td><td>${u.email!}</td>
                             <td>
-                                <span class="glyphicon glyphicon-pencil" onclick="edit_user_dialog(event, '${u.id}');"></span>
+                                <#if ! u.admin><span class="glyphicon glyphicon-pencil" onclick="edit_user_dialog(event, '${u.id}');"></span></#if>
+                            </td>
                             <td>
                                 <#if ! u.admin><span class="glyphicon glyphicon-remove" onclick="delete_user_dialog(event, '${u.id}');"></span></#if>
                             </td>
@@ -59,12 +59,18 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2"><h3>Groups</h3></th><th style="width: 15px;"></th>
+                            <th colspan="2"><h3>Groups</h3></th>                            
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list groups as g>
-                        <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td><td>
+                        <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td>
+                            <td>
+                                <#if g.id != "admin"><span class="glyphicon glyphicon-pencil" onclick="edit_group_dialog(event, '${g.id}');"></span></#if>
+                            </td>
+                            <td>
                                 <#if g.id != "admin"><span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span></#if>
                             </td>
                         </tr>
@@ -85,12 +91,16 @@
                             <#if groupId == "admin">
                             <th>Owner</th>
                             </#if>
-                            <th style="width: 15px;"></th>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list depositories as d>
                         <tr><td>${d.name}</td><td>${d.measurementType}</td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_depository_dialog(event, '${d.name}');"></span>
+                            </td>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_depository_dialog(event, '${d.name}');"></span>
                             </td>
@@ -420,11 +430,11 @@
                 <form>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Depository Name</label>
-                        <input type="text" name="depositoryname" class="form-inline"><p></p>
+                        <input type="text" name="depository_name" class="form-inline"><p></p>
                 </div>
                 <div class="row">
                         <label class="col-md-3 col-md-offset-1">Depository Measurement Type</label>
-                        <input type="text" name="depositorytype" class="form-inline"><p></p>
+                        <input type="text" name="depository_type" class="form-inline"><p></p>
                 </div>
                 <div class="clearfix"></div>
                 </form>
@@ -433,6 +443,37 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="putNewDepository();">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->    
+
+  <!-- Edit Depository -->
+  <div class="modal fade" id="editDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="editDepositoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Edit Depository</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <form>
+                <div class="row">
+                        <label class="col-md-3 col-md-offset-1">Depository Name</label>
+                        <input type="text" name="edit_depository_name" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                        <label class="col-md-3 col-md-offset-1">Depository Measurement Type</label>
+                        <input type="text" name="edit_depository_type" class="form-inline"><p></p>
+                </div>
+                <div class="clearfix"></div>
+                </form>
+            </div>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="editDepository();">Save changes</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -509,6 +550,13 @@
     <script src="/webroot/dist/js/bootstrap.min.js"></script>
     <script src="/webroot/dist/js/wattdepot-admin.js"></script>
 <script>
+$(document).ready(function () {
+    var selected_tab = getCookie("selected-tab");
+    if (selected_tab != null) {
+        $('#' + selected_tab + '_tab_link').tab('show');
+    }
+});
+
 var GROUPID = "${groupId}";
 var USERS = {};
 <#list users as u>
@@ -522,6 +570,16 @@ USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
 </#list>
 ]};
+</#list>
+var DEPOSITORIES = {};
+<#list depositories as d>
+DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}, "owner": {"id": "${d.owner.id}", "users": [
+<#assign o = d.owner>
+<#assign j = o.users?size>
+<#list o.users as u>
+{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
+</#list>
+]}};
 </#list>
 </script>
 </body>

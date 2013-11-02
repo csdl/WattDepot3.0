@@ -1,3 +1,30 @@
+// Utility functions for get/set/delete cookies
+function setCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function setSelectedTab(tabName) {
+    console.log("Setting tab to " + tabName);
+    setCookie("selected-tab", tabName);
+}
+
 function putNewUser() {
     var id = $("input[name='user_id']").val();
     var first = $("input[name='user_firstname']").val();
@@ -17,7 +44,7 @@ function putNewUser() {
     if (admin) {
         usr['admin'] = "true";
     }
-    console.log(users);
+    setSelectedTab('users');
     $.ajax({
         url : '/wattdepot/admin/user/temp',
         type : 'PUT',
@@ -31,13 +58,11 @@ function putNewUser() {
 
 function edit_user_dialog(event, id) {
     var modalElement = $('#editUserModal');
-
     modalElement.modal({
         backdrop : true,
         keyboard : true,
         show : false
     });
-
     var user = getKnownUser(id);
     $("input[name='edit_user_firstname']").val(user['firstName']);
     $("input[name='edit_user_lastname']").val(user['lastName']);
@@ -67,7 +92,7 @@ function editUser() {
     if (admin) {
         usr['admin'] = "true";
     }
-    console.log(users);
+    setSelectedTab('users');
     $.ajax({
         url : '/wattdepot/admin/user/temp',
         type : 'PUT',
@@ -94,6 +119,7 @@ function delete_user_dialog(event, id) {
 
 function deleteUser() {
     var id = $('#del_user_id').html();
+    setSelectedTab('users');
     $.ajax({
         url : '/wattdepot/admin/user/' + id,
         type : 'DELETE',
@@ -116,12 +142,11 @@ function putNewUserGroup() {
     for (var i = 0; i < selected_ids.length; i++) {
         selected_users.push(getKnownUser(selected_ids[i]));
     }
-    console.log(selected_users);
+    setSelectedTab('users');
     var grp = {
         "id" : id,
         "users" : selected_users
     };
-    console.log(JSON.stringify(grp))
     $.ajax({
         url : '/wattdepot/admin/usergroup/temp',
         type : 'PUT',
@@ -145,8 +170,9 @@ function delete_usergroup_dialog(event, id) {
     modalElement.modal('show');
 };
 
-function deleteUseGroupr() {
+function deleteUseGroup() {
     var id = $('#del_usergroup_id').html();
+    setSelectedTab('users');
     $.ajax({
         url : '/wattdepot/admin/usergroup/' + id,
         type : 'DELETE',
@@ -158,12 +184,13 @@ function deleteUseGroupr() {
 };
 
 function putNewDepository() {
-    var id = $("input[name='depositoryname']").val();
-    var type = $("input[name='depositorytype']").val();
+    var id = $("input[name='depository_name']").val();
+    var type = $("input[name='depository_type']").val();
     var depo = {
         "name" : id,
         "measurementType" : type
     };
+    setSelectedTab('depositories');
     $.ajax({
         url : '/wattdepot/' + GROUPID + '/depository/temp',
         type : 'PUT',
@@ -173,6 +200,44 @@ function putNewDepository() {
             location.reload();
         },
     });
+};
+
+function getKnownDepository(id) {
+    return DEPOSITORIES[id];
+};
+
+function edit_depository_dialog(event, id) {
+    var modalElement = $('#editDepositoryModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var depo = getKnownDepository(id);
+    $("input[name='edit_depository_name']").val(depot['name']);
+    $("input[name='edit_depository_type']").val(depot['type']);
+    modalElement.modal('show');
+};
+
+function editDepository() {
+    var id = $("input[name='edit_depository_name']").val();
+    var type = $("input[name='edit_depository_type']").val();
+    var depo = {
+        "name" : id,
+        "measurementType" : type
+    };
+    setSelectedTab('depositories');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/depository/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(depo),
+        success : function() {
+            location.reload();
+        },
+    });
+    
 };
 
 function delete_depository_dialog(event, id) {
@@ -189,6 +254,7 @@ function delete_depository_dialog(event, id) {
 
 function deleteDepository() {
     var id = $('#del_depository_id').html();
+    setSelectedTab('depositories');
     $.ajax({
         url : '/wattdepot/' + GROUP + '/depository/' + id,
         type : 'DELETE',
