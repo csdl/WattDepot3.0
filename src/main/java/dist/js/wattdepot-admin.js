@@ -160,6 +160,24 @@ function putNewUserGroup() {
     });
 };
 
+function edit_usergroup_dialog(event, id) {
+    var modalElement = $('#addUserGroupModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    
+    var group = getKnownUserGroup(id);
+    $("input[name='usergroup_name']").val(id);
+    for (var i = 0; i < group.users.length; i++) {
+        var uid = group.users[i].id;
+        console.log(uid);
+        $('select[name="groupusers"] option[value="' + uid + '"]').prop("selected", "selected");
+    }
+    modalElement.modal('show');
+};
+
 function delete_usergroup_dialog(event, id) {
     var modalElement = $('#deleteUserGroupModal');
 
@@ -341,5 +359,145 @@ function deleteLocation() {
 
 function getKnownLocation(id) {
     return LOCATIONS[id];
+};
+
+//****************** Sensor Groups **************************
+function putNewSensorGroup() {
+    var id = $("input[name='sensorgroup_name']").val();
+    var selected_ids = $("select[name='groupsensors']").val() || [];
+    var selected_sensors = new Array();
+    for (var i = 0; i < selected_ids.length; i++) {
+        selected_sensors.push(getKnownSensor(selected_ids[i]));
+    }
+    setSelectedTab('sensorgroups');
+    var grp = {
+        "id" : id,
+        "sensors" : selected_sensors
+    };
+    $.ajax({
+        url : '/wattdepot/admin/sensorgroup/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(grp),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function edit_sensorgroup_dialog(event, id) {
+    var modalElement = $('#addSensorGroupModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    
+    var group = getKnownSensorGroup(id);
+    $("input[name='sensorgroup_name']").val(id);
+    for (var i = 0; i < group.sensors.length; i++) {
+        var uid = group.sensors[i].id;
+        console.log(uid);
+        $('select[name="groupsensors"] option[value="' + uid + '"]').prop("selected", "selected");
+    }
+    modalElement.modal('show');
+};
+
+function delete_sensorgroup_dialog(event, id) {
+    var modalElement = $('#deleteSensorGroupModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    modalElement.find('#del_sensorgroup_id').html(id);
+    modalElement.modal('show');
+};
+
+function deleteSensorGroup() {
+    var id = $('#del_sensorgroup_id').html();
+    setSelectedTab('users');
+    $.ajax({
+        url : '/wattdepot/admin/sensorgroup/' + id,
+        type : 'DELETE',
+        contentType : 'application/json',
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function getKnownSensorGroup(id) {
+    return SENSORGROUPS[id];
+}
+
+//****************** Sensor Models **************************
+function putNewModel() {
+    var id = $("input[name='model_id']").val();
+    var protocol = $("input[name='model_protocol']").val();
+    var type = $("input[name='model_type']").val();
+    var version = $("input[name='model_version']").val();
+    var model = {
+        "id" : id,
+        "protocol": protocol,
+        "type": type,
+        "version": version
+    };
+    setSelectedTab('sensormodels');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensormodel/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(model),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function edit_model_dialog(event, id) {
+    var modalElement = $('#addModelModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var model = getKnownSensorModel(id);
+    $("input[name='model_id']").val(model['id']);
+    $("input[name='model_protocol']").val(model['protocol']);
+    $("input[name='model_type']").val(model['type']);
+    $("input[name='model_version']").val(model['version']);
+    modalElement.modal('show');
+};
+
+function delete_model_dialog(event, id) {
+    var modalElement = $('#deleteModelModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    modalElement.find('#del_model_id').html(id);
+    modalElement.modal('show');
+};
+
+function deleteModel() {
+    var id = $('#del_model_id').html();
+    setSelectedTab('sensormodels');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensormodel/' + id,
+        type : 'DELETE',
+        contentType : 'application/json',
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function getKnownSensorModel(id) {
+    return MODELS[id];
 };
 

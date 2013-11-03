@@ -6,6 +6,7 @@ package org.wattdepot3.server.restlet;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.UserGroupResource;
 
@@ -40,7 +41,9 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
   @Override
   public UserGroup retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
-    return null;
+    UserGroup group = null;
+    group = depot.getUserGroup(userGroupId);
+    return group;
   }
 
 
@@ -54,11 +57,16 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
   @Override
   public void store(UserGroup usergroup) {
     System.out.println("PUT /wattdepot/{" + groupId + "}/usergroup/ with " + usergroup);
-    try {
-      depot.defineUserGroup(usergroup.getId(), usergroup.getUsers());
+    if (!depot.getUserGroupIds().contains(usergroup.getId())) {
+      try {
+        depot.defineUserGroup(usergroup.getId(), usergroup.getUsers());
+      }
+      catch (UniqueIdException e) {
+        setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+      }      
     }
-    catch (UniqueIdException e) {
-      setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+    else {
+      depot.updateUserGroup(usergroup);
     }
   }
 
@@ -70,6 +78,12 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
   @Override
   public void remove() {
     System.out.println("DEL /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
+    try {
+      depot.deleteUserGroup(userGroupId);
+    }
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
   }
 
 }

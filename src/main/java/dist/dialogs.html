@@ -423,3 +423,94 @@
 </div>
 <!-- / .modal -->
 
+<!-- *********** Sensor Models ********** -->
+<!-- Add Location -->
+<div class="modal fade" id="addModelModal" tabindex="-1"
+    role="dialog" aria-labelledby="addModelModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add/Edit Sensor Model</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form>
+                        <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Sensor Model
+                                Name</label> <input type="text"
+                                name="model_id" class="form-inline">
+                            <p></p>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Protocol</label>
+                            <input type="text"
+                                name="model_protocol"
+                                class="form-inline">
+                            <p></p>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Type</label>
+                            <input type="text"
+                                name="model_type"
+                                class="form-inline">
+                            <p></p>
+                        </div>
+                        <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Version</label>
+                            <input type="text"
+                                name="model_version"
+                                class="form-inline">
+                            <p></p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="putNewModel();">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Delete Location -->
+<div class="modal fade" id="deleteModelModal" tabindex="-1"
+    role="dialog" aria-labelledby="deleteModelModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Sensor Model</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <b>Delete Sensor Model </b>
+                </p>
+                <div id="del_model_id"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button id="delete_button" type="button"
+                    class="btn btn-primary"
+                    onclick="deleteModel();">Delete
+                    Sensor Model</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- / .modal -->
+

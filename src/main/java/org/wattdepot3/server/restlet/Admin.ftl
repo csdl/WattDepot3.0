@@ -79,10 +79,10 @@ $(function(){
                     <#list groups as g>
                         <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td>
                             <td>
-                                <#if g.id != "admin"><span class="glyphicon glyphicon-pencil" onclick="edit_group_dialog(event, '${g.id}');"></span></#if>
+                                <#if g.id != "admin"><span class="glyphicon glyphicon-pencil" onclick="edit_usergroup_dialog(event, '${g.id}');"></span></#if>
                             </td>
                             <td>
-                                <#if g.id != "admin"><span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span></#if>
+                                <#if g.id != "admin"><span class="glyphicon glyphicon-remove" onclick="delete_usergroup_dialog(event, '${g.id}');"></span></#if>
                             </td>
                         </tr>
                     </#list>
@@ -133,12 +133,19 @@ $(function(){
                             <th>Longitude</th>
                             <th>Altitude</th>
                             <th>Description</th>
-                            <th style="width: 15px;"></th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list locations as l>
-                        <tr><td>${l.id}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td>
+                        <tr><td>${l.id}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td><#if groupId == "admin"><td>${l.owner.id}</td></#if>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_location_dialog(event, '${l.id}');"></span>
+                            </td>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_location_dialog(event, '${l.id}');"></span>
                             </td>
@@ -160,20 +167,27 @@ $(function(){
                             <th>Location</th>
                             <th>Model</th>
                             <th>Properties</th>
-                            <th style="width: 15px;"></th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensors as s>
-                        <tr><td>${s.id}</td><td>${s.uri}</td><td>${s.location}</td><td>${s.model}</td><td>${s.properties}</td>
+                        <tr><td>${s.id}</td><td>${s.uri}</td><td>${s.location}</td><td>${s.model}</td><td>${s.properties}</td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
                             <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_sensor_dialog(event, '${l.id}');"></span>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_sensor_dialog(event, '${s.id}');"></span>
+                            </td>
+                            <td>
+                                <span class="glyphicon glyphicon-remove" onclick="delete_sensor_dialog(event, '${s.id}');"></span>
                             </td>
                         </tr>
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#sensorModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor</button>
+                <button data-toggle="modal" data-target="#addSensorModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor</button>
             </div>       
         </div>
         <div class="tab-pane" id="sensorgroups">
@@ -184,12 +198,19 @@ $(function(){
                         <tr>
                             <th>Name</th>
                             <th>Sensors</th>
-                            <th style="width: 15px;"></th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensorgroups as g>
-                        <tr><td>${g.id}</td><td>${g.sensors}</td>
+                        <tr><td>${g.id}</td><td>${g.sensors}</td><#if groupId == "admin"><td>${g.owner.id}</td></#if>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_group_dialog(event, '${g.id}');"></span>
+                            </td>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span>
                             </td>
@@ -197,7 +218,7 @@ $(function(){
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#sensorGroupModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Group</button>
+                <button data-toggle="modal" data-target="#addSensorGroupModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Group</button>
             </div>       
         </div>
         <div class="tab-pane" id="sensormodels">
@@ -210,12 +231,19 @@ $(function(){
                             <th>Protocol</th>
                             <th>Type</th>
                             <th>Version</th>
-                            <th style="width: 15px;"></th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensormodels as m>
-                        <tr><td>${m.id}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td>
+                        <tr><td>${m.id}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span>
+                            </td>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_model_dialog(event, '${m.id}');"></span>
                             </td>
@@ -223,7 +251,7 @@ $(function(){
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#modelModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Model</button>
+                <button data-toggle="modal" data-target="#addModelModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Model</button>
             </div>       
         </div>
         <div class="tab-pane" id="sensorprocesses">
@@ -236,12 +264,19 @@ $(function(){
                             <th>Sensor</th>
                             <th>Polling Interval</th>
                             <th>Depository</th>
-                            <th style="width: 15px;"></th>
+                            <#if groupId == "admin">
+                            <th>Owner</th>
+                            </#if>
+                            <th style="width: 7px;"></th>
+                            <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensorprocesses as p>
-                        <tr><td>${p.id}</td><td>${p.sensor.id}</td><td>${p.pollingInterval}</td><td>${p.depositoryId}</td>
+                        <tr><td>${p.id}</td><td>${p.sensor.id}</td><td>${p.pollingInterval}</td><td>${p.depositoryId}</td><#if groupId == "admin"><td>${p.owner.id}</td></#if>
+                            <td>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_process_dialog(event, '${p.id}');"></span>
+                            </td>
                             <td>
                                 <span class="glyphicon glyphicon-remove" onclick="delete_process_dialog(event, '${p.id}');"></span>
                             </td>
@@ -249,7 +284,7 @@ $(function(){
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#processModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process</button>
+                <button data-toggle="modal" data-target="#addProcessModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process</button>
             </div>       
         </div>
     </div>  
@@ -261,7 +296,7 @@ $(function(){
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add User Group</h4>
+          <h4 class="modal-title">Add/Edit User Group</h4>
         </div>
         <div class="modal-body">
             <div class="container">
@@ -290,6 +325,40 @@ $(function(){
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
 
+  <!-- Add Sensor Group -->
+  <div class="modal fade" id="addSensorGroupModal" tabindex="-1" role="dialog" aria-labelledby="addSensorGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Add/Edit Sensor Group</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <form>
+                <div class="row">
+                        <label class="col-md-3 col-md-offset-1">Group Name</label>
+                        <input type="text" name="sensorgroup_name" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Users</label>
+                            <select name="groupsensors" multiple="multiple">
+                            <#list sensors as s>
+                                <option value="${s.id}">${s.id}</option>
+                            </#list>
+                            </select>
+                </div>
+                <div class="clearfix"></div>
+                </form>
+            </div>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="putNewSensorGroup();">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->    
 
 </div>
 <script>
@@ -321,6 +390,18 @@ DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measur
 var LOCATIONS = {};
 <#list locations as l>
 LOCATIONS["${l.id}"] = {"id": "${l.id}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "owner": "${l.owner.id}"};
+</#list>
+var SENSORGROUPS = {};
+<#list sensorgroups as sg>
+SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "sensors": [
+<#assign sgLen = sg.sensors?size>
+<#list sg.sensors as s>
+{"id": "${s.id}"}<#if sgLen != 1>,</#if><#assign sgLen = sgLen - 1>
+</#list>
+</#list>
+var MODELS = {};
+<#list sensormodels as m>
+MODELS["${m.id}"] = {"id": "${m.id}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "owner": "${m.owner.id}"};
 </#list>
 </script>
 </body>
