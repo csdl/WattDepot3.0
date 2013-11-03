@@ -3,9 +3,13 @@
  */
 package org.wattdepot3.server.restlet;
 
+import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.exception.MissMatchedOwnerException;
+import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.LocationResource;
 
 /**
@@ -39,8 +43,18 @@ public class LocationServerResource extends WattDepotServerResource implements L
   @Override
   public Location retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
-    return new Location(locationId, new Double(21.294642), new Double(-157.812727), new Double(30),
-        "Hale Aloha Ilima residence hall 6th floor", UserGroup.ADMIN_GROUP);
+    Location loc = null;
+    try {
+      loc = depot.getLocation(locationId, groupId);
+    }
+    catch (MissMatchedOwnerException e) {
+      setStatus(Status.CLIENT_ERROR_FORBIDDEN, e.getMessage());
+    }
+    if (loc == null) {
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "Location " + locationId
+          + " is not defined.");
+    }
+    return loc;
   }
 
   /*
@@ -52,6 +66,24 @@ public class LocationServerResource extends WattDepotServerResource implements L
   @Override
   public void store(Location location) {
     System.out.println("PUT /wattdepot/{" + groupId + "}/location/ with " + location);
+    UserGroup owner = depot.getUserGroup(groupId);
+    if (owner != null) {
+      if (!depot.getLocationIds(groupId).contains(location.getId())) {
+        try {
+          depot.defineLocation(location.getId(), location.getLatitude(), location.getLongitude(),
+              location.getAltitude(), location.getDescription(), owner);
+        }
+        catch (UniqueIdException e) {
+          setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+        }
+      }
+      else {
+        depot.updateLocation(location);
+      }
+    }
+    else {
+      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, groupId + " does not exist.");
+    }
   }
 
   /*
@@ -62,6 +94,11 @@ public class LocationServerResource extends WattDepotServerResource implements L
   @Override
   public void remove() {
     System.out.println("DEL /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
+    try {
+      depot.deleteLocation(locationId, groupId);
+    }
+    catch (IdNotFoundException | MissMatchedOwnerException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
   }
-
 }

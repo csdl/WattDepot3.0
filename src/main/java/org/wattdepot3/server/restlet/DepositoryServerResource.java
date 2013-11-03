@@ -7,6 +7,8 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.DepositoryResource;
 
@@ -77,6 +79,12 @@ public class DepositoryServerResource extends WattDepotServerResource implements
   @Override
   public void remove() {
     System.out.println("DEL /wattdepot/{" + groupId + "}/depository/{" + depositoryId + "}");
+    try {
+      depot.deleteWattDepository(depositoryId, groupId);
+    }
+    catch (IdNotFoundException | MissMatchedOwnerException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
   }
 
 }

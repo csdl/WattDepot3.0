@@ -25,6 +25,7 @@ function setSelectedTab(tabName) {
     setCookie("selected-tab", tabName);
 }
 
+//****************** Users **************************
 function putNewUser() {
     var id = $("input[name='user_id']").val();
     var first = $("input[name='user_firstname']").val();
@@ -134,6 +135,7 @@ function getKnownUser(id) {
     return USERS[id];
 }
 
+//****************** User Groups **************************
 function putNewUserGroup() {
     var id = $("input[name='usergroup_name']").val();
     var selected_ids = $("select[name='groupusers']").val() || [];
@@ -183,6 +185,11 @@ function deleteUseGroup() {
     });
 };
 
+function getKnownUserGroup(id) {
+    return USERGROUPS[id];
+}
+
+//****************** Depositories **************************
 function putNewDepository() {
     var id = $("input[name='depository_name']").val();
     var type = $("input[name='depository_type']").val();
@@ -202,10 +209,6 @@ function putNewDepository() {
     });
 };
 
-function getKnownDepository(id) {
-    return DEPOSITORIES[id];
-};
-
 function edit_depository_dialog(event, id) {
     var modalElement = $('#editDepositoryModal');
     modalElement.modal({
@@ -215,8 +218,8 @@ function edit_depository_dialog(event, id) {
     });
 
     var depo = getKnownDepository(id);
-    $("input[name='edit_depository_name']").val(depot['name']);
-    $("input[name='edit_depository_type']").val(depot['type']);
+    $("input[name='edit_depository_name']").val(depo['name']);
+    $("input[name='edit_depository_type']").val(depo['measurementType']);
     modalElement.modal('show');
 };
 
@@ -237,11 +240,10 @@ function editDepository() {
             location.reload();
         },
     });
-    
 };
 
 function delete_depository_dialog(event, id) {
-    var modalElement = $('#deleteUserModal');
+    var modalElement = $('#deleteDepositoryModal');
 
     modalElement.modal({
         backdrop : true,
@@ -256,7 +258,7 @@ function deleteDepository() {
     var id = $('#del_depository_id').html();
     setSelectedTab('depositories');
     $.ajax({
-        url : '/wattdepot/' + GROUP + '/depository/' + id,
+        url : '/wattdepot/' + GROUPID + '/depository/' + id,
         type : 'DELETE',
         contentType : 'application/json',
         success : function() {
@@ -264,3 +266,80 @@ function deleteDepository() {
         },
     });
 };
+
+function getKnownDepository(id) {
+    return DEPOSITORIES[id];
+};
+
+//****************** Locations **************************
+function putNewLocation() {
+    var id = $("input[name='location_id']").val();
+    var latitude = $("input[name='location_latitude']").val();
+    var longitude = $("input[name='location_longitude']").val();
+    var altitude = $("input[name='location_altitude']").val();
+    var description = $("input[name='location_description']").val();
+    var loc = {
+        "id" : id,
+        "latitude": latitude,
+        "longitude": longitude,
+        "altitude": altitude,
+        "description": description
+    };
+    setSelectedTab('locations');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/location/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(loc),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function edit_location_dialog(event, id) {
+    var modalElement = $('#addLocationModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var loc = getKnownLocation(id);
+    $("input[name='location_id']").val(loc['id']);
+    $("input[name='location_latitude']").val(loc['latitude']);
+    $("input[name='location_longitude']").val(loc['longitude']);
+    $("input[name='location_altitude']").val(loc['altitude']);
+    $("input[name='location_description']").val(loc['description']);
+    modalElement.modal('show');
+};
+
+function delete_location_dialog(event, id) {
+    var modalElement = $('#deleteLocationModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    modalElement.find('#del_location_id').html(id);
+    modalElement.modal('show');
+};
+
+function deleteLocation() {
+    var id = $('#del_location_id').html();
+    setSelectedTab('locations');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/location/' + id,
+        type : 'DELETE',
+        contentType : 'application/json',
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function getKnownLocation(id) {
+    return LOCATIONS[id];
+};
+

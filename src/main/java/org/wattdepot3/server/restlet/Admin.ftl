@@ -9,8 +9,19 @@
 <link rel="stylesheet" href="/webroot/dist/css/bootstrap-theme.min.css">
 <link rel="stylesheet/less" type="text/css" href="/webroot/dist/css/style.less">
 <script src="/webroot/dist/js/less-1.3.0.min.js"></script>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="/webroot/dist/js/bootstrap.min.js"></script>
+<script src="/webroot/dist/js/wattdepot-admin.js"></script>
+<script> 
+$(function(){
+  $("#modal-dialogs").load("/webroot/dist/dialogs.html"); 
+});
+</script> 
+
 </head>
 <body>
+  <div id="modal-dialogs"></div>
   <div class="container">
   <!-- Nav tabs -->
     <ul class="nav nav-tabs">
@@ -243,123 +254,6 @@
         </div>
     </div>  
     
-  <!-- **************************
-   Modal Dialogs
-   ****************************** -->
-  <!-- Add User -->
-  <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add User</h4>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">First Name</label>
-                        <input type="text" name="user_firstname" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Last Name</label>
-                            <input type="text" name="user_lastname" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Email Address</label>
-                            <input type="email" name="user_email" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Username</label>
-                            <input type="text" name="user_id" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Password</label>
-                            <input type="password" name="user_password" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                 <label class="col-md-3 col-md-offset-1"><input type="checkbox" name="user_admin"> is an admin?</label>
-                 
-                            <div class="clearfix"></div>
-                </div>
-                </form>
-            </div>                
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="putNewUser();">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->    
-
-  <!-- Edit User -->
-  <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Edit User</h4>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">First Name</label>
-                        <input type="text" name="edit_user_firstname" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Last Name</label>
-                            <input type="text" name="edit_user_lastname" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Email Address</label>
-                            <input type="email" name="edit_user_email" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Username</label>
-                            <input type="text" name="edit_user_id" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Password</label>
-                            <input type="password" name="edit_user_password" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                 <label class="col-md-3 col-md-offset-1"><input type="checkbox" name="edit_user_admin"> is an admin?</label>
-                 
-                            <div class="clearfix"></div>
-                </div>
-                </form>
-            </div>                
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="editUser();">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->    
-
-  <!-- Delete User -->
-  <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete User</h4>
-        </div>
-        <div class="modal-body">
-            <p><b>Delete User </b></p>
-            <div id="del_user_id">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteUser();">Delete User</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- / .modal -->
     
   <!-- Add User Group -->
   <div class="modal fade" id="addUserGroupModal" tabindex="-1" role="dialog" aria-labelledby="addUserGroupModalLabel" aria-hidden="true">
@@ -396,159 +290,8 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
 
-  <!-- Delete User Group -->
-  <div class="modal fade" id="deleteUserGroupModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserGroupModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete User Group</h4>
-        </div>
-        <div class="modal-body">
-            <p><b>Delete User Grup </b></p>
-            <div id="del_usergroup_id">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteUserGroup();">Delete User Group</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- / .modal -->
 
-  <!-- Add Depository -->
-  <div class="modal fade" id="addDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="addDepositoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add Depository</h4>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Depository Name</label>
-                        <input type="text" name="depository_name" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Depository Measurement Type</label>
-                        <input type="text" name="depository_type" class="form-inline"><p></p>
-                </div>
-                <div class="clearfix"></div>
-                </form>
-            </div>                
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="putNewDepository();">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->    
-
-  <!-- Edit Depository -->
-  <div class="modal fade" id="editDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="editDepositoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Edit Depository</h4>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Depository Name</label>
-                        <input type="text" name="edit_depository_name" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Depository Measurement Type</label>
-                        <input type="text" name="edit_depository_type" class="form-inline"><p></p>
-                </div>
-                <div class="clearfix"></div>
-                </form>
-            </div>                
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="editDepository();">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->    
-
-  <!-- Delete Depository -->
-  <div class="modal fade" id="deleteDepositoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteDepositoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Delete Depository</h4>
-        </div>
-        <div class="modal-body">
-            <p><b>Delete Depository </b></p>
-            <div id="del_depository_id">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="delete_button" type="button" class="btn btn-primary" onclick="deleteDespository();">Delete Depository</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- / .modal -->
-
-
-  <!-- Add Location -->
-  <div class="modal fade" id="addLocationModal" tabindex="-1" role="dialog" aria-labelledby="addLocationModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add Location</h4>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Location Name</label>
-                        <input type="text" name="locationname" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Latitude</label>
-                        <input type="number" name="locationlatitude" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Longitude</label>
-                        <input type="number" name="locationlongitude" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Altitude</label>
-                        <input type="number" name="locationaltitude" class="form-inline"><p></p>
-                </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Description</label>
-                        <input type="text" name="locationdescription" class="form-inline"><p></p>
-                </div>
-                <div class="clearfix"></div>
-                </form>
-            </div>                
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="putNewLocation();">Save changes</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->    
-  
 </div>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="/webroot/dist/js/bootstrap.min.js"></script>
-    <script src="/webroot/dist/js/wattdepot-admin.js"></script>
 <script>
 $(document).ready(function () {
     var selected_tab = getCookie("selected-tab");
@@ -573,13 +316,11 @@ USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 </#list>
 var DEPOSITORIES = {};
 <#list depositories as d>
-DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}, "owner": {"id": "${d.owner.id}", "users": [
-<#assign o = d.owner>
-<#assign j = o.users?size>
-<#list o.users as u>
-{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
+DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}", "owner": "${d.owner.id}"};
 </#list>
-]}};
+var LOCATIONS = {};
+<#list locations as l>
+LOCATIONS["${l.id}"] = {"id": "${l.id}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "owner": "${l.owner.id}"};
 </#list>
 </script>
 </body>
