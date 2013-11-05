@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
@@ -124,10 +125,10 @@ public class WattDepotImpl extends WattDepot {
    * java.util.List, org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public SensorGroup defineSensorGroup(String id, List<Sensor> sensors, UserGroup owner)
+  public SensorGroup defineSensorGroup(String id, Set<Sensor> sensors, UserGroup owner)
       throws UniqueIdException, MissMatchedOwnerException {
     for (Sensor s : sensors) {
-      if (!owner.equals(s)) {
+      if (!owner.equals(s.getOwner())) {
         throw new MissMatchedOwnerException(owner.getId() + " is not the owner of all the sensors.");
       }
     }
@@ -138,10 +139,7 @@ public class WattDepotImpl extends WattDepot {
     }
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
-    sg = new SensorGroup(id, owner);
-    for (Sensor s : sensors) {
-      sg.add(s);
-    }
+    sg = new SensorGroup(id, sensors, owner);
     session.save(sg);
     session.getTransaction().commit();
     session.close();
@@ -514,6 +512,8 @@ public class WattDepotImpl extends WattDepot {
     for (Sensor s : getSensors(UserGroup.ADMIN_GROUP_NAME)) {
       if (s.getId().equals(id)) {
         if (s.getOwner().getId().equals(groupId) || groupId.contains(UserGroup.ADMIN_GROUP_NAME)) {
+          Hibernate.initialize(s.getLocation());
+          Hibernate.initialize(s.getModel());
           return s;
         }
         else {
@@ -535,6 +535,11 @@ public class WattDepotImpl extends WattDepot {
     for (SensorGroup s : getSensorGroups(UserGroup.ADMIN_GROUP_NAME)) {
       if (s.getId().equals(id)) {
         if (s.getOwner().getId().equals(groupId) || groupId.contains(UserGroup.ADMIN_GROUP_NAME)) {
+          for (Sensor sens : s.getSensors()) {
+            Hibernate.initialize(sens);
+            Hibernate.initialize(sens.getLocation());
+            Hibernate.initialize(sens.getModel());
+          }
           return s;
         }
         else {
@@ -576,6 +581,11 @@ public class WattDepotImpl extends WattDepot {
     ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
     for (SensorGroup d : (List<SensorGroup>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
+        for (Sensor sens : d.getSensors()) {
+          Hibernate.initialize(sens);
+          Hibernate.initialize(sens.getLocation());
+          Hibernate.initialize(sens.getModel());
+        }
         ret.add(d);
       }
     }

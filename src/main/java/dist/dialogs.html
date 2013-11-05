@@ -412,8 +412,7 @@
                 <button type="button" class="btn btn-default"
                     data-dismiss="modal">Close</button>
                 <button id="delete_button" type="button"
-                    class="btn btn-primary"
-                    onclick="deleteLocation();">Delete
+                    class="btn btn-primary" onclick="deleteLocation();">Delete
                     Location</button>
             </div>
         </div>
@@ -424,10 +423,9 @@
 <!-- / .modal -->
 
 <!-- *********** Sensor Models ********** -->
-<!-- Add Location -->
-<div class="modal fade" id="addModelModal" tabindex="-1"
-    role="dialog" aria-labelledby="addModelModalLabel"
-    aria-hidden="true">
+<!-- Add SensorModel -->
+<div class="modal fade" id="addModelModal" tabindex="-1" role="dialog"
+    aria-labelledby="addModelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -439,29 +437,26 @@
                 <div class="container">
                     <form>
                         <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Sensor Model
-                                Name</label> <input type="text"
+                            <label class="col-md-3 col-md-offset-1">Sensor
+                                Model Name</label> <input type="text"
                                 name="model_id" class="form-inline">
                             <p></p>
                         </div>
                         <div class="row">
                             <label class="col-md-3 col-md-offset-1">Protocol</label>
-                            <input type="text"
-                                name="model_protocol"
+                            <input type="text" name="model_protocol"
                                 class="form-inline">
                             <p></p>
                         </div>
                         <div class="row">
                             <label class="col-md-3 col-md-offset-1">Type</label>
-                            <input type="text"
-                                name="model_type"
+                            <input type="text" name="model_type"
                                 class="form-inline">
                             <p></p>
                         </div>
                         <div class="row">
                             <label class="col-md-3 col-md-offset-1">Version</label>
-                            <input type="text"
-                                name="model_version"
+                            <input type="text" name="model_version"
                                 class="form-inline">
                             <p></p>
                         </div>
@@ -482,7 +477,7 @@
 </div>
 <!-- /.modal -->
 
-<!-- Delete Location -->
+<!-- Delete SensorModel -->
 <div class="modal fade" id="deleteModelModal" tabindex="-1"
     role="dialog" aria-labelledby="deleteModelModalLabel"
     aria-hidden="true">
@@ -503,8 +498,7 @@
                 <button type="button" class="btn btn-default"
                     data-dismiss="modal">Close</button>
                 <button id="delete_button" type="button"
-                    class="btn btn-primary"
-                    onclick="deleteModel();">Delete
+                    class="btn btn-primary" onclick="deleteModel();">Delete
                     Sensor Model</button>
             </div>
         </div>
@@ -514,3 +508,401 @@
 </div>
 <!-- / .modal -->
 
+<!-- Delete Sensor -->
+<div class="modal fade" id="deleteSensorModal" tabindex="-1"
+    role="dialog" aria-labelledby="deleteSensorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Sensor</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <b>Delete Sensor </b>
+                </p>
+                <div id="del_sensor_id"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button id="delete_button" type="button"
+                    class="btn btn-primary" onclick="deleteSensor();">Delete
+                    Sensor</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- / .modal -->
+
+<!-- Delete SensorGroup -->
+<div class="modal fade" id="deleteSensorGroupModal" tabindex="-1"
+    role="dialog" aria-labelledby="deleteSensorGroupModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Sensor Group</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <b>Delete Sensor Group </b>
+                </p>
+                <div id="del_sensorgroup_id"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button id="delete_button" type="button"
+                    class="btn btn-primary"
+                    onclick="deleteSensorGroup();">Delete
+                    Sensor Group</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- / .modal -->
+
+<!-- Delete SensorProcess -->
+<div class="modal fade" id="deleteSensorProcessModal" tabindex="-1"
+    role="dialog" aria-labelledby="deleteSensorProcessModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Delete Sensor Process</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <b>Delete Sensor Process </b>
+                </p>
+                <div id="del_sensorprocess_id"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button id="delete_button" type="button"
+                    class="btn btn-primary"
+                    onclick="deleteSensorProcess();">Delete
+                    Sensor Process</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- / .modal -->
+
+
+
+<div class="tab-pane active" id="input">
+    <div class="component">
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="textinput">Text
+                Input</label>
+            <div class="col-md-6">
+                <input id="textinput" name="textinput" type="text"
+                    placeholder="placeholder" class="form-control ">
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Password input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="passwordinput">Password
+                Input</label>
+            <div class="col-md-6">
+                <input id="passwordinput" name="passwordinput"
+                    type="password" placeholder="placeholder"
+                    class="form-control ">
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Search input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="searchinput">Search
+                Input</label>
+            <div class="col-md-6">
+                <input id="searchinput" name="searchinput" type="text"
+                    placeholder="placeholder"
+                    class="search-query form-control">
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Prepended text-->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="prependedtext">Prepended
+                Text</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon">prepend</span> <input
+                        id="prependedtext" name="prependedtext"
+                        class="col-md-6 form-control"
+                        placeholder="placeholder" type="text">
+                </div>
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Appended Input-->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="appendedtext">Appended
+                Text</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="appendedtext" name="appendedtext"
+                        class="form-control " placeholder="placeholder"
+                        type="text"> <span
+                        class="input-group-addon">append</span>
+                </div>
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Prepended checkbox -->
+        <div class="form-group">
+            <label class="col-md-3 control-label"
+                for="prependedcheckbox">Prepended Checkbox</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon"> <input
+                        type="checkbox">
+                    </span> <input id="prependedcheckbox"
+                        name="prependedcheckbox" class="form-control "
+                        type="text" placeholder="placeholder">
+                </div>
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Appended checkbox -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="appendedcheckbox">Appended
+                Checkbox</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="appendedcheckbox" name="appendedcheckbox"
+                        class="form-control " type="text"
+                        placeholder="placeholder"> <span
+                        class="input-group-addon"> <input
+                        type="checkbox">
+                    </span>
+                </div>
+                <p class="help-block">help</p>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Button Drop Down -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="buttondropdown">Button
+                Drop Down</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="buttondropdown" name="buttondropdown"
+                        class="form-control " placeholder="placeholder"
+                        type="text">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown">
+                            Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#">Option one</a></li>
+                            <li><a href="#">Option two</a></li>
+                            <li><a href="#">Option three</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Textarea -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="textarea">Text
+                Area</label>
+            <div class="col-md-6">
+                <textarea id="textarea" name="textarea"
+                    class="form-control ">default text</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane active" id="radioscheckboxes">
+    <div class="component">
+        <!-- Multiple Radios -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="radios">Multiple
+                Radios</label>
+            <div class="col-lg-6">
+                <div class="radio">
+                    <label for="radios-0"> <input type="radio"
+                        name="radios" id="radios-0" value="Option one"
+                        checked="checked"> Option one
+                    </label>
+                </div>
+                <div class="radio">
+                    <label for="radios-1"> <input type="radio"
+                        name="radios" id="radios-1" value="Option two">
+                        Option two
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Multiple Radios (inline) -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="radios">Inline
+                Radios</label>
+            <div class="col-lg-6">
+                <label class="radio-inline" for="radios-0"> <input
+                    type="radio" name="radios" id="radios-0" value="1"
+                    checked="checked"> 1
+                </label> <label class="radio-inline" for="radios-1"> <input
+                    type="radio" name="radios" id="radios-1" value="2">
+                    2
+                </label> <label class="radio-inline" for="radios-2"> <input
+                    type="radio" name="radios" id="radios-2" value="3">
+                    3
+                </label> <label class="radio-inline" for="radios-3"> <input
+                    type="radio" name="radios" id="radios-3" value="4">
+                    4
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Multiple Checkboxes -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="checkboxes">Multiple
+                Checkboxes</label>
+            <div class="col-lg-6">
+                <div class="checkbox">
+                    <label for="checkboxes-0"> <input
+                        type="checkbox" name="checkboxes"
+                        id="checkboxes-0" value="Option one">
+                        Option one
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label for="checkboxes-1"> <input
+                        type="checkbox" name="checkboxes"
+                        id="checkboxes-1" value="Option two">
+                        Option two
+                    </label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Multiple Checkboxes (inline) -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="checkboxes">Inline
+                Checkboxes</label>
+            <div class="col-lg-8">
+                <label class="checkbox-inline" for="checkboxes-0">
+                    <input type="checkbox" name="checkboxes"
+                    id="checkboxes-0" value="1"> 1
+                </label> <label class="checkbox-inline" for="checkboxes-1">
+                    <input type="checkbox" name="checkboxes"
+                    id="checkboxes-1" value="2"> 2
+                </label> <label class="checkbox-inline" for="checkboxes-2">
+                    <input type="checkbox" name="checkboxes"
+                    id="checkboxes-2" value="3"> 3
+                </label> <label class="checkbox-inline" for="checkboxes-3">
+                    <input type="checkbox" name="checkboxes"
+                    id="checkboxes-3" value="4"> 4
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="select">
+    <div class="component">
+        <!-- Select Basic -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="selectbasic">Select
+                Basic</label>
+            <div class="col-md-6">
+                <select id="selectbasic" name="selectbasic"
+                    class="form-control ">
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Select Multiple -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="selectmultiple">Select
+                Multiple</label>
+            <div class="col-md-6">
+                <select id="selectmultiple" name="selectmultiple"
+                    class="form-control " multiple="multiple">
+                    <option>Option one</option>
+                    <option>Option two</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane" id="buttons">
+    <div class="component">
+        <!-- File Button -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="filebutton">File
+                Button</label>
+            <div class="col-lg-6">
+                <input id="filebutton" name="filebutton" type="file">
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Button -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="singlebutton">Single
+                Button</label>
+            <div class="col-lg-6">
+                <button id="singlebutton" name="singlebutton"
+                    class="btn btn-primary">Button</button>
+            </div>
+        </div>
+    </div>
+    <div class="component">
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="button1id">Double
+                Button</label>
+            <div class="col-lg-6">
+                <button id="button1id" name="button1id"
+                    class="btn btn-success">Good Button</button>
+                <button id="button2id" name="button2id"
+                    class="btn btn-danger">Scary Button</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,7 +3,7 @@
  */
 package org.wattdepot3.datamodel;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * SensorGroup represents a group of Sensors. Used for aggregating sensor
@@ -16,7 +16,7 @@ public class SensorGroup {
   /** The unique id for this group. */
   private String id;
   /** The List of sensors the compose this group. */
-  protected ArrayList<Sensor> sensors;
+  protected Set<Sensor> sensors;
   /** The owner of this sensor model. */
   private UserGroup owner;
 
@@ -32,12 +32,14 @@ public class SensorGroup {
    * 
    * @param uniqueId
    *          The unique id.
+   * @param sensors
+   *          The set of sensors in the group.
    * @param owner
    *          the owner of the location.
    */
-  public SensorGroup(String uniqueId, UserGroup owner) {
+  public SensorGroup(String uniqueId, Set<Sensor> sensors, UserGroup owner) {
     this.id = uniqueId;
-    this.sensors = new ArrayList<Sensor>();
+    this.sensors = sensors;
     this.owner = owner;
   }
 
@@ -122,7 +124,7 @@ public class SensorGroup {
   /**
    * @return the sensors
    */
-  public ArrayList<Sensor> getSensors() {
+  public Set<Sensor> getSensors() {
     return sensors;
   }
 
@@ -188,7 +190,7 @@ public class SensorGroup {
    * @param sensors
    *          the sensors to set
    */
-  public void setSensors(ArrayList<Sensor> sensors) {
+  public void setSensors(Set<Sensor> sensors) {
     this.sensors = sensors;
   }
 

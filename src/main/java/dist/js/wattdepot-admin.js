@@ -1,21 +1,23 @@
 // Utility functions for get/set/delete cookies
-function setCookie(name,value,days) {
+function setCookie(name, value, days) {
     if (days) {
         var date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        var expires = "; expires="+date.toGMTString();
-    }
-    else var expires = "";
-    document.cookie = name+"="+value+expires+"; path=/";
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    } else
+        var expires = "";
+    document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ')
+            c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0)
+            return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
@@ -25,7 +27,92 @@ function setSelectedTab(tabName) {
     setCookie("selected-tab", tabName);
 }
 
-//****************** Users **************************
+function getKnownUser(id) {
+    return USERS[id];
+}
+
+function getKnownUserGroup(id) {
+    return USERGROUPS[id];
+}
+
+function getKnownDepository(id) {
+    return DEPOSITORIES[id];
+};
+
+function buildDepository(id) {
+    var depInfo = getKnownDepository(id);
+    var owner = getKnownUserGroup(depInfo['ownerId']);
+    var depository = {
+        "name" : depInfo['name'],
+        "measurementType" : depInfo['measurementType'],
+        "owner" : owner
+    };
+    return depository;
+}
+
+function getKnownLocation(id) {
+    return LOCATIONS[id];
+};
+
+function buildLocation(id) {
+    var locInfo = getKnownLocation(id);
+    var owner = getKnownUserGroup(locInfo['ownerId']);
+    var loc = {
+        "id" : locInfo['id'],
+        "latitude" : locInfo['latitude'],
+        "longitude" : locInfo['longitude'],
+        "altitude" : locInfo['altitude'],
+        "description" : locInfo['description'],
+        "owner" : owner
+    };
+    return loc;
+}
+
+function getKnownSensorModel(id) {
+    return MODELS[id];
+};
+
+function buildSensorModel(id) {
+    var modelInfo = getKnownSensorModel(id);
+    var owner = getKnownUserGroup(modelInfo['ownerId']);
+    var model = {
+        "id" : modelInfo['id'],
+        "protocol" : modelInfo['protocol'],
+        "type" : modelInfo['type'],
+        "version" : modelInfo['version'],
+        "owner" : owner
+    };
+    return model;
+};
+
+function getKnownSensor(id) {
+    return SENSORS[id];
+};
+
+function buildSensor(id) {
+    var sensorInfo = getKnownSensor(id);
+    var loc = buildLocation(sensorInfo['locationId']);
+    var model = buildSensorModel(sensorInfo['modelId']);
+    var owner = getKnownUserGroup(sensorInfo['ownerId']);
+    var sensor = {
+        "id" : sensorInfo['id'],
+        "uri" : sensorInfo['uri'],
+        "location" : loc,
+        "model" : model,
+        "owner" : owner
+    };
+    return sensor;
+}
+
+function getKnownSensorGroup(id) {
+    return SENSORGROUPS[id];
+}
+
+function getKnownSensorProcess(id) {
+    return SENSORPROCESSES[id];
+}
+
+// ****************** Users **************************
 function putNewUser() {
     var id = $("input[name='user_id']").val();
     var first = $("input[name='user_firstname']").val();
@@ -70,7 +157,7 @@ function edit_user_dialog(event, id) {
     $("input[name='edit_user_email']").val(user['email']);
     $("input[name='edit_user_id']").val(user['id']);
     $("input[name='edit_user_password']").val(user['password']);
-    $("input[name='edit_user_admin']").prop('checked', user['admin']);        
+    $("input[name='edit_user_admin']").prop('checked', user['admin']);
     modalElement.modal('show');
 };
 
@@ -131,11 +218,7 @@ function deleteUser() {
     });
 };
 
-function getKnownUser(id) {
-    return USERS[id];
-}
-
-//****************** User Groups **************************
+// ****************** User Groups **************************
 function putNewUserGroup() {
     var id = $("input[name='usergroup_name']").val();
     var selected_ids = $("select[name='groupusers']").val() || [];
@@ -167,13 +250,13 @@ function edit_usergroup_dialog(event, id) {
         keyboard : true,
         show : false
     });
-    
+
     var group = getKnownUserGroup(id);
     $("input[name='usergroup_name']").val(id);
     for (var i = 0; i < group.users.length; i++) {
         var uid = group.users[i].id;
-        console.log(uid);
-        $('select[name="groupusers"] option[value="' + uid + '"]').prop("selected", "selected");
+        $('select[name="groupusers"] option[value="' + uid + '"]').prop(
+                "selected", "selected");
     }
     modalElement.modal('show');
 };
@@ -203,17 +286,15 @@ function deleteUseGroup() {
     });
 };
 
-function getKnownUserGroup(id) {
-    return USERGROUPS[id];
-}
-
-//****************** Depositories **************************
+// ****************** Depositories **************************
 function putNewDepository() {
     var id = $("input[name='depository_name']").val();
     var type = $("input[name='depository_type']").val();
+    var owner = getKnownUserGroup(GROUPID);
     var depo = {
         "name" : id,
-        "measurementType" : type
+        "measurementType" : type,
+        "owner" : owner
     };
     setSelectedTab('depositories');
     $.ajax({
@@ -244,9 +325,11 @@ function edit_depository_dialog(event, id) {
 function editDepository() {
     var id = $("input[name='edit_depository_name']").val();
     var type = $("input[name='edit_depository_type']").val();
+    var owner = getKnownUserGroup(GROUPID);
     var depo = {
         "name" : id,
-        "measurementType" : type
+        "measurementType" : type,
+        "owner" : owner
     };
     setSelectedTab('depositories');
     $.ajax({
@@ -285,23 +368,21 @@ function deleteDepository() {
     });
 };
 
-function getKnownDepository(id) {
-    return DEPOSITORIES[id];
-};
-
-//****************** Locations **************************
+// ****************** Locations **************************
 function putNewLocation() {
     var id = $("input[name='location_id']").val();
     var latitude = $("input[name='location_latitude']").val();
     var longitude = $("input[name='location_longitude']").val();
     var altitude = $("input[name='location_altitude']").val();
     var description = $("input[name='location_description']").val();
+    var owner = getKnownUserGroup(GROUPID);
     var loc = {
         "id" : id,
-        "latitude": latitude,
-        "longitude": longitude,
-        "altitude": altitude,
-        "description": description
+        "latitude" : latitude,
+        "longitude" : longitude,
+        "altitude" : altitude,
+        "description" : description,
+        "owner" : owner
     };
     setSelectedTab('locations');
     $.ajax({
@@ -357,22 +438,95 @@ function deleteLocation() {
     });
 };
 
-function getKnownLocation(id) {
-    return LOCATIONS[id];
+// ****************** Sensors **************************
+function putNewSensor() {
+    var id = $("input[name='sensor_id']").val();
+    var uri = $("input[name='sensor_uri']").val();
+    var selected_loc = $("select[name='sensor_location']").val();
+    var loc = buildLocation(selected_loc);
+    var selected_model = $("select[name='sensor_model']").val();
+    var model = buildSensorModel(selected_model);
+    var owner = getKnownUserGroup(GROUPID);    
+    var sensor = {
+        "id" : id,
+        "uri" : uri,
+        "location" : loc,
+        "model" : model,
+        "owner" : owner
+    };
+    setSelectedTab('sensors');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensor/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(sensor),
+        success : function() {
+            location.reload();
+        },
+    });
 };
 
-//****************** Sensor Groups **************************
+function edit_sensor_dialog(event, id) {
+    var modalElement = $('#addSensorModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var sensor = getKnownSensor(id);
+    $("input[name='sensor_id']").val(sensor['id']);
+    $("input[name='sensor_uri']").val(sensor['uri']);
+    var lid = sensor.location;
+    $('select[name="sensor_location"] option[value="' + lid + '"]').prop(
+            "selected", "selected");
+    var mid = sensor.model;
+    $('select[name="sensor_model"] option[value="' + mid + '"]').prop(
+            "selected", "selected");
+
+    modalElement.modal('show');
+};
+
+function delete_sensor_dialog(event, id) {
+    var modalElement = $('#deleteSensorModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    modalElement.find('#del_sensor_id').html(id);
+    modalElement.modal('show');
+};
+
+function deleteSensor() {
+    var id = $('#del_sensor_id').html();
+    setSelectedTab('sensors');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensor/' + id,
+        type : 'DELETE',
+        contentType : 'application/json',
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+// ****************** Sensor Groups **************************
 function putNewSensorGroup() {
     var id = $("input[name='sensorgroup_name']").val();
     var selected_ids = $("select[name='groupsensors']").val() || [];
     var selected_sensors = new Array();
     for (var i = 0; i < selected_ids.length; i++) {
-        selected_sensors.push(getKnownSensor(selected_ids[i]));
+        selected_sensors.push(buildSensor(selected_ids[i]));
     }
+    var owner = getKnownUserGroup(GROUPID);    
+    
     setSelectedTab('sensorgroups');
     var grp = {
         "id" : id,
-        "sensors" : selected_sensors
+        "sensors" : selected_sensors,
+        "owner" : owner
     };
     $.ajax({
         url : '/wattdepot/admin/sensorgroup/temp',
@@ -392,13 +546,13 @@ function edit_sensorgroup_dialog(event, id) {
         keyboard : true,
         show : false
     });
-    
+
     var group = getKnownSensorGroup(id);
     $("input[name='sensorgroup_name']").val(id);
     for (var i = 0; i < group.sensors.length; i++) {
         var uid = group.sensors[i].id;
-        console.log(uid);
-        $('select[name="groupsensors"] option[value="' + uid + '"]').prop("selected", "selected");
+        $('select[name="groupsensors"] option[value="' + uid + '"]').prop(
+                "selected", "selected");
     }
     modalElement.modal('show');
 };
@@ -417,7 +571,7 @@ function delete_sensorgroup_dialog(event, id) {
 
 function deleteSensorGroup() {
     var id = $('#del_sensorgroup_id').html();
-    setSelectedTab('users');
+    setSelectedTab('sensorgroups');
     $.ajax({
         url : '/wattdepot/admin/sensorgroup/' + id,
         type : 'DELETE',
@@ -428,11 +582,7 @@ function deleteSensorGroup() {
     });
 };
 
-function getKnownSensorGroup(id) {
-    return SENSORGROUPS[id];
-}
-
-//****************** Sensor Models **************************
+// ****************** Sensor Models **************************
 function putNewModel() {
     var id = $("input[name='model_id']").val();
     var protocol = $("input[name='model_protocol']").val();
@@ -440,9 +590,9 @@ function putNewModel() {
     var version = $("input[name='model_version']").val();
     var model = {
         "id" : id,
-        "protocol": protocol,
-        "type": type,
-        "version": version
+        "protocol" : protocol,
+        "type" : type,
+        "version" : version
     };
     setSelectedTab('sensormodels');
     $.ajax({
@@ -497,7 +647,77 @@ function deleteModel() {
     });
 };
 
-function getKnownSensorModel(id) {
-    return MODELS[id];
+//****************** Sensor Processes **************************
+function putNewProcess() {
+    var id = $("input[name='sensorprocess_name']").val();
+    var selected_sensor = $("select[name='process_sensor']").val();
+    var sensor = buildSensor(selected_sensor);
+    var interval = $("input[name='sensorprocess_polling']").val();
+    var selected_depository = $("select[name='process_depository']").val();
+    var depo = buildDepository(selected_depository);
+    var owner = getKnownUserGroup(GROUPID);    
+    var process = {
+        "id" : id,
+        "sensor" : sensor,
+        "pollingInterval" : interval,
+        "depositoryId" : selected_depository,
+        "owner" : owner
+    };
+    setSelectedTab('sensorprocesses');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensorprocess/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(process),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function edit_process_dialog(event, id) {
+    var modalElement = $('#addProcessModal');
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+
+    var process = getKnownSensorProcess(id);
+    $("input[name='sensorprocess_name']").val(process['id']);
+    var lid = process.sensorId;
+    $('select[name="process_sensor"] option[value="' + lid + '"]').prop(
+            "selected", "selected");
+    $("input[name='sensorprocess_polling']").val(process['pollingInterval']);
+    var mid = process.depositoryId;
+    $('select[name="process_depository"] option[value="' + mid + '"]').prop(
+            "selected", "selected");
+    
+    modalElement.modal('show');
+};
+
+function delete_process_dialog(event, id) {
+    var modalElement = $('#deleteSensorProcessModal');
+
+    modalElement.modal({
+        backdrop : true,
+        keyboard : true,
+        show : false
+    });
+    modalElement.find('#del_sensorprocess_id').html(id);
+    modalElement.modal('show');
+};
+
+function deleteSensorProcess() {
+    var id = $('#del_sensorprocess_id').html();
+    setSelectedTab('sensorprocesses');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensorprocess/' + id,
+        type : 'DELETE',
+        contentType : 'application/json',
+        success : function() {
+            location.reload();
+        },
+    });
 };
 

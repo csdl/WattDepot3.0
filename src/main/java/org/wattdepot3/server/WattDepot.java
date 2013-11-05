@@ -74,7 +74,7 @@ public abstract class WattDepot {
    * @param id
    *          The unique id.
    * @param sensors
-   *          A list of the Sensors that make up the SensorGroup
+   *          A set of the Sensors that make up the SensorGroup
    * @param owner
    *          the owner of the SensorGroup.
    * @return the defined SensorGroup.
@@ -83,7 +83,7 @@ public abstract class WattDepot {
    * @throws MissMatchedOwnerException
    *           if the given owner doesn't match the owners of the Sensors.
    */
-  public abstract SensorGroup defineSensorGroup(String id, List<Sensor> sensors, UserGroup owner)
+  public abstract SensorGroup defineSensorGroup(String id, Set<Sensor> sensors, UserGroup owner)
       throws UniqueIdException, MissMatchedOwnerException;
 
   /**
@@ -534,4 +534,5 @@ public abstract class WattDepot {
    * @return The updated user from persistence.
    */
   public abstract UserInfo updateUserInfo(UserInfo user);
+
 }

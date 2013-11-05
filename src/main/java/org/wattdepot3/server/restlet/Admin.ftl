@@ -30,9 +30,9 @@ $(function(){
         </#if>
         <li><a id="depositories_tab_link" href="#depositories" data-toggle="tab">Depositories</a></li>
         <li><a id="locations_tab_link" href="#locations" data-toggle="tab">Locations</a></li>
+        <li><a id="sensormodels_tab_link" href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
         <li><a id="sensors_tab_link" href="#sensors" data-toggle="tab">Sensors</a></li>
         <li><a id="sensorgroups_tab_link" href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
-        <li><a id="sensormodels_tab_link" href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
         <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Sensor Processes</a></li>
     </ul>
     <!-- Tab panes -->
@@ -166,7 +166,6 @@ $(function(){
                             <th>URI</th>
                             <th>Location</th>
                             <th>Model</th>
-                            <th>Properties</th>
                             <#if groupId == "admin">
                             <th>Owner</th>
                             </#if>
@@ -176,7 +175,7 @@ $(function(){
                     </thead>
                     <tbody>
                     <#list sensors as s>
-                        <tr><td>${s.id}</td><td>${s.uri}</td><td>${s.location}</td><td>${s.model}</td><td>${s.properties}</td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
+                        <tr><td>${s.id}</td><td>${s.uri}</td><td>${s.location.id}</td><td>${s.model.id}</td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_sensor_dialog(event, '${s.id}');"></span>
                             </td>
@@ -207,12 +206,12 @@ $(function(){
                     </thead>
                     <tbody>
                     <#list sensorgroups as g>
-                        <tr><td>${g.id}</td><td>${g.sensors}</td><#if groupId == "admin"><td>${g.owner.id}</td></#if>
+                        <tr><td>${g.id}</td><td><#list g.sensors as u>${u.id} </#list></td><#if groupId == "admin"><td>${g.owner.id}</td></#if>
                             <td>
-                                <span class="glyphicon glyphicon-pencil" onclick="edit_group_dialog(event, '${g.id}');"></span>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_sensorgroup_dialog(event, '${g.id}');"></span>
                             </td>
                             <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_group_dialog(event, '${g.id}');"></span>
+                                <span class="glyphicon glyphicon-remove" onclick="delete_sensorgroup_dialog(event, '${g.id}');"></span>
                             </td>
                         </tr>
                     </#list>
@@ -301,15 +300,68 @@ $(function(){
         <div class="modal-body">
             <div class="container">
                 <form>
+                <div class="form-group">
+                        <label class="col-md-3 control-label" for="usergroup_name">Group Name</label>
+                        <div class="col-md-9">
+                            <input type="text" name="usergroup_name" class="form-control"/>
+                            <p class="help-block">User group names must be unique.</p>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="groupusers">Users</label>
+                    <div class="col-md-9">
+                        <select class="form-control" name="groupusers" multiple="multiple">
+                        <#list users as u>
+                            <option value="${u.id}">${u.id}</option>
+                        </#list>
+                        </select>
+                        <p class="help-block">Choose the members of the group. Users can only be in one group.</p>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                </form>
+            </div>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="putNewUserGroup();">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->    
+
+  <!-- Add Sensor -->
+  <div class="modal fade" id="addSensorModal" tabindex="-1" role="dialog" aria-labelledby="addSensorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Add/Edit Sensor</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <form>
                 <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Group Name</label>
-                        <input type="text" name="usergroup_name" class="form-inline"><p></p>
+                        <label class="col-md-3 col-md-offset-1">Sensor Name</label>
+                        <input type="text" name="sensor_id" class="form-inline"><p></p>
                 </div>
                 <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Users</label>
-                            <select name="groupusers" multiple="multiple">
-                            <#list users as u>
-                                <option value="${u.id}">${u.id}</option>
+                        <label class="col-md-3 col-md-offset-1">Sensor URI</label>
+                        <input type="text" name="sensor_uri" class="form-inline"><p></p>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Location</label>
+                            <select name="sensor_location">
+                            <#list locations as l>
+                                <option value="${l.id}">${l.id}</option>
+                            </#list>
+                            </select>
+                </div>
+                <div class="row">
+                            <label class="col-md-3 col-md-offset-1">Model</label>
+                            <select name="sensor_model">
+                            <#list sensormodels as sm>
+                                <option value="${sm.id}">${sm.id}</option>
                             </#list>
                             </select>
                 </div>
@@ -319,7 +371,7 @@ $(function(){
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="putNewUserGroup();">Save changes</button>
+          <button type="button" class="btn btn-primary" onclick="putNewSensor();">Save changes</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -341,7 +393,7 @@ $(function(){
                         <input type="text" name="sensorgroup_name" class="form-inline"><p></p>
                 </div>
                 <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Users</label>
+                            <label class="col-md-3 col-md-offset-1">Sensors</label>
                             <select name="groupsensors" multiple="multiple">
                             <#list sensors as s>
                                 <option value="${s.id}">${s.id}</option>
@@ -355,6 +407,64 @@ $(function(){
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="putNewSensorGroup();">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->    
+
+  <!-- Add Sensor Process -->
+  <div class="modal fade" id="addProcessModal" tabindex="-1" role="dialog" aria-labelledby="addProcessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Add/Edit Sensor Process</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Process Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="sensorprocess_name" class="form-inline">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Sensor</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="process_sensor">
+                                <#list sensors as s>
+                                    <option value="${s.id}">${s.id}</option>
+                                </#list>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Polling Interval</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="number" name="sensorprocess_polling" class="form-inline">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Depository</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="process_depository">
+                                <#list depositories as d>
+                                    <option value="${d.name}">${d.name}</option>
+                                </#list>
+                                </select>
+                            </div>
+                    </div>
+                    <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="putNewProcess();">Save changes</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -385,11 +495,19 @@ USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 </#list>
 var DEPOSITORIES = {};
 <#list depositories as d>
-DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}", "owner": "${d.owner.id}"};
+DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}", "ownerId": "${d.owner.id}"};
 </#list>
 var LOCATIONS = {};
 <#list locations as l>
-LOCATIONS["${l.id}"] = {"id": "${l.id}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "owner": "${l.owner.id}"};
+LOCATIONS["${l.id}"] = {"id": "${l.id}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "ownerId": "${l.owner.id}"};
+</#list>
+var MODELS = {};
+<#list sensormodels as m>
+MODELS["${m.id}"] = {"id": "${m.id}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "ownerId": "${m.owner.id}"};
+</#list>
+var SENSORS = {};
+<#list sensors as s>
+SENSORS["${s.id}"] = {"id": "${s.id}", "uri": "${s.uri}", "locationId": "${s.location.id}", "modelId": "${s.model.id}", "ownerId": "${s.owner.id}"};
 </#list>
 var SENSORGROUPS = {};
 <#list sensorgroups as sg>
@@ -398,10 +516,11 @@ SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "sensors": [
 <#list sg.sensors as s>
 {"id": "${s.id}"}<#if sgLen != 1>,</#if><#assign sgLen = sgLen - 1>
 </#list>
+], "ownerId": "${sg.owner.id}"};
 </#list>
-var MODELS = {};
-<#list sensormodels as m>
-MODELS["${m.id}"] = {"id": "${m.id}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "owner": "${m.owner.id}"};
+var SENSORPROCESSES = {};
+<#list sensorprocesses as sp>
+SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}"};
 </#list>
 </script>
 </body>
