@@ -16,11 +16,13 @@
 <script> 
 $(function(){
   $("#modal-dialogs").load("/webroot/dist/dialogs.html"); 
+  $("#navigation-bar").load("/webroot/dist/navbar.html");
 });
 </script> 
 
 </head>
 <body>
+  <div id="navigation-bar"></div>
   <div id="modal-dialogs"></div>
   <div class="container">
   <!-- Nav tabs -->
@@ -29,11 +31,9 @@ $(function(){
         <li><a id="users_tab_link" href="#users" data-toggle="tab">Users</a></li>
         </#if>
         <li><a id="depositories_tab_link" href="#depositories" data-toggle="tab">Depositories</a></li>
-        <li><a id="locations_tab_link" href="#locations" data-toggle="tab">Locations</a></li>
-        <li><a id="sensormodels_tab_link" href="#sensormodels" data-toggle="tab">Sensor Models</a></li>
         <li><a id="sensors_tab_link" href="#sensors" data-toggle="tab">Sensors</a></li>
         <li><a id="sensorgroups_tab_link" href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
-        <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Sensor Processes</a></li>
+        <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Sensor Process Metadata</a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -122,40 +122,6 @@ $(function(){
                 <button data-toggle="modal" data-target="#addDepositoryModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Depository</a>
             </div>       
         </div>
-        <div class="tab-pane" id="locations">
-            <div class="well">
-                <table class="table">
-                    <thead>
-                      <tr><th colspan="5"><h3>Locations</h3></th></tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
-                            <th>Altitude</th>
-                            <th>Description</th>
-                            <#if groupId == "admin">
-                            <th>Owner</th>
-                            </#if>
-                            <th style="width: 7px;"></th>
-                            <th style="width: 7px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <#list locations as l>
-                        <tr><td>${l.id}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td><#if groupId == "admin"><td>${l.owner.id}</td></#if>
-                            <td>
-                                <span class="glyphicon glyphicon-pencil" onclick="edit_location_dialog(event, '${l.id}');"></span>
-                            </td>
-                            <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_location_dialog(event, '${l.id}');"></span>
-                            </td>
-                        </tr>
-                    </#list>
-                    </tbody>
-                </table>
-                <button data-toggle="modal" data-target="#addLocationModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Location</button>
-            </div>       
-        </div>
         <div class="tab-pane" id="sensors">
             <div class="well">
                 <table class="table">
@@ -187,7 +153,92 @@ $(function(){
                     </tbody>
                 </table>
                 <button data-toggle="modal" data-target="#addSensorModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor</button>
-            </div>       
+            </div>   
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseLocation">Sensor Locations</a>
+                        </h4>
+                    </div>
+                    <div id="collapseLocation" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="well">
+                                <table class="table">
+                                    <thead>
+                                        <tr><th colspan="5"><h3>Locations</h3></th></tr>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Latitude</th>
+                                            <th>Longitude</th>
+                                            <th>Altitude</th>
+                                            <th>Description</th>
+                                            <#if groupId == "admin">
+                                            <th>Owner</th>
+                                            </#if>
+                                            <th style="width: 7px;"></th>
+                                            <th style="width: 7px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <#list locations as l>
+                                        <tr><td>${l.id}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td><#if groupId == "admin"><td>${l.owner.id}</td></#if>
+                                            <td>
+                                                <span class="glyphicon glyphicon-pencil" onclick="edit_location_dialog(event, '${l.id}');"></span>
+                                            </td>
+                                            <td>
+                                                <span class="glyphicon glyphicon-remove" onclick="delete_location_dialog(event, '${l.id}');"></span>
+                                            </td>
+                                        </tr>
+                                    </#list>
+                                    </tbody>
+                                </table>
+                                <button data-toggle="modal" data-target="#addLocationModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Location</button>
+                            </div>       
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseModel">Sensor Models</a>
+                        </h4>
+                    </div>
+                    <div id="collapseModel" class="panel-collapse collapse">
+                        <div class="well">
+                            <table class="table">
+                                <thead>
+                                    <tr><th colspan="5"><h3>Sensor Models</h3></th></tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Protocol</th>
+                                        <th>Type</th>
+                                        <th>Version</th>
+                                        <#if groupId == "admin">
+                                        <th>Owner</th>
+                                        </#if>
+                                        <th style="width: 7px;"></th>
+                                        <th style="width: 7px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <#list sensormodels as m>
+                                    <tr><td>${m.id}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
+                                        <td>
+                                            <span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span>
+                                        </td>
+                                        <td>
+                                            <span class="glyphicon glyphicon-remove" onclick="delete_model_dialog(event, '${m.id}');"></span>
+                                        </td>
+                                    </tr>
+                                </#list>
+                                </tbody>
+                            </table>
+                            <button data-toggle="modal" data-target="#addModelModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Model</button>
+                        </div>       
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="tab-pane" id="sensorgroups">
             <div class="well">
@@ -220,44 +271,11 @@ $(function(){
                 <button data-toggle="modal" data-target="#addSensorGroupModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Group</button>
             </div>       
         </div>
-        <div class="tab-pane" id="sensormodels">
-            <div class="well">
-                <table class="table">
-                    <thead>
-                      <tr><th colspan="5"><h3>Sensor Models</h3></th></tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Protocol</th>
-                            <th>Type</th>
-                            <th>Version</th>
-                            <#if groupId == "admin">
-                            <th>Owner</th>
-                            </#if>
-                            <th style="width: 7px;"></th>
-                            <th style="width: 7px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <#list sensormodels as m>
-                        <tr><td>${m.id}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
-                            <td>
-                                <span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span>
-                            </td>
-                            <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_model_dialog(event, '${m.id}');"></span>
-                            </td>
-                        </tr>
-                    </#list>
-                    </tbody>
-                </table>
-                <button data-toggle="modal" data-target="#addModelModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Model</button>
-            </div>       
-        </div>
         <div class="tab-pane" id="sensorprocesses">
             <div class="well">
                 <table class="table">
                     <thead>
-                      <tr><th colspan="5"><h3>Sensor Processes</h3></th></tr>
+                      <tr><th colspan="5"><h3>Sensor Process Metadata</h3></th></tr>
                         <tr>
                             <th>Name</th>
                             <th>Sensor</th>
@@ -283,7 +301,7 @@ $(function(){
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#addProcessModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process</button>
+                <button data-toggle="modal" data-target="#addProcessModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process Metadata</button>
             </div>       
         </div>
     </div>  
@@ -341,33 +359,139 @@ $(function(){
         <div class="modal-body">
             <div class="container">
                 <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Sensor Name</label>
-                        <input type="text" name="sensor_id" class="form-inline"><p></p>
+                <div class="form-group">
+                        <label class="col-md-3 control-label" for="sensor_id">Sensor Name</label>
+                        <div class="col-md-9">
+                            <input type="text" name="sensor_id" class="form-control">
+                            <p class="help-block">Sensor names must be unique.</p>
+                        </div>
                 </div>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Sensor URI</label>
-                        <input type="text" name="sensor_uri" class="form-inline"><p></p>
+                <div class="form-group">
+                        <label class="col-md-3 control-label" for="sensor_uri">Sensor URI</label>
+                        <div class="col-md-9">
+                            <input type="text" name="sensor_uri" class="form-control">
+                            <p class="help-block">The URI to contact the sensor.</p>
+                        </div>
                 </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Location</label>
-                            <select name="sensor_location">
-                            <#list locations as l>
-                                <option value="${l.id}">${l.id}</option>
-                            </#list>
-                            </select>
+                <div class="form-group">
+                            <label class="col-md-3 control-label" for="sensor_location">Location</label>
+                            <div class="col-md-9">
+                                <select class="form-control" name="sensor_location">
+                                <#list locations as l>
+                                    <option value="${l.id}">${l.id}</option>
+                                </#list>
+                                </select>
+                                <p class="help-block">Select the optional location for the sensor.</p>
+                            </div>
                 </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Model</label>
-                            <select name="sensor_model">
-                            <#list sensormodels as sm>
-                                <option value="${sm.id}">${sm.id}</option>
-                            </#list>
-                            </select>
+                <div class="form-group">
+                            <label class="col-md-3 control-label" for="sensor_model">Model</label>
+                            <div class="col-md-9">
+                                <select class="form-control" name="sensor_model">
+                                <#list sensormodels as sm>
+                                    <option value="${sm.id}">${sm.id}</option>
+                                </#list>
+                                </select>
+                                <p class="help-block">Select the model for the sensor.</p>
+                            </div>
                 </div>
                 <div class="clearfix"></div>
                 </form>
-            </div>                
+                <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newLocationForm"><span class="glyphicon glyphicon-plus"></span> Location</button>                
+                <div id="newLocationForm" class="collapse"> 
+                    <form>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Location Name</label>
+                            <div class="col-md-9">
+                                <input type="text" name="inline_location_id" class="form-control">
+                                <p class="help-block">The unique name of the location.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Latitude</label>
+                            <div class="col-md-9">
+                            <input type="number"
+                                name="inline_location_latitude"
+                                class="form-control">
+                            <p class="help-block">Enter the latitude.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Longitude</label>
+                            <div class="col-md-9">
+                            <input type="number"
+                                name="inline_location_longitude"
+                                class="form-control">
+                            <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Altitude</label>
+                            <div class="col-md-9">
+                            <input type="number"
+                                name="inline_location_altitude"
+                                class="form-control">
+                            <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Description</label>
+                            <div class="col-md-9">
+                            <input type="text"
+                                name="inline_location_description"
+                                class="form-control">
+                            <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                    <button type="button" class="btn-sm btn-primary"
+                        onclick="putNewInlineLocation();">Save Location</button>
+                    <p></p>
+                </div>
+                <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newModelForm"><span class="glyphicon glyphicon-plus"></span> Model</button>
+                <div id="newModelForm" class="collapse"> 
+                    <form>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Sensor Model Name</label> 
+                            <div class="col-md-9">
+                                <input type="text"
+                                name="inline_model_id" class="form-control">
+                                <p class="help-block">Unique model name.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Protocol</label>
+                            <div class="col-md-9">
+                            <input type="text" name="inline_model_protocol"
+                                class="form-control">
+                            <p class="help-block">The protocol used by the sensor.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Type</label>
+                            <div class="col-md-9">
+                            <input type="text" name="inline_model_type"
+                                class="form-control">
+                            <p class="help-block">The type of the sensor.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Version</label>
+                            <div class="col-md-9">
+                            <input type="text" name="inline_model_version"
+                                class="form-control">
+                            <p class="help-block">The version.</p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                    <button type="button" class="btn-sm btn-primary"
+                        onclick="putNewInlineModel();">Save Model</button>
+                    <p></p>
+                </div>                
+                
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -388,17 +512,22 @@ $(function(){
         <div class="modal-body">
             <div class="container">
                 <form>
-                <div class="row">
-                        <label class="col-md-3 col-md-offset-1">Group Name</label>
-                        <input type="text" name="sensorgroup_name" class="form-inline"><p></p>
+                <div class="form-group">
+                        <label class="col-md-3 control-label" for="sensorgroup_name">Group Name</label>
+                        <div class="col-md-9">
+                        <input type="text" name="sensorgroup_name" class="form-control"><p class="help-block"></p>
+                        </div>
                 </div>
-                <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Sensors</label>
-                            <select name="groupsensors" multiple="multiple">
+                <div class="form-group">
+                            <label class="col-md-3 control-label" for="groupsensors">Sensors</label>
+                            <div class="col-md-9">
+                            <select class="form-control" name="groupsensors" multiple="multiple">
                             <#list sensors as s>
                                 <option value="${s.id}">${s.id}</option>
                             </#list>
                             </select>
+                            <p class="help-block"></p>
+                            </div>
                 </div>
                 <div class="clearfix"></div>
                 </form>
@@ -422,46 +551,47 @@ $(function(){
         </div>
         <div class="modal-body">
             <div class="container">
-                <div class="row">
-                    <form>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Process Name</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" type="text" name="sensorprocess_name" class="form-inline">
-                            </div>
+                <form>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Process Name</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="text" name="sensorprocess_name" class="form-control">
+                            <p class="help-block">Unique name for the metadata.</p>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Sensor</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="process_sensor">
-                                <#list sensors as s>
-                                    <option value="${s.id}">${s.id}</option>
-                                </#list>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Sensor</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="process_sensor">
+                            <#list sensors as s>
+                                <option value="${s.id}">${s.id}</option>
+                            </#list>
+                            </select>
+                            <p class="help-block">Select the sensor making measurements.</p>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Polling Interval</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" type="number" name="sensorprocess_polling" class="form-inline">
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Polling Interval</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" type="number" name="sensorprocess_polling" class="form-control">
+                            <p class="help-block">Number of seconds between measurements.</p>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Depository</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="process_depository">
-                                <#list depositories as d>
-                                    <option value="${d.name}">${d.name}</option>
-                                </#list>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Depository</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="process_depository">
+                            <#list depositories as d>
+                                <option value="${d.name}">${d.name}</option>
+                            </#list>
+                            </select>
+                            <p class="help-block">Select the depository to store the measurements.</p>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
-                        </form>
-                    </div>
-                </div>
-            </div>                
-        </div>
+                </form>
+            </div>
+        </div>                
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="putNewProcess();">Save changes</button>

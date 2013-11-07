@@ -448,6 +448,13 @@ public abstract class WattDepot {
   public abstract UserGroup getUserGroup(String id);
 
   /**
+   * @param user
+   *          The user.
+   * @return The UserGroup that the user is in.
+   */
+  public abstract UserGroup getUsersGroup(UserInfo user);
+
+  /**
    * @return The known/defined UserGroups.
    */
   public abstract List<UserGroup> getUserGroups();

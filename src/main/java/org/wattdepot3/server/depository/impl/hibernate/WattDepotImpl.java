@@ -1033,4 +1033,17 @@ public class WattDepotImpl extends WattDepot {
     return user;
   }
 
+  /* (non-Javadoc)
+   * @see org.wattdepot3.server.WattDepot#getUsersGroup(org.wattdepot3.datamodel.UserInfo)
+   */
+  @Override
+  public UserGroup getUsersGroup(UserInfo user) {
+    for (UserGroup group : getUserGroups()) {
+      if (group.getUsers().contains(user)) {
+        return group;
+      }
+    }
+    return null;
+  }
+
 }

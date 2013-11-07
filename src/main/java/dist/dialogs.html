@@ -9,47 +9,61 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Add User</h4>
+                <h4 class="modal-title">Add/Edit User</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">First
-                                Name</label> <input type="text"
-                                name="user_firstname"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">First
+                                Name</label>
+                            <div class="col-md-9">
+                                <input type="text" name="user_firstname"
+                                    class="form-control">
+                                <p class="help-block">First name.</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Last
-                                Name</label> <input type="text"
-                                name="user_lastname" class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Last
+                                Name</label>
+                            <div class="col-md-9">
+                                <input type="text" name="user_lastname"
+                                    class="form-control">
+                                <p class="help-block">Last name.</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Email
-                                Address</label> <input type="email"
-                                name="user_email" class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Email
+                                Address</label>
+                            <div class="col-md-9">
+                                <input type="email" name="user_email"
+                                    class="form-control">
+                                <p class="help-block">email address.</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Username</label>
-                            <input type="text" name="user_id"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Username</label>
+                            <div class="col-md-9">
+                                <input type="text" name="user_id"
+                                    class="form-control">
+                                <p class="help-block">Unique user
+                                    name.</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Password</label>
-                            <input type="password" name="user_password"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                                <input type="password"
+                                    name="user_password"
+                                    class="form-control">
+                                <p class="help-block">Password.</p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1"><input
-                                type="checkbox" name="user_admin">
-                                is an admin?</label>
-
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">
+                                <input type="checkbox" name="user_admin">
+                                is an admin?
+                            </label>
                             <div class="clearfix"></div>
                         </div>
                     </form>
@@ -60,76 +74,6 @@
                     data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary"
                     onclick="putNewUser();">Save changes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<!-- Edit User -->
-<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"
-    aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Edit User</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">First
-                                Name</label> <input type="text"
-                                name="edit_user_firstname"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Last
-                                Name</label> <input type="text"
-                                name="edit_user_lastname"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Email
-                                Address</label> <input type="email"
-                                name="edit_user_email"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Username</label>
-                            <input type="text" name="edit_user_id"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Password</label>
-                            <input type="password"
-                                name="edit_user_password"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1"><input
-                                type="checkbox" name="edit_user_admin">
-                                is an admin?</label>
-
-                            <div class="clearfix"></div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"
-                    onclick="editUser();">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -212,24 +156,30 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
                     aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Add Depository</h4>
+                <h4 class="modal-title">Add/Edit Depository</h4>
             </div>
             <div class="modal-body">
                 <div class="container">
                     <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Depository
-                                Name</label> <input type="text"
-                                name="depository_name"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Depository
+                                Name</label>
+                            <div class="col-md-9">
+                                <input type="text"
+                                    name="depository_name"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Depository
-                                Measurement Type</label> <input type="text"
-                                name="depository_type"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Depository
+                                Measurement Type</label>
+                            <div class="col-md-9">
+                                <input type="text"
+                                    name="depository_type"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -240,51 +190,6 @@
                     data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary"
                     onclick="putNewDepository();">Save changes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
-<!-- Edit Depository -->
-<div class="modal fade" id="editDepositoryModal" tabindex="-1"
-    role="dialog" aria-labelledby="editDepositoryModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Edit Depository</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Depository
-                                Name</label> <input type="text"
-                                name="edit_depository_name"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Depository
-                                Measurement Type</label> <input type="text"
-                                name="edit_depository_type"
-                                class="form-inline">
-                            <p></p>
-                        </div>
-                        <div class="clearfix"></div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"
-                    onclick="editDepository();">Save changes</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -340,39 +245,50 @@
             <div class="modal-body">
                 <div class="container">
                     <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Location
-                                Name</label> <input type="text"
-                                name="location_id" class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Location
+                                Name</label>
+                            <div class="col-md-9">
+                                <input type="text" name="location_id"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Latitude</label>
-                            <input type="number"
-                                name="location_latitude"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Latitude</label>
+                            <div class="col-md-9">
+                                <input type="number"
+                                    name="location_latitude"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Longitude</label>
-                            <input type="number"
-                                name="location_longitude"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Longitude</label>
+                            <div class="col-md-9">
+                                <input type="number"
+                                    name="location_longitude"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Altitude</label>
-                            <input type="number"
-                                name="location_altitude"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Altitude</label>
+                            <div class="col-md-9">
+                                <input type="number"
+                                    name="location_altitude"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Description</label>
-                            <input type="text"
-                                name="location_description"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Description</label>
+                            <div class="col-md-9">
+                                <input type="text"
+                                    name="location_description"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -436,29 +352,38 @@
             <div class="modal-body">
                 <div class="container">
                     <form>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Sensor
-                                Model Name</label> <input type="text"
-                                name="model_id" class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Sensor
+                                Model Name</label>
+                            <div class="col-md-9">
+                                <input type="text" name="model_id"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Protocol</label>
-                            <input type="text" name="model_protocol"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Protocol</label>
+                            <div class="col-md-9">
+                                <input type="text" name="model_protocol"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Type</label>
-                            <input type="text" name="model_type"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Type</label>
+                            <div class="col-md-9">
+                                <input type="text" name="model_type"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
-                        <div class="row">
-                            <label class="col-md-3 col-md-offset-1">Version</label>
-                            <input type="text" name="model_version"
-                                class="form-inline">
-                            <p></p>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Version</label>
+                            <div class="col-md-9">
+                                <input type="text" name="model_version"
+                                    class="form-control">
+                                <p class="help-block"></p>
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </form>
@@ -602,307 +527,3 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- / .modal -->
-
-
-
-<div class="tab-pane active" id="input">
-    <div class="component">
-        <!-- Text input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="textinput">Text
-                Input</label>
-            <div class="col-md-6">
-                <input id="textinput" name="textinput" type="text"
-                    placeholder="placeholder" class="form-control ">
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Password input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="passwordinput">Password
-                Input</label>
-            <div class="col-md-6">
-                <input id="passwordinput" name="passwordinput"
-                    type="password" placeholder="placeholder"
-                    class="form-control ">
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Search input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="searchinput">Search
-                Input</label>
-            <div class="col-md-6">
-                <input id="searchinput" name="searchinput" type="text"
-                    placeholder="placeholder"
-                    class="search-query form-control">
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Prepended text-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="prependedtext">Prepended
-                Text</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon">prepend</span> <input
-                        id="prependedtext" name="prependedtext"
-                        class="col-md-6 form-control"
-                        placeholder="placeholder" type="text">
-                </div>
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Appended Input-->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="appendedtext">Appended
-                Text</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input id="appendedtext" name="appendedtext"
-                        class="form-control " placeholder="placeholder"
-                        type="text"> <span
-                        class="input-group-addon">append</span>
-                </div>
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Prepended checkbox -->
-        <div class="form-group">
-            <label class="col-md-3 control-label"
-                for="prependedcheckbox">Prepended Checkbox</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-addon"> <input
-                        type="checkbox">
-                    </span> <input id="prependedcheckbox"
-                        name="prependedcheckbox" class="form-control "
-                        type="text" placeholder="placeholder">
-                </div>
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Appended checkbox -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="appendedcheckbox">Appended
-                Checkbox</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input id="appendedcheckbox" name="appendedcheckbox"
-                        class="form-control " type="text"
-                        placeholder="placeholder"> <span
-                        class="input-group-addon"> <input
-                        type="checkbox">
-                    </span>
-                </div>
-                <p class="help-block">help</p>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Button Drop Down -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="buttondropdown">Button
-                Drop Down</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input id="buttondropdown" name="buttondropdown"
-                        class="form-control " placeholder="placeholder"
-                        type="text">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default dropdown-toggle"
-                            data-toggle="dropdown">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a href="#">Option one</a></li>
-                            <li><a href="#">Option two</a></li>
-                            <li><a href="#">Option three</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Textarea -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="textarea">Text
-                Area</label>
-            <div class="col-md-6">
-                <textarea id="textarea" name="textarea"
-                    class="form-control ">default text</textarea>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="tab-pane active" id="radioscheckboxes">
-    <div class="component">
-        <!-- Multiple Radios -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="radios">Multiple
-                Radios</label>
-            <div class="col-lg-6">
-                <div class="radio">
-                    <label for="radios-0"> <input type="radio"
-                        name="radios" id="radios-0" value="Option one"
-                        checked="checked"> Option one
-                    </label>
-                </div>
-                <div class="radio">
-                    <label for="radios-1"> <input type="radio"
-                        name="radios" id="radios-1" value="Option two">
-                        Option two
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Multiple Radios (inline) -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="radios">Inline
-                Radios</label>
-            <div class="col-lg-6">
-                <label class="radio-inline" for="radios-0"> <input
-                    type="radio" name="radios" id="radios-0" value="1"
-                    checked="checked"> 1
-                </label> <label class="radio-inline" for="radios-1"> <input
-                    type="radio" name="radios" id="radios-1" value="2">
-                    2
-                </label> <label class="radio-inline" for="radios-2"> <input
-                    type="radio" name="radios" id="radios-2" value="3">
-                    3
-                </label> <label class="radio-inline" for="radios-3"> <input
-                    type="radio" name="radios" id="radios-3" value="4">
-                    4
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Multiple Checkboxes -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="checkboxes">Multiple
-                Checkboxes</label>
-            <div class="col-lg-6">
-                <div class="checkbox">
-                    <label for="checkboxes-0"> <input
-                        type="checkbox" name="checkboxes"
-                        id="checkboxes-0" value="Option one">
-                        Option one
-                    </label>
-                </div>
-
-                <div class="checkbox">
-                    <label for="checkboxes-1"> <input
-                        type="checkbox" name="checkboxes"
-                        id="checkboxes-1" value="Option two">
-                        Option two
-                    </label>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Multiple Checkboxes (inline) -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="checkboxes">Inline
-                Checkboxes</label>
-            <div class="col-lg-8">
-                <label class="checkbox-inline" for="checkboxes-0">
-                    <input type="checkbox" name="checkboxes"
-                    id="checkboxes-0" value="1"> 1
-                </label> <label class="checkbox-inline" for="checkboxes-1">
-                    <input type="checkbox" name="checkboxes"
-                    id="checkboxes-1" value="2"> 2
-                </label> <label class="checkbox-inline" for="checkboxes-2">
-                    <input type="checkbox" name="checkboxes"
-                    id="checkboxes-2" value="3"> 3
-                </label> <label class="checkbox-inline" for="checkboxes-3">
-                    <input type="checkbox" name="checkboxes"
-                    id="checkboxes-3" value="4"> 4
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="tab-pane" id="select">
-    <div class="component">
-        <!-- Select Basic -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="selectbasic">Select
-                Basic</label>
-            <div class="col-md-6">
-                <select id="selectbasic" name="selectbasic"
-                    class="form-control ">
-                    <option>Option one</option>
-                    <option>Option two</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Select Multiple -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="selectmultiple">Select
-                Multiple</label>
-            <div class="col-md-6">
-                <select id="selectmultiple" name="selectmultiple"
-                    class="form-control " multiple="multiple">
-                    <option>Option one</option>
-                    <option>Option two</option>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="tab-pane" id="buttons">
-    <div class="component">
-        <!-- File Button -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="filebutton">File
-                Button</label>
-            <div class="col-lg-6">
-                <input id="filebutton" name="filebutton" type="file">
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Button -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="singlebutton">Single
-                Button</label>
-            <div class="col-lg-6">
-                <button id="singlebutton" name="singlebutton"
-                    class="btn btn-primary">Button</button>
-            </div>
-        </div>
-    </div>
-    <div class="component">
-        <!-- Button (Double) -->
-        <div class="form-group">
-            <label class="col-md-3 control-label" for="button1id">Double
-                Button</label>
-            <div class="col-lg-6">
-                <button id="button1id" name="button1id"
-                    class="btn btn-success">Good Button</button>
-                <button id="button2id" name="button2id"
-                    class="btn btn-danger">Scary Button</button>
-            </div>
-        </div>
-    </div>
-</div>

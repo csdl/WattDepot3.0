@@ -9,11 +9,13 @@ import java.util.Map;
 
 import org.restlet.data.LocalReference;
 import org.restlet.data.MediaType;
+import org.restlet.data.Status;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
+import org.restlet.security.User;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.Sensor;
@@ -48,6 +50,17 @@ public class AdminServerResource extends WattDepotServerResource {
   @Get()
   public Representation toHtml() {
     System.out.println("GET /wattdepot/{" + groupId + "}/");
+    if (!isInRole(groupId) && !isInRole("admin")) {
+      User user = getClientInfo().getUser();
+      UserInfo info = depot.getUser(user.getIdentifier());
+      UserGroup group = depot.getUsersGroup(info);
+      if (group != null) {
+        redirectPermanent("/wattdepot/" + group.getId() + "/");
+      }
+      else {
+        setStatus(Status.CLIENT_ERROR_FORBIDDEN);
+      }
+    }
     Map<String, Object> dataModel = new HashMap<String, Object>();
     // get some stuff from the database
     List<UserInfo> users = depot.getUsers();

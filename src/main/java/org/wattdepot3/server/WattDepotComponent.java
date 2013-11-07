@@ -7,7 +7,9 @@ import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.security.MemoryRealm;
+import org.restlet.security.Role;
 import org.restlet.security.User;
+import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 
 /**
@@ -41,17 +43,20 @@ public class WattDepotComponent extends Component {
     MemoryRealm realm = new MemoryRealm();
     realm.setName("WattDepot Security");
     getRealms().add(realm);
-    // add the ADMIN user
-    User admin = new User(UserInfo.ADMIN.getId(), UserInfo.ADMIN.getPassword(),
-        UserInfo.ADMIN.getFirstName(), UserInfo.ADMIN.getLastName(), UserInfo.ADMIN.getEmail());
-    realm.getUsers().add(admin);
-    realm.map(admin, app.getRole("ADMIN"));
-    realm.map(admin, app.getRole("User"));
+    for (UserGroup group : app.getDepot().getUserGroups()) {
+      app.getRoles().add(new Role(group.getId()));
+      for (UserInfo info : group.getUsers()) {
+        User user = new User(info.getId(), info.getPassword(), info.getFirstName(),
+            info.getLastName(), info.getEmail());
+        realm.getUsers().add(user);
+        realm.map(user, app.getRole(group.getId()));
+      }
+    }
 
     // Set the realm's default enroler and verifier
     app.getContext().setDefaultEnroler(realm.getEnroler());
     app.getContext().setDefaultVerifier(realm.getVerifier());
-    
+
     // Configure the log service
     getLogService().setLoggerName("WattDepot3.AccessLog");
     getLogService().setLogPropertiesRef("clap://system/org/wattdepot3/server/log.properties");

@@ -145,53 +145,22 @@ function putNewUser() {
 };
 
 function edit_user_dialog(event, id) {
-    var modalElement = $('#editUserModal');
+    var modalElement = $('#addUserModal');
     modalElement.modal({
         backdrop : true,
         keyboard : true,
         show : false
     });
     var user = getKnownUser(id);
-    $("input[name='edit_user_firstname']").val(user['firstName']);
-    $("input[name='edit_user_lastname']").val(user['lastName']);
-    $("input[name='edit_user_email']").val(user['email']);
-    $("input[name='edit_user_id']").val(user['id']);
-    $("input[name='edit_user_password']").val(user['password']);
-    $("input[name='edit_user_admin']").prop('checked', user['admin']);
+    $("input[name='user_firstname']").val(user['firstName']);
+    $("input[name='user_lastname']").val(user['lastName']);
+    $("input[name='user_email']").val(user['email']);
+    $("input[name='user_id']").val(user['id']);
+    $("input[name='user_password']").val(user['password']);
+    $("input[name='user_admin']").prop('checked', user['admin']);
     modalElement.modal('show');
 };
 
-function editUser() {
-    var id = $("input[name='edit_user_id']").val();
-    var first = $("input[name='edit_user_firstname']").val();
-    var last = $("input[name='edit_user_lastname']").val();
-    var pass = $("input[name='edit_user_password']").val();
-    var email = $("input[name='edit_user_email']").val();
-    var admin = $("input[name='edit_user_admin']").is(':checked');
-    var usr = {
-        "id" : id,
-        "firstName" : first,
-        "lastName" : last,
-        "email" : email,
-        "password" : pass,
-        "admin" : "false",
-        "properties" : []
-    };
-    if (admin) {
-        usr['admin'] = "true";
-    }
-    setSelectedTab('users');
-    $.ajax({
-        url : '/wattdepot/admin/user/temp',
-        type : 'PUT',
-        contentType : 'application/json',
-        data : JSON.stringify(usr),
-        success : function() {
-            location.reload();
-        },
-    });
-
-};
 
 function delete_user_dialog(event, id) {
     var modalElement = $('#deleteUserModal');
@@ -273,7 +242,7 @@ function delete_usergroup_dialog(event, id) {
     modalElement.modal('show');
 };
 
-function deleteUseGroup() {
+function deleteUserGroup() {
     var id = $('#del_usergroup_id').html();
     setSelectedTab('users');
     $.ajax({
@@ -309,7 +278,7 @@ function putNewDepository() {
 };
 
 function edit_depository_dialog(event, id) {
-    var modalElement = $('#editDepositoryModal');
+    var modalElement = $('#addDepositoryModal');
     modalElement.modal({
         backdrop : true,
         keyboard : true,
@@ -317,30 +286,9 @@ function edit_depository_dialog(event, id) {
     });
 
     var depo = getKnownDepository(id);
-    $("input[name='edit_depository_name']").val(depo['name']);
-    $("input[name='edit_depository_type']").val(depo['measurementType']);
+    $("input[name='depository_name']").val(depo['name']);
+    $("input[name='depository_type']").val(depo['measurementType']);
     modalElement.modal('show');
-};
-
-function editDepository() {
-    var id = $("input[name='edit_depository_name']").val();
-    var type = $("input[name='edit_depository_type']").val();
-    var owner = getKnownUserGroup(GROUPID);
-    var depo = {
-        "name" : id,
-        "measurementType" : type,
-        "owner" : owner
-    };
-    setSelectedTab('depositories');
-    $.ajax({
-        url : '/wattdepot/' + GROUPID + '/depository/temp',
-        type : 'PUT',
-        contentType : 'application/json',
-        data : JSON.stringify(depo),
-        success : function() {
-            location.reload();
-        },
-    });
 };
 
 function delete_depository_dialog(event, id) {
@@ -375,6 +323,33 @@ function putNewLocation() {
     var longitude = $("input[name='location_longitude']").val();
     var altitude = $("input[name='location_altitude']").val();
     var description = $("input[name='location_description']").val();
+    var owner = getKnownUserGroup(GROUPID);
+    var loc = {
+        "id" : id,
+        "latitude" : latitude,
+        "longitude" : longitude,
+        "altitude" : altitude,
+        "description" : description,
+        "owner" : owner
+    };
+    setSelectedTab('locations');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/location/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(loc),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function putNewInlineLocation() {
+    var id = $("input[name='inline_location_id']").val();
+    var latitude = $("input[name='inline_location_latitude']").val();
+    var longitude = $("input[name='inline_location_longitude']").val();
+    var altitude = $("input[name='inline_location_altitude']").val();
+    var description = $("input[name='inline_location_description']").val();
     var owner = getKnownUserGroup(GROUPID);
     var loc = {
         "id" : id,
@@ -588,6 +563,29 @@ function putNewModel() {
     var protocol = $("input[name='model_protocol']").val();
     var type = $("input[name='model_type']").val();
     var version = $("input[name='model_version']").val();
+    var model = {
+        "id" : id,
+        "protocol" : protocol,
+        "type" : type,
+        "version" : version
+    };
+    setSelectedTab('sensormodels');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensormodel/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(model),
+        success : function() {
+            location.reload();
+        },
+    });
+};
+
+function putNewInlineModel() {
+    var id = $("input[name='inline_model_id']").val();
+    var protocol = $("input[name='inline_model_protocol']").val();
+    var type = $("input[name='inline_model_type']").val();
+    var version = $("input[name='inline_model_version']").val();
     var model = {
         "id" : id,
         "protocol" : protocol,
