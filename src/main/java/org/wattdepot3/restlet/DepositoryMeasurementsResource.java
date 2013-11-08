@@ -18,7 +18,7 @@ import org.wattdepot3.datamodel.Measurement;
 public interface DepositoryMeasurementsResource {
 
   /**
-   * Defines GET /wattdepot/depository/{depository_id}/measurements/ API call.
+   * Defines GET /wattdepot/{group_id}/depository/{depository_id}/measurements/ API call.
    * 
    * @return An ArrayList of the Measurements that have sent measurements to the
    *         depository.

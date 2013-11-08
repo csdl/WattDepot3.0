@@ -27,8 +27,11 @@ public class DepositoriesServerResource extends WattDepotServerResource implemen
   public ArrayList<Depository> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depositories/");
     ArrayList<Depository> ret = new ArrayList<Depository>();
-    depot.getWattDepositories(groupId);
-    ret.add(new Depository("Ilima energy consumption", "energy", UserGroup.ADMIN_GROUP));
+    UserGroup fake = new UserGroup(groupId);
+    for (Depository d : depot.getWattDepositories(groupId)) {
+      d.setOwner(fake);
+      ret.add(d);
+    }
     return ret;
   }
 

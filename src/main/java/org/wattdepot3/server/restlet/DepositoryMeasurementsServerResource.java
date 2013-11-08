@@ -5,14 +5,12 @@ package org.wattdepot3.server.restlet;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.restlet.resource.ResourceException;
-import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.Sensor;
-import org.wattdepot3.datamodel.SensorModel;
-import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 
 /**
@@ -50,23 +48,22 @@ public class DepositoryMeasurementsServerResource extends WattDepotServerResourc
    */
   @Override
   public ArrayList<Measurement> retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId + "}/measurements/?sensor={"
-        + sensorId + "}&start={" + start + "}&end={" + end + "}");
+    System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId
+        + "}/measurements/?sensor={" + sensorId + "}&start={" + start + "}&end={" + end + "}");
     ArrayList<Measurement> ret = new ArrayList<Measurement>();
-    if (sensorId != null && start != null && end != null) {
-      // have start and end so build the list of measurements.
-      Sensor s = new Sensor(sensorId, "http://foo.com", new Location("ilima-3", new Double(
-          21.294642), new Double(-157.812727), new Double(40),
-          "Hale Aloha Ilima residence hall 7th floor", UserGroup.ADMIN_GROUP), new SensorModel(
-          "sm1", "Hammer", "hammer", "1.0", UserGroup.ADMIN_GROUP), UserGroup.ADMIN_GROUP);
-
-      Timestamp now = new Timestamp(new Date().getTime());
-      ret.add(new Measurement(s, now, new Double(102.3), "energy"));
-      return ret;
-
+    try {
+      Depository depository = depot.getWattDeposiory(depositoryId, groupId);
+      Sensor sensor = depot.getSensor(sensorId, groupId);
+      for (Measurement meas : depository.getMeasurements(sensor,
+          new Timestamp(Long.parseLong(start)), new Timestamp(Long.parseLong(end)))) {
+        ret.add(meas);
+      }
     }
-    // can't get measurements for bad url. TODO: set error code on response.
-    return null;
+    catch (MissMatchedOwnerException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return ret;
   }
 
 }

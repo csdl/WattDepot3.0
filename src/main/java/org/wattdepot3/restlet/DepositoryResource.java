@@ -16,7 +16,7 @@ import org.wattdepot3.datamodel.Depository;
  */
 public interface DepositoryResource {
   /**
-   * Defines GET /wattdepot/depository/{depository_id} API call.
+   * Defines GET /wattdepot/{group_id}/depository/{depository_id} API call.
    * 
    * @return The Depository with the given id.
    */
@@ -25,7 +25,7 @@ public interface DepositoryResource {
   public Depository retrieve();
 
   /**
-   * Defines the PUT /wattdepot/depository/ API call.
+   * Defines the PUT /wattdepot/{group_id}/depository/ API call.
    * 
    * @param depository
    *          The Depository to store.
@@ -34,7 +34,7 @@ public interface DepositoryResource {
   public void store(Depository depository);
 
   /**
-   * Defined the DEL /wattdepot/depository/{depository_id} API call.
+   * Defined the DEL /wattdepot/{group_id}/depository/{depository_id} API call.
    */
   @Delete
   public void remove();

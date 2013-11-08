@@ -301,6 +301,13 @@ public abstract class WattDepot {
 
   /**
    * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined Location Ids.
+   */
+  public abstract List<String> getLocationIds(String groupId);
+
+  /**
+   * @param groupId
    *          the group id of the user making the request.
    * @return The known/defined Locations owned by the given group id.
    */
@@ -331,10 +338,24 @@ public abstract class WattDepot {
 
   /**
    * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorGroup Ids.
+   */
+  public abstract List<String> getSensorGroupIds(String groupId);
+
+  /**
+   * @param groupId
    *          the group id of the user making the request.
    * @return The known/defined SensorGroups owned by the given group id.
    */
   public abstract List<SensorGroup> getSensorGroups(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined Sensor Ids.
+   */
+  public abstract List<String> getSensorIds(String groupId);
 
   /**
    * @param id
@@ -347,6 +368,13 @@ public abstract class WattDepot {
    */
   public abstract SensorModel getSensorModel(String id, String groupId)
       throws MissMatchedOwnerException;
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorModel Ids.
+   */
+  public abstract List<String> getSensorModelIds(String groupId);
 
   /**
    * @param groupId
@@ -376,6 +404,13 @@ public abstract class WattDepot {
 
   /**
    * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined SensorProcess Ids.
+   */
+  public abstract List<String> getSensorProcessIds(String groupId);
+
+  /**
+   * @param groupId
    *          the group id of the user making the request.
    * @return The known/defined Sensors owned by the given group id.
    */
@@ -389,58 +424,6 @@ public abstract class WattDepot {
   public abstract UserInfo getUser(String id);
 
   /**
-   * @return A list of the defined user Ids.
-   */
-  public abstract List<String> getUserIds();
-
-  /**
-   * @return A list of the defined user group Ids.
-   */
-  public abstract List<String> getUserGroupIds();
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined Location Ids.
-   */
-  public abstract List<String> getLocationIds(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined Sensor Ids.
-   */
-  public abstract List<String> getSensorIds(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined SensorGroup Ids.
-   */
-  public abstract List<String> getSensorGroupIds(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined SensorModel Ids.
-   */
-  public abstract List<String> getSensorModelIds(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined SensorProcess Ids.
-   */
-  public abstract List<String> getSensorProcessIds(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined WattDepository Ids.
-   */
-  public abstract List<String> getWattDepositoryIds(String groupId);
-
-  /**
    * @param id
    *          the unique id for the UserGroup.
    * @return The UserGroup with the given id.
@@ -448,11 +431,9 @@ public abstract class WattDepot {
   public abstract UserGroup getUserGroup(String id);
 
   /**
-   * @param user
-   *          The user.
-   * @return The UserGroup that the user is in.
+   * @return A list of the defined user group Ids.
    */
-  public abstract UserGroup getUsersGroup(UserInfo user);
+  public abstract List<String> getUserGroupIds();
 
   /**
    * @return The known/defined UserGroups.
@@ -460,9 +441,21 @@ public abstract class WattDepot {
   public abstract List<UserGroup> getUserGroups();
 
   /**
+   * @return A list of the defined user Ids.
+   */
+  public abstract List<String> getUserIds();
+
+  /**
    * @return The known/defined UserInfos.
    */
   public abstract List<UserInfo> getUsers();
+
+  /**
+   * @param user
+   *          The user.
+   * @return The UserGroup that the user is in.
+   */
+  public abstract UserGroup getUsersGroup(UserInfo user);
 
   /**
    * @param id
@@ -482,6 +475,13 @@ public abstract class WattDepot {
    * @return The known/defined WattDepositories owned by the given group id.
    */
   public abstract List<Depository> getWattDepositories(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined WattDepository Ids.
+   */
+  public abstract List<String> getWattDepositoryIds(String groupId);
 
   /**
    * Updates the given location in the persistent store.

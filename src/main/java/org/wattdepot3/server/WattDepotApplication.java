@@ -3,15 +3,22 @@
  */
 package org.wattdepot3.server;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import org.restlet.security.ChallengeAuthenticator;
+import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
 import org.wattdepot3.server.restlet.AdminServerResource;
 import org.wattdepot3.server.restlet.DepositoriesServerResource;
+import org.wattdepot3.server.restlet.DepositoryMeasurementServerResource;
 import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
 import org.wattdepot3.server.restlet.DepositoryServerResource;
 import org.wattdepot3.server.restlet.DepositoryValueServerResource;
@@ -39,6 +46,7 @@ public class WattDepotApplication extends Application {
 
   private WattDepot depot;
   private WattDepotComponent component;
+  private Map<String, WebSession> sessions;
 
   /**
    * Default constructor.
@@ -49,6 +57,54 @@ public class WattDepotApplication extends Application {
     setAuthor("Cam Moore");
     // Use settings to instantiate the right WattDepot instance.
     depot = new WattDepotImpl();
+    sessions = new HashMap<String, WebSession>();
+  }
+
+  /**
+   * @param id
+   *          The WebSession id.
+   * @return The WebSession with the given id or null.
+   */
+  public WebSession getWebSession(String id) {
+    return sessions.get(id);
+  }
+
+  /**
+   * Creates a new WebSession for the given user with their password. If their
+   * password doesn't match returns null.
+   * 
+   * @param username
+   *          The unique id for the user.
+   * @param password
+   *          Their password.
+   * @return A new WebSession or null if the password doesn't match the password
+   *         in the persistent store.
+   */
+  public WebSession createWebSession(String username, String password) {
+    WebSession ret = null;
+    UserInfo info = depot.getUser(username);
+    if (info != null) {
+      UserGroup group = depot.getUsersGroup(info);
+      if (group != null) {
+        if (password.equals(info.getPassword())) {
+          String id = "" + info.hashCode() + group.hashCode() + new Date().getTime();
+          ret = new WebSession(id, info.getId(), group.getId());
+          sessions.put(id, ret);
+        }
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Removes the WebSession from the application.
+   * 
+   * @param id
+   *          The id of the session.
+   * @return The old WebSession if it existed or null.
+   */
+  public WebSession removeWebSession(String id) {
+    return sessions.remove(id);
   }
 
   /**
@@ -93,10 +149,14 @@ public class WattDepotApplication extends Application {
     Directory directory = new Directory(getContext(), webRoot);
     directory.setListingAllowed(true);
     router.attach("/webroot/", directory);
+    // router.attach("/wattdepot/", LoginPageServerResource.class);
+    // router.attach("/wattdepot/login/", LoginServerResource.class);
     router.attach("/wattdepot/{group_id}/", AdminServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/", DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}",
         DepositoryServerResource.class);
+    router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurement/",
+        DepositoryMeasurementServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurements/",
         DepositoryMeasurementsServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/value/",

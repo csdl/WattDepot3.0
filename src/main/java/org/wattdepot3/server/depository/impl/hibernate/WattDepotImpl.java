@@ -35,6 +35,15 @@ public class WattDepotImpl extends WattDepot {
    * Default constructor.
    */
   public WattDepotImpl() {
+    UserGroup admin = getUserGroup(UserGroup.ADMIN_GROUP.getId());
+    if (admin == null) {
+      try {
+        defineUserGroup(UserGroup.ADMIN_GROUP.getId(), UserGroup.ADMIN_GROUP.getUsers());
+      }
+      catch (UniqueIdException e) {
+        // what do we do here?
+      }
+    }
     UserInfo adminUser = getUser(UserInfo.ADMIN.getId());
     if (adminUser == null) {
       try {
@@ -48,15 +57,6 @@ public class WattDepotImpl extends WattDepot {
     }
     else {
       updateUserInfo(UserInfo.ADMIN);
-    }
-    UserGroup admin = getUserGroup(UserGroup.ADMIN_GROUP.getId());
-    if (admin == null) {
-      try {
-        defineUserGroup(UserGroup.ADMIN_GROUP.getId(), UserGroup.ADMIN_GROUP.getUsers());
-      }
-      catch (UniqueIdException e) {
-        // what do we do here?
-      }
     }
   }
 
@@ -218,8 +218,11 @@ public class WattDepotImpl extends WattDepot {
     }
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
+    for (UserInfo u : users) {
+      session.saveOrUpdate(u);
+    }
     g = new UserGroup(id, users);
-    session.save(g);
+    session.saveOrUpdate(g);
     session.getTransaction().commit();
     session.close();
     return g;
@@ -242,7 +245,7 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     u = new UserInfo(id, firstName, lastName, email, password, admin, properties);
-    session.save(u);
+    session.saveOrUpdate(u);
     session.getTransaction().commit();
     session.close();
     return u;
@@ -853,6 +856,19 @@ public class WattDepotImpl extends WattDepot {
     return (List<UserInfo>) result;
   }
 
+  /* (non-Javadoc)
+   * @see org.wattdepot3.server.WattDepot#getUsersGroup(org.wattdepot3.datamodel.UserInfo)
+   */
+  @Override
+  public UserGroup getUsersGroup(UserInfo user) {
+    for (UserGroup group : getUserGroups()) {
+      if (group.getUsers().contains(user)) {
+        return group;
+      }
+    }
+    return null;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -865,7 +881,7 @@ public class WattDepotImpl extends WattDepot {
     Depository ret = null;
     for (Depository d : all) {
       if (d.getName().equals(id)) {
-        ret = d;
+        ret = new DepositoryImpl(d);
       }
     }
     return ret;
@@ -888,7 +904,7 @@ public class WattDepotImpl extends WattDepot {
     ArrayList<Depository> ret = new ArrayList<Depository>();
     for (Depository d : (List<Depository>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
-        ret.add(d);
+        ret.add(new DepositoryImpl(d));
       }
     }
     return ret;
@@ -1031,19 +1047,6 @@ public class WattDepotImpl extends WattDepot {
     session.getTransaction().commit();
     session.close();
     return user;
-  }
-
-  /* (non-Javadoc)
-   * @see org.wattdepot3.server.WattDepot#getUsersGroup(org.wattdepot3.datamodel.UserInfo)
-   */
-  @Override
-  public UserGroup getUsersGroup(UserInfo user) {
-    for (UserGroup group : getUserGroups()) {
-      if (group.getUsers().contains(user)) {
-        return group;
-      }
-    }
-    return null;
   }
 
 }
