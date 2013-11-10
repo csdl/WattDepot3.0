@@ -25,6 +25,10 @@ public class SensorsServerResource extends WattDepotServerResource implements Se
   @Override
   public ArrayList<Sensor> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/sensormodels/");
-    return null;
+    ArrayList<Sensor> ret = new ArrayList<Sensor>();
+    for (Sensor s : depot.getSensors(groupId)) {
+      ret.add(s);
+    }
+    return ret;
   }
 }

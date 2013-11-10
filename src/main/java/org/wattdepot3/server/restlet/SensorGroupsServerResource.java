@@ -26,7 +26,11 @@ public class SensorGroupsServerResource extends WattDepotServerResource implemen
   @Override
   public ArrayList<SensorGroup> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/sensorgroups/");
-    return null;
+    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
+    for (SensorGroup sg : depot.getSensorGroups(groupId)) {
+      ret.add(sg);
+    }
+    return ret;
   }
 
 }

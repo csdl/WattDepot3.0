@@ -120,12 +120,15 @@ function putNewUser() {
     var pass = $("input[name='user_password']").val();
     var email = $("input[name='user_email']").val();
     var admin = $("input[name='user_admin']").is(':checked');
+    var usrPass = {
+      "id" : id,
+      "plainText" : pass
+    };
     var usr = {
         "id" : id,
         "firstName" : first,
         "lastName" : last,
         "email" : email,
-        "password" : pass,
         "admin" : "false",
         "properties" : []
     };
@@ -134,13 +137,21 @@ function putNewUser() {
     }
     setSelectedTab('users');
     $.ajax({
-        url : '/wattdepot/admin/user/temp',
-        type : 'PUT',
-        contentType : 'application/json',
-        data : JSON.stringify(usr),
-        success : function() {
-            location.reload();
-        },
+       url : '/wattdepot/admin/userpassword/temp',
+       type : 'PUT',
+       contentType : 'application/json',
+       data : JSON.stringify(usrPass),
+       success : function() {
+           $.ajax({
+               url : '/wattdepot/admin/user/temp',
+               type : 'PUT',
+               contentType : 'application/json',
+               data : JSON.stringify(usr),
+               success : function() {
+                   location.reload();
+               },
+           });           
+       },
     });
 };
 

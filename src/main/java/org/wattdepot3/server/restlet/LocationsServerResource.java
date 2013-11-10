@@ -25,7 +25,11 @@ public class LocationsServerResource extends WattDepotServerResource implements 
   @Override
   public ArrayList<Location> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/locations/");
-    return null;
+    ArrayList<Location> ret = new ArrayList<Location>();
+    for (Location l : depot.getLocations(groupId)) {
+      ret.add(l);
+    }
+    return ret;
   }
 
 }

@@ -13,7 +13,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
  */
 public class UserPassword {
   /** The password for the admin user. */
-  public static final UserPassword ADMIN = new UserPassword("admin", "admin");
+  public static final UserPassword ADMIN = new UserPassword(UserInfo.ADMIN.getId(), "admin");
   private String id;
   private String encryptedPassword;
   private String plainText;

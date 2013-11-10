@@ -284,6 +284,14 @@ public abstract class WattDepot {
   public abstract void deleteUserGroup(String id) throws IdNotFoundException;
 
   /**
+   * @param userId
+   *          The id of the UserPassword to delete.
+   * @throws IdNotFoundException
+   *           If the id is not known or defined.
+   */
+  public abstract void deleteUserPassword(String userId) throws IdNotFoundException;
+
+  /**
    * Deletes the given WattDepository.
    * 
    * @param id
@@ -456,6 +464,13 @@ public abstract class WattDepot {
   public abstract List<String> getUserIds();
 
   /**
+   * @param id
+   *          The user's id.
+   * @return the UserPassword instance associated with the user.
+   */
+  public abstract UserPassword getUserPassword(String id);
+
+  /**
    * @return The known/defined UserInfos.
    */
   public abstract List<UserInfo> getUsers();
@@ -553,10 +568,10 @@ public abstract class WattDepot {
   public abstract UserInfo updateUserInfo(UserInfo user);
 
   /**
-   * @param id
-   *          The user's id.
-   * @return the UserPassword instance associated with the user.
+   * @param password
+   *          The UserPassword to update.
+   * @return The updated password from persistence.
    */
-  public abstract UserPassword getUserPassword(String id);
+  public abstract UserPassword updateUserPassword(UserPassword password);
 
 }

@@ -44,12 +44,8 @@ public class LocationServerResource extends WattDepotServerResource implements L
   public Location retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
     Location loc = null;
-    UserGroup fake = new UserGroup(groupId);
     try {
       loc = depot.getLocation(locationId, groupId);
-      if (loc != null) {
-//        loc.setOwner(fake);
-      }
     }
     catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FORBIDDEN, e.getMessage());

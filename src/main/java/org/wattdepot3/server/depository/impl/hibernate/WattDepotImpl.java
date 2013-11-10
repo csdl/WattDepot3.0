@@ -36,6 +36,19 @@ public class WattDepotImpl extends WattDepot {
    * Default constructor.
    */
   public WattDepotImpl() {
+    UserPassword adminPassword = getUserPassword(UserInfo.ADMIN.getId());
+    if (adminPassword == null) {
+      try {
+        defineUserPassword(UserPassword.ADMIN.getId(), UserPassword.ADMIN.getPlainText());
+      }
+      catch (UniqueIdException e1) {
+        // what do we do here?
+        e1.printStackTrace();
+      }      
+    }
+    else {
+      updateUserPassword(adminPassword);
+    }
     UserGroup admin = getUserGroup(UserGroup.ADMIN_GROUP.getId());
     if (admin == null) {
       try {
@@ -45,12 +58,8 @@ public class WattDepotImpl extends WattDepot {
         // what do we do here?
       }
     }
-    try {
-      defineUserPassword(UserPassword.ADMIN.getId(), UserPassword.ADMIN.getPlainText());
-    }
-    catch (UniqueIdException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+    else {
+      updateUserGroup(admin);
     }
     UserInfo adminUser = getUser(UserInfo.ADMIN.getId());
     if (adminUser == null) {
@@ -446,6 +455,22 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     session.delete(g);
+    session.getTransaction().commit();
+    session.close();
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.server.WattDepot#deleteUserPassword(java.lang.String)
+   */
+  @Override
+  public void deleteUserPassword(String userId) throws IdNotFoundException {
+    UserPassword up = getUserPassword(userId);
+    if (up == null) {
+      throw new IdNotFoundException(userId + " is not a defined user password id.");
+    }
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    session.delete(up);
     session.getTransaction().commit();
     session.close();
   }
@@ -1097,6 +1122,19 @@ public class WattDepotImpl extends WattDepot {
     session.getTransaction().commit();
     session.close();
     return user;
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.server.WattDepot#updateUserPassword(org.wattdepot3.datamodel.UserPassword)
+   */
+  @Override
+  public UserPassword updateUserPassword(UserPassword password) {
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    session.saveOrUpdate(password);
+    session.getTransaction().commit();
+    session.close();
+    return password;
   }
 
 }

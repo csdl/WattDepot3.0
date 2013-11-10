@@ -20,11 +20,11 @@ import org.wattdepot3.exception.NoMeasurementException;
  */
 public class Depository {
   /** Name of the Depository. */
-  private String name;
+  protected String name;
   /** Measurement type stored in the Depository. */
-  private String measurementType;
+  protected String measurementType;
   /** The owner of this depository. */
-  private UserGroup owner;
+  protected UserGroup owner;
 
   /**
    * The default constructor.

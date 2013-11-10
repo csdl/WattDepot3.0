@@ -63,17 +63,22 @@ public class UserInfoServerResource extends WattDepotServerResource implements U
     if (!depot.getUsers().contains(user)) {
       try {
         UserInfo defined = depot.defineUserInfo(user.getId(), user.getFirstName(),
-            user.getLastName(), user.getEmail(), user.getAdmin(),
-            user.getProperties());
+            user.getLastName(), user.getEmail(), user.getAdmin(), user.getProperties());
         WattDepotApplication app = (WattDepotApplication) getApplication();
-        MemoryRealm realm = (MemoryRealm) app.getComponent().getRealm("WattDepot Security");
-        User newUser = new User(user.getId(), up.getPlainText(), user.getFirstName(),
-            user.getLastName(), user.getEmail());
-        realm.getUsers().add(newUser);
-        realm.map(newUser, app.getRole("User"));
-        if (user.getAdmin()) {
-          UserGroup.ADMIN_GROUP.add(defined);
-          depot.updateUserGroup(UserGroup.ADMIN_GROUP);
+        UserPassword up = app.getDepot().getUserPassword(user.getId());
+        if (up != null) {
+          MemoryRealm realm = (MemoryRealm) app.getComponent().getRealm("WattDepot Security");
+          User newUser = new User(user.getId(), up.getPlainText(), user.getFirstName(),
+              user.getLastName(), user.getEmail());
+          realm.getUsers().add(newUser);
+          realm.map(newUser, app.getRole("User"));
+          if (user.getAdmin()) {
+            UserGroup.ADMIN_GROUP.add(defined);
+            depot.updateUserGroup(UserGroup.ADMIN_GROUP);
+          }
+        }
+        else {
+          setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "No password information for " + user.getId());
         }
       }
       catch (UniqueIdException e) {

@@ -658,14 +658,14 @@ $(document).ready(function () {
 var GROUPID = "${groupId}";
 var USERS = {};
 <#list users as u>
-USERS["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]};
+USERS["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]};
 </#list>
 var USERGROUPS = {};
 <#list groups as g>
 USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 <#assign j = g.users?size>
 <#list g.users as u>
-{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "password" : "${u.password!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
+{"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
 </#list>
 ]};
 </#list>

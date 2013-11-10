@@ -26,6 +26,10 @@ public class SensorProcessesServerResource extends WattDepotServerResource imple
   @Override
   public ArrayList<SensorProcess> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/sensorprocesses/");
-    return null;
+    ArrayList<SensorProcess> ret = new ArrayList<SensorProcess>();
+    for (SensorProcess sp : depot.getSensorProcesses(groupId)) {
+      ret.add(sp);
+    }
+    return ret;
   }
 }
