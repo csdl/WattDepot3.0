@@ -17,9 +17,6 @@
         <property name="email" type="java.lang.String">
             <column name="EMAIL" />
         </property>
-        <property name="password" type="java.lang.String">
-            <column name="PASSWORD" />
-        </property>
         <property name="admin" type="java.lang.Boolean">
             <column name="ADMIN" />
         </property>

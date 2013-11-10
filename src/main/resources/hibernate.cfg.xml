@@ -30,14 +30,15 @@
         <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
 
         <!-- Echo all executed SQL to stdout -->
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
 
         <mapping resource="org/wattdepot3/datamodel/Depository.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/Location.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/Measurement.hbm.xml" />
+        <mapping resource="org/wattdepot3/server/depository/impl/hibernate/MeasurementImpl.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/Property.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/Sensor.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/SensorGroup.hbm.xml" />
@@ -45,6 +46,7 @@
         <mapping resource="org/wattdepot3/datamodel/SensorProcess.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/UserGroup.hbm.xml" />
         <mapping resource="org/wattdepot3/datamodel/UserInfo.hbm.xml" />
+        <mapping resource="org/wattdepot3/datamodel/UserPassword.hbm.xml" />
 
     </session-factory>
 

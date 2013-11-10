@@ -18,6 +18,7 @@ import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorProcess;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
@@ -44,12 +45,19 @@ public class WattDepotImpl extends WattDepot {
         // what do we do here?
       }
     }
+    try {
+      defineUserPassword(UserPassword.ADMIN.getId(), UserPassword.ADMIN.getPlainText());
+    }
+    catch (UniqueIdException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
     UserInfo adminUser = getUser(UserInfo.ADMIN.getId());
     if (adminUser == null) {
       try {
         defineUserInfo(UserInfo.ADMIN.getId(), UserInfo.ADMIN.getFirstName(),
-            UserInfo.ADMIN.getLastName(), UserInfo.ADMIN.getEmail(), UserInfo.ADMIN.getPassword(),
-            UserInfo.ADMIN.getAdmin(), UserInfo.ADMIN.getProperties());
+            UserInfo.ADMIN.getLastName(), UserInfo.ADMIN.getEmail(), UserInfo.ADMIN.getAdmin(),
+            UserInfo.ADMIN.getProperties());
       }
       catch (UniqueIdException e) {
         // what do we do here?
@@ -237,18 +245,35 @@ public class WattDepotImpl extends WattDepot {
    */
   @Override
   public UserInfo defineUserInfo(String id, String firstName, String lastName, String email,
-      String password, Boolean admin, Set<Property> properties) throws UniqueIdException {
+      Boolean admin, Set<Property> properties) throws UniqueIdException {
     UserInfo u = getUser(id);
     if (u != null) {
       throw new UniqueIdException(id + " is already a UserInfo id.");
     }
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
-    u = new UserInfo(id, firstName, lastName, email, password, admin, properties);
+    u = new UserInfo(id, firstName, lastName, email, admin, properties);
     session.saveOrUpdate(u);
     session.getTransaction().commit();
     session.close();
     return u;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#defineUserPassword(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public UserPassword defineUserPassword(String id, String password) throws UniqueIdException {
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    UserPassword up = new UserPassword(id, password);
+    session.saveOrUpdate(up);
+    session.getTransaction().commit();
+    session.close();
+    return up;
   }
 
   /*
@@ -842,6 +867,27 @@ public class WattDepotImpl extends WattDepot {
   /*
    * (non-Javadoc)
    * 
+   * @see org.wattdepot3.server.WattDepot#getUserPassword(java.lang.String)
+   */
+  @Override
+  public UserPassword getUserPassword(String id) {
+    UserPassword ret = null;
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    @SuppressWarnings("unchecked")
+    List<UserPassword> result = (List<UserPassword>) session.createQuery("from UserPassword")
+        .list();
+    for (UserPassword up : result) {
+      if (up.getId().equals(id)) {
+        ret = up;
+      }
+    }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.server.WattDepot#getUsers()
    */
   @SuppressWarnings("unchecked")
@@ -856,8 +902,12 @@ public class WattDepotImpl extends WattDepot {
     return (List<UserInfo>) result;
   }
 
-  /* (non-Javadoc)
-   * @see org.wattdepot3.server.WattDepot#getUsersGroup(org.wattdepot3.datamodel.UserInfo)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#getUsersGroup(org.wattdepot3.datamodel.
+   * UserInfo)
    */
   @Override
   public UserGroup getUsersGroup(UserInfo user) {

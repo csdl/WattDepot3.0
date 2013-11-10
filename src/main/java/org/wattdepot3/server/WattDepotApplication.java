@@ -3,7 +3,6 @@
  */
 package org.wattdepot3.server;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,11 +85,11 @@ public class WattDepotApplication extends Application {
     if (info != null) {
       UserGroup group = depot.getUsersGroup(info);
       if (group != null) {
-        if (password.equals(info.getPassword())) {
-          String id = "" + info.hashCode() + group.hashCode() + new Date().getTime();
-          ret = new WebSession(id, info.getId(), group.getId());
-          sessions.put(id, ret);
-        }
+//        if (password.equals(info.getPassword())) {
+//          String id = "" + info.hashCode() + group.hashCode() + new Date().getTime();
+//          ret = new WebSession(id, info.getId(), group.getId());
+//          sessions.put(id, ret);
+//        }
       }
     }
     return ret;

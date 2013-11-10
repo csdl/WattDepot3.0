@@ -30,7 +30,8 @@ public class UserGroupsServerResource extends WattDepotServerResource implements
     System.out.println("GET /wattdepot/{" + groupId + "}/usergroups/");
     ArrayList<UserGroup> ret = new ArrayList<UserGroup>();
     UserGroup g1 = new UserGroup("UH");
-    UserInfo i1 = new UserInfo("cmoore", "Cam", "Moore", "cmoore@hawaii.edu", "password", false, new HashSet<Property>());
+    UserInfo i1 = new UserInfo("cmoore", "Cam", "Moore", "cmoore@hawaii.edu", false,
+        new HashSet<Property>());
     g1.add(i1);
     ret.add(g1);
     return ret;

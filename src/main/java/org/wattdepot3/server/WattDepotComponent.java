@@ -11,6 +11,7 @@ import org.restlet.security.Role;
 import org.restlet.security.User;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.datamodel.UserPassword;
 
 /**
  * WattDepotComponent - Main class to start the WattDepot3 Server.
@@ -46,7 +47,8 @@ public class WattDepotComponent extends Component {
     for (UserGroup group : app.getDepot().getUserGroups()) {
       app.getRoles().add(new Role(group.getId()));
       for (UserInfo info : group.getUsers()) {
-        User user = new User(info.getId(), info.getPassword(), info.getFirstName(),
+        UserPassword up = app.getDepot().getUserPassword(info.getId());
+        User user = new User(info.getId(), up.getPlainText(), info.getFirstName(),
             info.getLastName(), info.getEmail());
         realm.getUsers().add(user);
         realm.map(user, app.getRole(group.getId()));

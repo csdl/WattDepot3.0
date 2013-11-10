@@ -27,7 +27,7 @@ public class Depository {
   private UserGroup owner;
 
   /**
-   * Hide the default constructor.
+   * The default constructor.
    */
   public Depository() {
 

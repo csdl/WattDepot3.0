@@ -9,6 +9,7 @@ import org.restlet.security.MemoryRealm;
 import org.restlet.security.User;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.UserInfoResource;
@@ -62,11 +63,11 @@ public class UserInfoServerResource extends WattDepotServerResource implements U
     if (!depot.getUsers().contains(user)) {
       try {
         UserInfo defined = depot.defineUserInfo(user.getId(), user.getFirstName(),
-            user.getLastName(), user.getEmail(), user.getPassword(), user.getAdmin(),
+            user.getLastName(), user.getEmail(), user.getAdmin(),
             user.getProperties());
         WattDepotApplication app = (WattDepotApplication) getApplication();
         MemoryRealm realm = (MemoryRealm) app.getComponent().getRealm("WattDepot Security");
-        User newUser = new User(user.getId(), user.getPassword(), user.getFirstName(),
+        User newUser = new User(user.getId(), up.getPlainText(), user.getFirstName(),
             user.getLastName(), user.getEmail());
         realm.getUsers().add(newUser);
         realm.map(newUser, app.getRole("User"));

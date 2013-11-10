@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class UserInfo {
   /** The admin user. */
-  public static final UserInfo ADMIN = new UserInfo("admin", "admin", null, null, "admin", true,
+  public static final UserInfo ADMIN = new UserInfo("admin", "admin", null, null, true,
       new HashSet<Property>());
 
   /** A unique id for the User. */
@@ -25,8 +25,6 @@ public class UserInfo {
   private String lastName;
   /** The User's email address. */
   private String email;
-  /** The User's password. */
-  private String password;
   /** True if the user is an admin. */
   private Boolean admin;
   /** Additional properties of the user. */
@@ -36,10 +34,6 @@ public class UserInfo {
     String adminName = System.getenv("wattdepot-server.admin.name");
     if (adminName != null) {
       ADMIN.setId(adminName);
-    }
-    String password = System.getenv("wattdepot-server.admin.password");
-    if (password != null) {
-      ADMIN.setPassword(password);
     }
   }
 
@@ -61,20 +55,17 @@ public class UserInfo {
    *          The user's last name.
    * @param email
    *          The user's email address.
-   * @param password
-   *          The user's password.
    * @param admin
    *          True if they are an admin.
    * @param properties
    *          The additional properties for the user.
    */
-  public UserInfo(String id, String firstName, String lastName, String email, String password,
+  public UserInfo(String id, String firstName, String lastName, String email, 
       Boolean admin, Set<Property> properties) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.password = password;
     this.admin = admin;
     this.properties = properties;
   }
@@ -130,14 +121,6 @@ public class UserInfo {
     else if (!firstName.equals(other.firstName)) {
       return false;
     }
-    if (password == null) {
-      if (other.password != null) {
-        return false;
-      }
-    }
-    else if (!password.equals(other.password)) {
-      return false;
-    }
     if (properties == null) {
       if (other.properties != null) {
         return false;
@@ -185,13 +168,6 @@ public class UserInfo {
   }
 
   /**
-   * @return the password
-   */
-  public String getPassword() {
-    return password;
-  }
-
-  /**
    * @return the properties
    */
   public Set<Property> getProperties() {
@@ -224,7 +200,6 @@ public class UserInfo {
     result = prime * result + ((admin == null) ? 0 : admin.hashCode());
     result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-    result = prime * result + ((password == null) ? 0 : password.hashCode());
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
     return result;
   }
@@ -280,14 +255,6 @@ public class UserInfo {
   }
 
   /**
-   * @param password
-   *          the password to set
-   */
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  /**
    * @param properties
    *          the properties to set
    */
@@ -303,7 +270,7 @@ public class UserInfo {
   @Override
   public String toString() {
     return "User {\"id\"=\"" + id + "\", \"firstname\"=\"" + firstName + "\", \"lastname\"=\"" + lastName
-        + "\", \"email\"=\"" + email + "\", \"password\"=\"" + password + "\", \"admin\"=" + admin
+        + "\", \"email\"=\"" + email + "\", \"admin\"=" + admin
         + ", \"properties\"=" + properties + "}";
   }
 

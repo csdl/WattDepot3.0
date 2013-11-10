@@ -15,6 +15,7 @@ import org.wattdepot3.datamodel.SensorProcess;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
@@ -152,8 +153,6 @@ public abstract class WattDepot {
    *          The user's last name.
    * @param email
    *          The user's email address.
-   * @param password
-   *          The user's password.
    * @param admin
    *          True if they are an admin.
    * @param properties
@@ -163,7 +162,18 @@ public abstract class WattDepot {
    *           if the id is already used for another UserInfo.
    */
   public abstract UserInfo defineUserInfo(String id, String firstName, String lastName,
-      String email, String password, Boolean admin, Set<Property> properties)
+      String email, Boolean admin, Set<Property> properties) throws UniqueIdException;
+
+  /**
+   * @param id
+   *          The unique id.
+   * @param password
+   *          The user's password.
+   * @return The defined UserPassword.
+   * @throws UniqueIdException
+   *           if the id is already used for another UserInfo.
+   */
+  public abstract UserPassword defineUserPassword(String id, String password)
       throws UniqueIdException;
 
   /**
@@ -541,5 +551,12 @@ public abstract class WattDepot {
    * @return The updated user from persistence.
    */
   public abstract UserInfo updateUserInfo(UserInfo user);
+
+  /**
+   * @param id
+   *          The user's id.
+   * @return the UserPassword instance associated with the user.
+   */
+  public abstract UserPassword getUserPassword(String id);
 
 }
