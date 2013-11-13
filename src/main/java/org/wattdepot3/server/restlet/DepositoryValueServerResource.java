@@ -68,9 +68,12 @@ public class DepositoryValueServerResource extends WattDepotServerResource imple
         Sensor sensor = depot.getSensor(sensorId, groupId);
         if (sensor != null) {
           Double value = null;
+          Date startDate = null;
+          Date endDate = null;
+          Date time = null;
           if (start != null && end != null) {
-            Date startDate = DateConvert.parseCalStringToDate(start);
-            Date endDate = DateConvert.parseCalStringToDate(end);
+            startDate = DateConvert.parseCalStringToDate(start);
+            endDate = DateConvert.parseCalStringToDate(end);
             if (gapSeconds != null) {
               value = deposit.getValue(sensor, startDate, endDate, Long.parseLong(gapSeconds));
             }
@@ -79,7 +82,7 @@ public class DepositoryValueServerResource extends WattDepotServerResource imple
             }
           }
           else if (timestamp != null) {
-            Date time = DateConvert.parseCalStringToDate(timestamp);
+            time = DateConvert.parseCalStringToDate(timestamp);
             if (gapSeconds != null) {
               value = deposit.getValue(sensor, time, Long.parseLong(gapSeconds));
             }
@@ -88,6 +91,12 @@ public class DepositoryValueServerResource extends WattDepotServerResource imple
             }
           }
           MeasuredValue val = new MeasuredValue(sensorId, value, deposit.getMeasurementType());
+          if (end != null) {
+            val.setDate(endDate);
+          }
+          else if (time != null) {
+            val.setDate(time);
+          }
           return val;
         }
         else {

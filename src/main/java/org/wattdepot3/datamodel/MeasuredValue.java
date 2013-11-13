@@ -3,6 +3,8 @@
  */
 package org.wattdepot3.datamodel;
 
+import java.util.Date;
+
 /**
  * MeasuredValue - represents a measured value. Has sensor id, value and
  * measurement type.
@@ -17,6 +19,8 @@ public class MeasuredValue {
   private Double value;
   /** The type of the measurement. */
   private String measurementType;
+  /** The time of the measured value. */
+  private Date date;
 
   /**
    * Hide the default constructor.
@@ -60,6 +64,20 @@ public class MeasuredValue {
    */
   public String getMeasurementType() {
     return measurementType;
+  }
+
+  /**
+   * @return the date
+   */
+  public Date getDate() {
+    return date;
+  }
+
+  /**
+   * @param date the date to set
+   */
+  public void setDate(Date date) {
+    this.date = date;
   }
 
 }

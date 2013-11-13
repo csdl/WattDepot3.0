@@ -3,6 +3,7 @@
  */
 package org.wattdepot3.server.restlet;
 
+import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
@@ -45,15 +46,18 @@ public class DepositoryMeasurementServerResource extends WattDepotServerResource
         + "}/measurement/ with " + meas);
     try {
       Depository depository = depot.getWattDeposiory(depositoryId, groupId);
-      depository.putMeasurement(meas);
+      if (depository != null) {
+        depository.putMeasurement(meas);
+      }
+      else {
+        setStatus(Status.CLIENT_ERROR_BAD_REQUEST, depositoryId + " does not exist.");
+      }
     }
     catch (MissMatchedOwnerException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
     }
     catch (MeasurementTypeException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
     }
   }
 

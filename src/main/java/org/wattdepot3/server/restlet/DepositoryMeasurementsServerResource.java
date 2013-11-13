@@ -56,26 +56,41 @@ public class DepositoryMeasurementsServerResource extends WattDepotServerResourc
     System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId
         + "}/measurements/?sensor={" + sensorId + "}&start={" + start + "}&end={" + end + "}");
     if (start != null && end != null) {
-    ArrayList<Measurement> ret = new ArrayList<Measurement>();
-    try {
-      Depository depository = depot.getWattDeposiory(depositoryId, groupId);
-      Sensor sensor = depot.getSensor(sensorId, groupId);
-      Date startDate = DateConvert.parseCalStringToDate(start);
-      Date endDate = DateConvert.parseCalStringToDate(end);
-      for (Measurement meas : depository.getMeasurements(sensor, startDate, endDate)) {
-        ret.add(meas);
+      ArrayList<Measurement> ret = new ArrayList<Measurement>();
+      try {
+        Depository depository = depot.getWattDeposiory(depositoryId, groupId);
+        if (depository != null) {
+          Sensor sensor = depot.getSensor(sensorId, groupId);
+          if (sensor != null) {
+            Date startDate = DateConvert.parseCalStringToDate(start);
+            Date endDate = DateConvert.parseCalStringToDate(end);
+            if (startDate != null && endDate != null) {
+              for (Measurement meas : depository.getMeasurements(sensor, startDate, endDate)) {
+                ret.add(meas);
+              }
+            }
+            else {
+              setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "Start date and/or end date missing.");
+            }
+          }
+          else {
+            setStatus(Status.CLIENT_ERROR_BAD_REQUEST, sensorId + " is not defined");
+          }
+        }
+        else {
+          setStatus(Status.CLIENT_ERROR_BAD_REQUEST, depositoryId + " is not defined.");
+        }
       }
-    }
-    catch (MissMatchedOwnerException e) {
-      setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
-    }
-    catch (ParseException e) {
-      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
-    }
-    catch (DatatypeConfigurationException e) {
-      setStatus(Status.SERVER_ERROR_INTERNAL, e.getMessage());
-    }
-    return ret;
+      catch (MissMatchedOwnerException e) {
+        setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+      }
+      catch (ParseException e) {
+        setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
+      }
+      catch (DatatypeConfigurationException e) {
+        setStatus(Status.SERVER_ERROR_INTERNAL, e.getMessage());
+      }
+      return ret;
     }
     else {
       setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "Missing start and/or end times.");
