@@ -44,21 +44,21 @@ public class MeasuredValue {
   /**
    * @return the sensorId
    */
-  protected String getSensorId() {
+  public String getSensorId() {
     return sensorId;
   }
 
   /**
    * @return the value
    */
-  protected Double getValue() {
+  public Double getValue() {
     return value;
   }
 
   /**
    * @return the measurementType
    */
-  protected String getMeasurementType() {
+  public String getMeasurementType() {
     return measurementType;
   }
 

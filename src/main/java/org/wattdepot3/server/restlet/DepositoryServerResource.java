@@ -44,8 +44,13 @@ public class DepositoryServerResource extends WattDepotServerResource implements
   @Override
   public Depository retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId + "}");
-    Depository depo = new Depository("First depository", "energy", UserGroup.ADMIN_GROUP);
-    return depo;
+    try {
+      return depot.getWattDeposiory(depositoryId, groupId);
+    }
+    catch (MissMatchedOwnerException e) {
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, e.getMessage());
+    }
+    return null;
   }
 
   /*

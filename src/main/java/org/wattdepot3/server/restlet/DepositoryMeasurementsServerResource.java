@@ -3,15 +3,20 @@
  */
 package org.wattdepot3.server.restlet;
 
-import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
+import org.wattdepot3.util.DateConvert;
 
 /**
  * DepositoryMeasurementsServerResource - Handles the Depository measurements
@@ -50,20 +55,32 @@ public class DepositoryMeasurementsServerResource extends WattDepotServerResourc
   public ArrayList<Measurement> retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId
         + "}/measurements/?sensor={" + sensorId + "}&start={" + start + "}&end={" + end + "}");
+    if (start != null && end != null) {
     ArrayList<Measurement> ret = new ArrayList<Measurement>();
     try {
       Depository depository = depot.getWattDeposiory(depositoryId, groupId);
       Sensor sensor = depot.getSensor(sensorId, groupId);
-      for (Measurement meas : depository.getMeasurements(sensor,
-          new Timestamp(Long.parseLong(start)), new Timestamp(Long.parseLong(end)))) {
+      Date startDate = DateConvert.parseCalStringToDate(start);
+      Date endDate = DateConvert.parseCalStringToDate(end);
+      for (Measurement meas : depository.getMeasurements(sensor, startDate, endDate)) {
         ret.add(meas);
       }
     }
     catch (MissMatchedOwnerException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+    }
+    catch (ParseException e) {
+      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
+    }
+    catch (DatatypeConfigurationException e) {
+      setStatus(Status.SERVER_ERROR_INTERNAL, e.getMessage());
     }
     return ret;
+    }
+    else {
+      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "Missing start and/or end times.");
+      return null;
+    }
   }
 
 }

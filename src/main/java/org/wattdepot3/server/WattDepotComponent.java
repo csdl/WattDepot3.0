@@ -3,15 +3,19 @@
  */
 package org.wattdepot3.server;
 
+import org.codehaus.jackson.map.SerializationConfig;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.representation.Representation;
 import org.restlet.security.MemoryRealm;
 import org.restlet.security.Role;
 import org.restlet.security.User;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
+import org.wattdepot3.server.depository.impl.hibernate.MeasurementImpl;
 
 /**
  * WattDepotComponent - Main class to start the WattDepot3 Server.
@@ -37,6 +41,11 @@ public class WattDepotComponent extends Component {
     server.getContext().getParameters().set("tracing", "true");
 
     WattDepotApplication app = new WattDepotApplication();
+    // configure the JacksonRepresentation so that it uses ISO-8601 compliant notation
+    MeasurementImpl source = new MeasurementImpl();
+    Representation rep = app.getConverterService().toRepresentation(source);
+    ((JacksonRepresentation) rep).getObjectMapper().configure(
+        SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     getDefaultHost().attachDefault(app);
     app.setComponent(this);
 

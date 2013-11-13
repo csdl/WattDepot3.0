@@ -3,7 +3,8 @@
  */
 package org.wattdepot3.datamodel;
 
-import java.sql.Timestamp;
+import java.util.Date;
+
 
 /**
  * Measurement - represents a measurement from a sensor.
@@ -15,7 +16,7 @@ public class Measurement {
   /** Unique database id. If necessary. */
   private Long id;
   private Sensor sensor;
-  private Timestamp timestamp;
+  private Date timestamp;
   private Double value;
   private String measurementType;
 
@@ -36,7 +37,7 @@ public class Measurement {
    * @param measurementType
    *          The type of the measurement.
    */
-  public Measurement(Sensor sensor, Timestamp timestamp, Double value, String measurementType) {
+  public Measurement(Sensor sensor, Date timestamp, Double value, String measurementType) {
     this.sensor = sensor;
     this.timestamp = timestamp;
     this.value = value;
@@ -126,7 +127,7 @@ public class Measurement {
   /**
    * @return the timestamp
    */
-  public Timestamp getTimestamp() {
+  public Date getDate() {
     return timestamp;
   }
 
@@ -170,7 +171,7 @@ public class Measurement {
   /**
    * @param timestamp the timestamp to set
    */
-  public void setTimestamp(Timestamp timestamp) {
+  public void setDate(Date timestamp) {
     this.timestamp = timestamp;
   }
 

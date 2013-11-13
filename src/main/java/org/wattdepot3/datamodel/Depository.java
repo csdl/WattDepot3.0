@@ -3,7 +3,6 @@
  */
 package org.wattdepot3.datamodel;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -94,7 +93,7 @@ public class Depository {
    *          The end of the interval.
    * @return A list of the measurements in the interval.
    */
-  public List<Measurement> getMeasurements(Sensor sensor, Timestamp start, Timestamp end) {
+  public List<Measurement> getMeasurements(Sensor sensor, Date start, Date end) {
     throw new RuntimeException("Not implemented.");
   }
 

@@ -306,7 +306,7 @@ public class WattDepotImpl extends WattDepot {
     }
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
-    d = new Depository(name, measurementType, owner);
+    d = new DepositoryImpl(name, measurementType, owner);
     session.save(d);
     session.getTransaction().commit();
     session.close();
@@ -973,7 +973,7 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
-    List result = session.createQuery("from Depository").list();
+    List result = session.createQuery("from DepositoryImpl").list();
     session.getTransaction().commit();
     session.close();
     ArrayList<Depository> ret = new ArrayList<Depository>();
