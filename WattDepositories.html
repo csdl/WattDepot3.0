@@ -17,9 +17,8 @@
         <div class="jumbotron">
             <header class="top-bar">
                 <h2>
-                    <span><img alt="WattDepot logo"
-                        src="wattdepot-logo.png"> WattDepot3 HTML
-                        API: Sensors</span>
+                    <img alt="WattDepot logo" src="wattdepot-logo.png">
+                    WattDepot3 HTML API: Sensors
                 </h2>
             </header>
         </div>
@@ -30,12 +29,15 @@
                     <ul class="nav nav-pills nav-stacked">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="HtmlApi.html">Overview</a></li>
-                        <li><a href="Locations.html">Locations</a>
                         <li><a href="Sensors.html">Sensors</a>
-                        <li><a href="SensorGroups.html">Sensor
-                                Groups</a>
-                        <li><a href="SensorModels.html">Sensor
-                                Models</a>
+                            <ul>
+                                <li><a href="Locations.html">Sensor
+                                        Locations</a></li>
+                                <li><a href="SensorGroups.html">Sensor
+                                        Groups</a></li>
+                                <li><a href="SensorModels.html">Sensor
+                                        Models</a></li>
+                            </ul></li>
                         <li><a href="SensorProcesses.html">Sensor
                                 Processes</a>
                         <li class="active"><a
@@ -46,42 +48,42 @@
             <div class="col-xs-12 col-sm-9">
                 <header> </header>
                 <div class="card">
-                    <section id="get_wattdepositories">
+                    <section id="get_depositories">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositories
+                                /wattdepot/{group_id}/depositories
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositories
+                            http://server.wattdepot.org/wattdepot/{group_id}/depositories
                             <a class="btn right"
-                                onclick="$('#get_wattdepositories_response_long').slideToggle()"><b>Response
+                                onclick="$('#get_depositories_response_long').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepositories_response_long"
+                            id="get_depositories_response_long"
                             display="none">
                             <pre>
 		      <code>
-<span>[</span>
-  <span>{</span>
-     <span>"id":</span> <span>"ilima-energy1",</span>
-     <span>"name":</span> <span>"Ilima energy consumption",</span>
-     <span>"measurementType":</span> <span>"energy"</span>
-  <span>},</span>
-  <span>{</span>
-     <span>"id":</span> <span>"lehua-energy1",</span>
-     <span>"name":</span> <span>"Lehua energy consumption",</span>
-     <span>"measurementType":</span> <span>"energy"</span>
-  <span>},</span>
-  <span>{</span>
-     <span>"id":</span> <span>"uh-temp1",</span>
-     <span>"name":</span> <span>"University of Hawaii Temperature",</span>
-     <span>"measurementType":</span> <span>"temperature"</span>
-  <span>}</span>
-<span class="p">]</span>
+[
+  {
+     "id": "ilima-energy1",
+     "name": "Ilima energy consumption",
+     "measurementType": "energy"
+  },
+  {
+     "id": "lehua-energy1",
+     "name": "Lehua energy consumption",
+     "measurementType": "energy"
+  },
+  {
+     "id": "uh-temp1",
+     "name": "University of Hawaii Temperature",
+     "measurementType": "temperature"
+  }
+]
 		      </code>
 		    </pre>
                         </div>
@@ -92,172 +94,172 @@
                     </section>
                 </div>
                 <div class="card">
-                    <section id="get_wattdepository">
+                    <section id="get_depository">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositories/<span>{wattdepository_id}</span>
+                                /wattdepot/{group_id}/depository/{depository_id}
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositories/ilima-energy1
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1
                             <a class="btn right"
-                                onclick="$('#get_wattdepository_response').slideToggle()"><b>Response
+                                onclick="$('#get_depository_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepository_response"
-                            display="none">
+                            id="get_depository_response" display="none">
                             <pre>
               <code>
-<span>{</span>
-   <span>"id":</span> <span>"ilima-energy1",</span>
-   <span>"name":</span> <span>"Ilima energy consumption",</span>
-   <span>"measurementType":</span> <span>"energy"</span>
-<span>}</span>
+{
+   "id": "ilima-energy1",
+   "name": "Ilima energy consumption",
+   "measurementType": "energy"
+}
              </code>
             </pre>
                         </div>
                         <div class="card-description">
                             <p>Get the WattDepository with the given
-                                wattdepository_id.</p>
+                                depository_id.</p>
                         </div>
                     </section>
                 </div>
                 <div class="card">
-                    <section id="get_wattdepository_sensors">
-                        <header>
-                            <h2>
-                                <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}/sensors</span>
-                            </h2>
-                        </header>
-                        <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors
-                            <a class="btn right"
-                                onclick="$('#get_wattdepository_response_sensors').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
-                        </div>
-                        <div class="card-info-more"
-                            id="get_wattdepository_response_sensors"
-                            display="none">
-                            <pre>
-              <code>
-<span>[</span>
-   <span>{</span>
-      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-telco&quot;,</span>
-      <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-telco&quot;,</span>
-      <span>&quot;location&quot;</span><span>:</span>
-            <span>{</span>
-               <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 6th floor&quot;,</span>
-               <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
-               <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
-               <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
-               <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
-            <span class="p">},</span>
-      <span>&quot;model&quot;</span><span>:</span>
-            <span>{</span>
-               <span>&quot;id&quot;</span><span>:</span> <span>&quot;egauge1.0&quot;,</span>
-               <span>&quot;protocol&quot;</span><span>:</span> <span>&quot;eGauge&quot;,</span>
-               <span>&quot;type&quot;</span><span>:</span> <span>&quot;EGAUGE&quot;,</span>
-               <span>&quot;version&quot;</span><span>:</span> <span>&quot;1.0&quot;</span>
-            <span>},</span>
-      <span>[]</span>
-   <span class="p">},</span>
-   <span>{</span>
-      <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6-elect&quot;,</span>
-      <span>&quot;uri&quot;</span><span>:</span> <span>&quot;http://foo.com/ilima-6-elect&quot;,</span>
-      <span>&quot;location&quot;</span><span>:</span> 
-            <span>{</span>
-               <span>&quot;description&quot;</span><span>:</span> <span>&quot;Hale Aloha Ilima residence hall 6th floor&quot;,</span>
-               <span>&quot;altitude&quot;</span><span>:</span> <span>30,</span>
-               <span>&quot;longitude&quot;</span><span>:</span> <span>-157.812727,</span>
-               <span>&quot;latitude&quot;</span><span>:</span> <span>21.294642,</span>
-               <span>&quot;id&quot;</span><span>:</span> <span>&quot;ilima-6th&quot;</span>
-            <span class="p">},</span>      
-      <span>&quot;model&quot;</span><span>:</span>
-            <span>{</span>
-               <span>&quot;id&quot;</span><span>:</span> <span>&quot;egauge1.0&quot;,</span>
-               <span>&quot;protocol&quot;</span><span>:</span> <span>&quot;eGauge&quot;,</span>
-               <span>&quot;type&quot;</span><span>:</span> <span>&quot;EGAUGE&quot;,</span>
-               <span>&quot;version&quot;</span><span>:</span> <span>&quot;1.0&quot;</span>
-            <span>},</span>
-      <span>[]</span>
-   <span class="p">}</span>
-<span class="p">]</span>
-              </code>
-            </pre>
-                        </div>
-                        <div class="card-description">
-                            <p>Get the list of Sensors that sent
-                                measurements to the WattDepository with
-                                the given wattdepository_id.</p>
-                        </div>
-                    </section>
-                </div>
-                <div class="card">
-                    <section id="get_wattdepository_sensors_short">
+                    <section id="get_depository_sensors">
                         <header>
                             <h3>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}/sensors?short=true</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/sensors/
                             </h3>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors?short=true
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/sensors/
                             <a class="btn right"
-                                onclick="$('#get_wattdepository_response_sensors_short').slideToggle()"><b>Response
+                                onclick="$('#get_depository_response_sensors').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepository_response_sensors_short"
+                            id="get_depository_response_sensors"
                             display="none">
                             <pre>
               <code>
-<span>[</span>
-   <span>&quot;ilima-6-telco&quot;,</span>
-   <span>&quot;ilima-6-elect&quot;</span>
-<span class="p">]</span>
+[
+   {
+      &quot;id&quot;: &quot;ilima-6-telco&quot;,
+      &quot;uri&quot;: &quot;http://foo.com/ilima-6-telco&quot;,
+      &quot;location&quot;:
+            {
+               &quot;description&quot;: &quot;Hale Aloha Ilima residence hall 6th floor&quot;,
+               &quot;altitude&quot;: 30,
+               &quot;longitude&quot;: -157.812727,
+               &quot;latitude&quot;: 21.294642,
+               &quot;id&quot;: &quot;ilima-6th&quot;
+            },
+      &quot;model&quot;:
+            {
+               &quot;id&quot;: &quot;egauge1.0&quot;,
+               &quot;protocol&quot;: &quot;eGauge&quot;,
+               &quot;type&quot;: &quot;EGAUGE&quot;,
+               &quot;version&quot;: &quot;1.0&quot;
+            },
+      []
+   },
+   {
+      &quot;id&quot;: &quot;ilima-6-elect&quot;,
+      &quot;uri&quot;: &quot;http://foo.com/ilima-6-elect&quot;,
+      &quot;location&quot;: 
+            {
+               &quot;description&quot;: &quot;Hale Aloha Ilima residence hall 6th floor&quot;,
+               &quot;altitude&quot;: 30,
+               &quot;longitude&quot;: -157.812727,
+               &quot;latitude&quot;: 21.294642,
+               &quot;id&quot;: &quot;ilima-6th&quot;
+            },      
+      &quot;model&quot;:
+            {
+               &quot;id&quot;: &quot;egauge1.0&quot;,
+               &quot;protocol&quot;: &quot;eGauge&quot;,
+               &quot;type&quot;: &quot;EGAUGE&quot;,
+               &quot;version&quot;: &quot;1.0&quot;
+            },
+      []
+   }
+]
               </code>
             </pre>
                         </div>
                         <div class="card-description">
                             <p>Get the list of Sensors that sent
                                 measurements to the WattDepository with
-                                the given wattdepository_id in shortened
+                                the given depository_id.</p>
+                        </div>
+                    </section>
+                </div>
+                <!--                 <div class="card">
+                    <section id="get_depository_sensors_short">
+                        <header>
+                            <h3>
+                                <span class="big-type">GET</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/sensors/?short=true
+                            </h3>
+                        </header>
+                        <div class="card-info">
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/sensors/?short=true
+                            <a class="btn right"
+                                onclick="$('#get_depository_response_sensors_short').slideToggle()"><b>Response
+                                    <span class="caret"></span>
+                            </b></a>
+                        </div>
+                        <div class="card-info-more"
+                            id="get_depository_response_sensors_short"
+                            display="none">
+                            <pre>
+              <code>
+[
+   &quot;ilima-6-telco&quot;,
+   &quot;ilima-6-elect&quot;
+]
+              </code>
+            </pre>
+                        </div>
+                        <div class="card-description">
+                            <p>Get the list of Sensors that sent
+                                measurements to the WattDepository with
+                                the given depository_id in shortened
                                 format. Shortend format uses sensor ids
                                 instead of full sensors.</p>
                         </div>
                     </section>
-                </div>
+                </div> -->
                 <div class="card">
-                    <section id="get_wattdepository_sensor_value">
+                    <section id="get_depository_sensor_value">
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/value/<span>{timestamp}</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/value/?sensor={sensor_id}&amp;time={timestamp}
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/value/2013-07-28T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/value/?sensor=ilima-6-telco&amp;time=2013-07-28T09:00:00.000-10:00
                             <a class="btn right"
-                                onclick="$('#get_wattdepository_response_sensor_value').slideToggle()"><b>Response
+                                onclick="$('#get_depository_response_sensor_value').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepository_response_sensor_value"
+                            id="get_depository_response_sensor_value"
                             display="none">
                             <pre>
               <code>
-<span>{</span>
-  <span>"sensorId":</span> <span>"ilima-6-telco",</span>
-  <span>"value":</span> <span>130531.388,</span>
-  <span>"measurementType":</span> <span>"energy"</span>
-<span>}</span>
+{
+  "sensorId": "ilima-6-telco",
+  "value": 130531.388,
+  "measurementType": "energy"
+  "date":"2013-07-28T19:00:00.000+0000"
+}
               </code>
             </pre>
                         </div>
@@ -273,30 +275,31 @@
                     </section>
                 </div>
                 <div class="card">
-                    <section id="get_wattdepository_sensor_value2">
+                    <section id="get_depository_sensor_value2">
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/value?start={timestamp},end={timestamp}</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/value/?sensor={sensor_id}&amp;start={timestamp}&amp;end={timestamp}
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/value?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/value/?sensor=ilima-6-telco&amp;start=2013-07-28T09:00:00.000-10:00&amp;end=2013-07-29T09:00:00.000-10:00
                             <a class="btn right"
-                                onclick="$('#get_wattdepository_response_sensor_value2').slideToggle()"><b>Response
+                                onclick="$('#get_depository_response_sensor_value2').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepository_response_sensor_value2"
+                            id="get_depository_response_sensor_value2"
                             display="none">
                             <pre>
               <code>
-<span>{</span>
-  <span>"sensorId":</span> <span>"ilima-6-telco",</span>
-  <span>"value":</span> <span>372.84,</span>
-  <span>"measurementType":</span> <span>"energy"</span>
-<span>}</span>
+{
+  "sensorId": "ilima-6-telco",
+  "value": 372.84,
+  "measurementType": "energy"
+  "date": "2013-07-29T19:00:00.000+0000"
+}
               </code>
             </pre>
                         </div>
@@ -304,7 +307,8 @@
                             <p>Get measurement value for the given
                                 sensor over the time period. The value
                                 at start is subtracted from the value at
-                                end.</p>
+                                end. Note the date is the end of the
+                                period.</p>
                             <p>The request will return an error if
                                 the start or end timestamp is less than
                                 the eariliest measurement time or
@@ -314,166 +318,211 @@
                     </section>
                 </div>
                 <div class="card">
-                    <section id="get_wattdepository_sensor_measurements">
+                    <section id="get_depository_sensor_measurements">
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>/sensors/<span>{sensor_id}</span>/measurements?start={timestamp},end={timestamp}</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/measurements/?sensor={sensor_id}&amp;start={timestamp}&amp;end={timestamp}
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1/sensors/ilima-6-telco/measurements?start=2013-07-28T09:00:00.000-10:00,end=2013-07-29T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/measurements/?sensor=ilima-6-telco&amp;start=2013-07-28T09:00:00.000-10:00&amp;end=2013-07-29T09:00:00.000-10:00
                             <a class="btn right"
-                                onclick="$('#get_wattdepository_response_sensor_measurements').slideToggle()"><b>Response
+                                onclick="$('#get_depository_response_sensor_measurements').slideToggle()"><b>Response
                                     <span class="caret"></span>
                             </b></a>
                         </div>
                         <div class="card-info-more"
-                            id="get_wattdepository_response_sensor_measurements"
+                            id="get_depository_response_sensor_measurements"
                             display="none">
                             <pre>
               <code>
-<span>[</span>
-  <span>{</span>
-      <span>"sensorId":</span> <span>"ilima-6-telco",</span>
-      <span>"timestamp":</span> <span>"2013-07-28T09:00:00.000-10:00"</span>
-      <span>"value":</span> <span>372.84,</span>
-      <span>"measurementType":</span> <span>"energy"</span>
-  <span>},</span>
-  <span>{</span>
-      <span>"sensorId":</span> <span>"ilima-6-telco",</span>
-      <span>"timestamp":</span> <span>"2013-07-28T15:00:00.000-10:00"</span>
-      <span>"value":</span> <span>492.75,</span>
-      <span>"measurementType":</span> <span>"energy"</span>
-  <span>},</span>
-  <span>{</span>
-      <span>"sensorId":</span> <span>"ilima-6-telco",</span>
-      <span>"timestamp":</span> <span>"2013-07-29T09:00:00.000-10:00"</span>
-      <span>"value":</span> <span>406.92,</span>
-      <span>"measurementType":</span> <span>"energy"</span>
-  <span>}</span>
-<span>]</span>
+[
+  {
+    "sensor":
+      {
+        "id": "ilima-6-telco",
+        "uri":"http://foo.com",
+        "location":
+          {
+            "id":"ilima-3",
+            "latitude":21.294642,
+            "longitude":-157.812727,
+            "altitude":40.0,
+            "description":"Hale Aloha Ilima residence hall 7th floor"
+          },
+        "model":
+          {
+            "id":"sm1",
+            "protocol":"Hammer",
+            "type":"hammer",
+            "version":"1.0"
+          }
+        "properties":[]
+      },
+   "date": "2013-07-28T19:00:00.000+0000",
+   "value": 372.84,
+   "measurementType": "energy"
+  },
+  {
+    "sensor":
+      {
+        "id": "ilima-6-telco",
+        "uri":"http://foo.com",
+        "location":
+          {
+            "id":"ilima-3",
+            "latitude":21.294642,
+            "longitude":-157.812727,
+            "altitude":40.0,
+            "description":"Hale Aloha Ilima residence hall 7th floor"
+          },
+        "model":
+          {
+            "id":"sm1",
+            "protocol":"Hammer",
+            "type":"hammer",
+            "version":"1.0"
+          }
+        "properties":[]
+      },
+    "date": "2013-07-29T07:00:00.000+0000",
+    "value": 492.75,
+    "measurementType": "energy"
+  },
+  {
+    "sensor":
+      {
+        "id": "ilima-6-telco",
+        "uri":"http://foo.com",
+        "location":
+          {
+            "id":"ilima-3",
+            "latitude":21.294642,
+            "longitude":-157.812727,
+            "altitude":40.0,
+            "description":"Hale Aloha Ilima residence hall 7th floor"
+          },
+        "model":
+          {
+            "id":"sm1",
+            "protocol":"Hammer",
+            "type":"hammer",
+            "version":"1.0"
+          }
+        "properties":[]
+      },
+    "date": "2013-07-29T19:00:00.000+0000",
+    "value": 406.92,
+    "measurementType": "energy"
+  }
+]
               </code>
             </pre>
                         </div>
                         <div class="card-description">
-                            <p>Get measurements for the given
-                                sensor over the time period.</p>
+                            <p>Get measurements for the given sensor
+                                over the time period.</p>
                         </div>
                     </section>
                 </div>
                 <div class="card">
-                    <section id="post_wattdepository">
+                    <section id="post_depository">
                         <header>
                             <h2>
-                                <span class="big-type">POST</span>
-                                /wattdepot/wattdepositories/
+                                <span class="big-type">PUT</span>
+                                /wattdepot/{group_id}/depositories/
                             </h2>
                         </header>
-                        <div class="card-info">
-                            curl -F '{"id": "wattdepositorie1", "name":
+                        <div class="card-info">curl -X PUT -H
+                            "ContentType: application/json" -d '{"name":
                             "Ilima energy consumption",
                             "measurementType": "energy"}'
-                            http://server.wattdepot.org/wattdepot/wattdepositories/
-                            <a
-                                class="btn dropdown-toggle
-                 right"
-                                onclick="$('#put_wattdepository_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/depositories/
+
                         </div>
                         <div class="card-info-more"
-                            id="put_wattdepository_response"
-                            display="none">
+                            id="put_depository_response" display="none">
                             <pre>
               <code>
-<span>{</span>
-   <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
-   <span>&quot;message&quot;</span><span>:</span> <span>&quot;OK&quot;</span>
-<span class="p">}</span>
+{
+   &quot;status&quot;: 200,
+   &quot;message&quot;: &quot;OK&quot;
+}
               </code>
             </pre>
                         </div>
                         <div class="card-description">
                             <p>Add the WattDepository. Will return
-                                the status. Error status if duplicate
-                                unique id.</p>
+                                the HTTP status. Error status if
+                                duplicate unique id.</p>
                         </div>
                     </section>
                 </div>
                 <div class="card">
-                    <section id="post_wattdepository_measurement">
+                    <section id="post_depository_measurement">
                         <header>
-                            <h2>
-                                <span class="big-type">POST</span>
-                                /wattdepot/wattdepositories/{wattdepository_id}
-                            </h2>
+                            <h3>
+                                <span class="big-type">PUT</span>
+                                /wattdepot/{group_id}/depository/{depository_id}/measurement/
+                            </h3>
                         </header>
-                        <div class="card-info">
-                            curl -F '{"sensorId": "ilima-6th-telco",
-                            "value": 793l4.54, "timestamp":
+                        <div class="card-info">curl -X PUT -H
+                            "ContentType: application/json" -d
+                            '{"sensorId": "ilima-6th-telco", "value":
+                            793l4.54, "timestamp":
                             "2013-07-28T09:02:00.000-10:00",
                             "measurementType": "energy"}'
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1
-                            <a class="btn right"
-                                onclick="$('#put_wattdepository_measurement_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/measurement/
+
                         </div>
                         <div class="card-info-more"
-                            id="put_wattdepository_measurement_response"
+                            id="put_depository_measurement_response"
                             display="none">
                             <pre>
               <code>
-<span>{</span>
-   <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
-   <span>&quot;message&quot;</span><span>:</span> <span>&quot;OK&quot;</span>
-<span class="p">}</span>
+{
+   &quot;status&quot;: 200,
+   &quot;message&quot;: &quot;OK&quot;
+}
               </code>
             </pre>
                         </div>
                         <div class="card-description">
                             <p>Add the measurement to the given
-                                WattDepository. Will return the status.
-                                Error status if measurement type of the
-                                measurement doesn't match the
+                                WattDepository. Will return the HTTP
+                                status. Error status if measurement type
+                                of the measurement doesn't match the
                                 WattDepositories measurement type.</p>
                         </div>
                     </section>
                 </div>
                 <div class="card">
-                    <section id="del_wattdepository">
+                    <section id="del_depository">
                         <header>
                             <h2>
                                 <span class="big-type">DEL</span>
-                                /wattdepot/wattdepositorie/<span>{wattdepository_id}</span>
+                                /wattdepot/{group_id}/depository/{depository_id}
                             </h2>
                         </header>
-                        <div class="card-info">
-                            curl -X DELETE
-                            http://server.wattdepot.org/wattdepot/wattdepositorie/ilima-energy1
-                            <a
-                                class="btn dropdown-toggle
-                 right"
-                                onclick="$('#del_wattdepository_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                        <div class="card-info">curl -X DELETE
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1
+
                         </div>
                         <div class="card-info-more"
-                            id="del_wattdepository_response"
-                            display="none">
+                            id="del_depository_response" display="none">
                             <pre>
               <code>
-<span>{</span>
-   <span>&quot;status&quot;</span><span>:</span> <span>200,</span>
-   <span>&quot;message&quot;</span><span>:</span> <span>&quot;OK&quot;</span>
-<span class="p">}</span>
+{
+   &quot;status&quot;: 200,
+   &quot;message&quot;: &quot;OK&quot;
+}
               </code>
             </pre>
                         </div>
                         <div class="card-description">
-                            <p>Deletes the Sensor with the given
-                                wattdepository_id. Will return the
+                            <p>Deletes the WattDepository with the
+                                given depository_id. Will return the
                                 status. Error status if duplicate unique
                                 id.</p>
                         </div>

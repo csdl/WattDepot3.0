@@ -30,12 +30,15 @@
                     <ul class="nav nav-pills nav-stacked">
                         <li> <a href="index.html">Home</a></li>
                         <li><a href="HtmlApi.html">Overview</a></li>
-                        <li><a href="Locations.html">Locations</a>
                         <li class="active"><a href="Sensors.html">Sensors</a>
-                        <li><a href="SensorGroups.html">Sensor
-                                Groups</a>
-                        <li><a href="SensorModels.html">Sensor
-                                Models</a>
+                            <ul>
+                                <li><a href="Locations.html">Sensor
+                                        Locations</a></li>
+                                <li><a href="SensorGroups.html">Sensor
+                                        Groups</a></li>
+                                <li><a href="SensorModels.html">Sensor
+                                        Models</a></li>
+                            </ul></li>
                         <li><a href="SensorProcesses.html">Sensor
                                 Processes</a>
                         <li><a href="WattDepositories.html">WattDepositories</a></li>
@@ -49,11 +52,11 @@
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensors
+                                /wattdepot/{group_id}/sensors
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensors
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensors
                             <a class="btn right"
                                 onclick="$('#get_sensors_response_long').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -114,16 +117,16 @@
                         </div>
                     </section>
                 </div>
-                <div class="card">
+<!--                 <div class="card">
                     <section id="get_sensors_short">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensors?short=true
+                                /wattdepot/{group_id}/sensors?short=true
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensors?short=true
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensors?short=true
                             <a class="btn right"
                                 onclick="$('#get_sensors_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -159,17 +162,17 @@
                                 the full locations and models.</p>
                         </div>
                     </section>
-                </div>
+                </div> -->
                 <div class="card">
                     <section id="get_sensor">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensor/<span>{sensor_id}</span>
+                                /wattdepot/{group_id}/sensor/<span>{sensor_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensor/ilima-6-telco
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensor/ilima-6-telco
                             <a class="btn right"
                                 onclick="$('#get_sensor_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -208,16 +211,16 @@
                         </div>
                     </section>
                 </div>
-                <div class="card">
+<!--                 <div class="card">
                     <section id="get_sensor_short">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensor/<span>{sensor_id}?short=true</span>
+                                /wattdepot/{group_id}/sensor/<span>{sensor_id}?short=true</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensor/ilima-6-telco?short=true
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensor/ilima-6-telco?short=true
                             <a class="btn right"
                                 onclick="$('#get_sensor_response_short').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -245,13 +248,13 @@
                                 instead of the full location and model.</p>
                         </div>
                     </section>
-                </div>
+                </div> -->
                 <div class="card">
                     <section id="post_sensor">
                         <header>
                             <h2>
                                 <span class="big-type">PUT</span>
-                                /wattdepot/sensor/
+                                /wattdepot/{group_id}/sensor/
                             </h2>
                         </header>
                         <div class="card-info">
@@ -262,11 +265,8 @@
                             "description": "40.0"}, "model": {id :"sm1",
                             "protocol": "Hammer", "type": "hammer",
                             "version": "1.0"}, []}'
-                            http://server.wattdepot.org/wattdepot/sensor/
-                            <a class="btn right"
-                                onclick="$('#put_sensor_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensor/
+                            
                         </div>
                         <div class="card-info-more"
                             id="put_sensor_response" display="none">
@@ -291,16 +291,13 @@
                         <header>
                             <h2>
                                 <span class="big-type">DEL</span>
-                                /wattdepot/sensor/<span>{sensor_id}</span>
+                                /wattdepot/{group_id}/sensor/<span>{sensor_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
                             curl -X DELETE
-                            http://server.wattdepot.org/wattdepot/sensor/ilima-6th
-                            <a class="btn right"
-                                onclick="$('#del_sensor_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensor/ilima-6th
+                            
                         </div>
                         <div class="card-info-more"
                             id="del_sensor_response" display="none">

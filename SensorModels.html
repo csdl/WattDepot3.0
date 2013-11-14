@@ -28,14 +28,18 @@
                 id="sidebar" role="navigation">
                 <div class="well sidebar-nav">
                     <ul class="nav nav-pills nav-stacked">
-                        <li> <a href="index.html">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="HtmlApi.html">Overview</a></li>
-                        <li><a href="Locations.html">Locations</a>
-                        <li><a href="Sensors.html">Sensors</a>
-                        <li><a href="SensorGroups.html">Sensor
-                                Groups</a>
-                        <li class="active"><a
-                            href="SensorModels.html">Sensor Models</a>
+                        <li class="active"><a href="Sensors.html">Sensors</a>
+                            <ul>
+                                <li><a href="Locations.html">Sensor
+                                        Locations</a></li>
+                                <li><a href="SensorGroups.html">Sensor
+                                        Groups</a></li>
+                                <li class="active"><a
+                                    href="SensorModels.html">Sensor
+                                        Models</a></li>
+                            </ul></li>
                         <li><a href="SensorProcesses.html">Sensor
                                 Processes</a>
                         <li><a href="WattDepositories.html">WattDepositories</a></li>
@@ -49,11 +53,11 @@
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensormodels
+                                /wattdepot/{group_id}/sensormodels
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensormodels
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensormodels
                             <a class="btn right"
                                 onclick="$('#get_sensormodels_response_long').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -92,11 +96,11 @@
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensormodel/<span>{sensormodel_id}</span>
+                                /wattdepot/{group_id}/sensormodel/<span>{sensormodel_id}</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensormodel/egauge1
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensormodel/egauge1
                             <a class="btn right"
                                 onclick="$('#get_sensormodel_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -126,18 +130,14 @@
                         <header>
                             <h2>
                                 <span class="big-type">PUT</span>
-                                /wattdepot/sensormodel/
+                                /wattdepot/{group_id}/sensormodel/
                             </h2>
                         </header>
-                        <div class="card-info">
-                            curl -F '{id :"egauge1", "protocol":
-                            "eGauge", "type": "EGAUGE", "version":
-                            "1.0"}'
-                            http://server.wattdepot.org/wattdepot/sensormodel/
-                            <a class="btn right"
-                                onclick="$('#put_sensormodel_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                        <div class="card-info">curl -F '{id
+                            :"egauge1", "protocol": "eGauge", "type":
+                            "EGAUGE", "version": "1.0"}'
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensormodel/
+
                         </div>
                         <div class="card-info-more"
                             id="put_sensormodel_response" display="none">
@@ -152,8 +152,8 @@
                         </div>
                         <div class="card-description">
                             <p>Add the Sensor Model. Will return the
-                                status. Error status if duplicate unique
-                                id.</p>
+                                HTTP status. Error status if duplicate
+                                unique id.</p>
                         </div>
                     </section>
                 </div>
@@ -162,16 +162,12 @@
                         <header>
                             <h2>
                                 <span class="big-type">DEL</span>
-                                /wattdepot/sensormodel/<span>{sensormodel_id}</span>
+                                /wattdepot/{group_id}/sensormodel/<span>{sensormodel_id}</span>
                             </h2>
                         </header>
-                        <div class="card-info">
-                            curl -X DELETE
-                            http://server.wattdepot.org/wattdepot/sensormodel/egauge1
-                            <a class="btn right"
-                                onclick="$('#del_sensormodel_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                        <div class="card-info">curl -X DELETE
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensormodel/egauge1
+
                         </div>
                         <div class="card-info-more"
                             id="del_sensormodel_response" display="none">
@@ -187,8 +183,8 @@
                         <div class="card-description">
                             <p>Deletes the Sensor Model with the
                                 given sensormodel_id. Will return the
-                                status. Error status if sensormodel_id
-                                is not defined.</p>
+                                HTTP status. Error status if
+                                sensormodel_id is not defined.</p>
                         </div>
                     </section>
                 </div>

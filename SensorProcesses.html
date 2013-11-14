@@ -28,14 +28,17 @@
                 id="sidebar" role="navigation">
                 <div class="well sidebar-nav">
                     <ul class="nav nav-pills nav-stacked">
-                        <li> <a href="index.html">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li><a href="HtmlApi.html">Overview</a></li>
-                        <li><a href="Locations.html">Locations</a>
                         <li><a href="Sensors.html">Sensors</a>
-                        <li><a href="SensorGroups.html">Sensor
-                                Groups</a>
-                        <li><a href="SensorModels.html">Sensor
-                                Models</a>
+                            <ul>
+                                <li><a href="Locations.html">Sensor
+                                        Locations</a></li>
+                                <li><a href="SensorGroups.html">Sensor
+                                        Groups</a></li>
+                                <li><a href="SensorModels.html">Sensor
+                                        Models</a></li>
+                            </ul></li>
                         <li class="active"><a
                             href="SensorProcesses.html">Sensor
                                 Processes</a>
@@ -50,11 +53,11 @@
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensorprocesses
+                                /wattdepot/{group_id}/sensorprocesses
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensorprocesses
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocesses
                             <a class="btn right"
                                 onclick="$('#get_sensorprocesses_response_long').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -126,16 +129,16 @@
                         </div>
                     </section>
                 </div>
-                <div class="card">
+<!--                 <div class="card">
                     <section id="get_sensors_short">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensorprocesses?short=true
+                                /wattdepot/{group_id}/sensorprocesses?short=true
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensorprocesses?short=true
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocesses?short=true
                             <a class="btn right"
                                 onclick="$('#get_sensors_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -167,17 +170,17 @@
                                 sensors.</p>
                         </div>
                     </section>
-                </div>
+                </div> -->
                 <div class="card">
                     <section id="get_sensorprocess">
                         <header>
-                            <h2>
+                            <h3>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensorprocess/<span>{sensorprocess_id}</span>
-                            </h2>
+                                /wattdepot/{group_id}/sensorprocess/<span>{sensorprocess_id}</span>
+                            </h3>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensorprocess/egauge1-fast
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocess/egauge1-fast
                             <a class="btn right"
                                 onclick="$('#get_sensorprocess_response').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -222,16 +225,16 @@
                         </div>
                     </section>
                 </div>
-                <div class="card">
+<!--                 <div class="card">
                     <section id="get_sensorprocess_short">
                         <header>
                             <h2>
                                 <span class="big-type">GET</span>
-                                /wattdepot/sensorprocess/<span>{sensorprocess_id}?short=true</span>
+                                /wattdepot/{group_id}/sensorprocess/<span>{sensorprocess_id}?short=true</span>
                             </h2>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/sensorprocess/egauge1-fast?short=true
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocess/egauge1-fast?short=true
                             <a class="btn right"
                                 onclick="$('#get_sensorprocess_response_short').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -257,13 +260,13 @@
                                 of full sensors.</p>
                         </div>
                     </section>
-                </div>
+                </div> -->
                 <div class="card">
                     <section id="post_sensorprocess">
                         <header>
                             <h2>
                                 <span class="big-type">PUT</span>
-                                /wattdepot/sensorprocess/
+                                /wattdepot/{group_id}/sensorprocess/
                             </h2>
                         </header>
                         <div class="card-info">
@@ -275,11 +278,8 @@
                             :"egauge1", "protocol": "eGauge", "type":
                             "EGAUGE", "version": "1.0"}, []},
                             "pollingInterval": 10}'
-                            http://server.wattdepot.org/wattdepot/sensorprocess/
-                            <a class="btn right"
-                                onclick="$('#put_sensorprocess_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocess/
+                          
                         </div>
                         <div class="card-info-more"
                             id="put_sensorprocess_response"
@@ -303,18 +303,15 @@
                 <div class="card">
                     <section id="del_sensorprocess">
                         <header>
-                            <h2>
+                            <h3>
                                 <span class="big-type">DEL</span>
-                                /wattdepot/sensorprocess/<span>{sensorprocess_id}</span>
-                            </h2>
+                                /wattdepot/{group_id}/sensorprocess/<span>{sensorprocess_id}</span>
+                            </h3>
                         </header>
                         <div class="card-info">
                             curl -X DELETE
-                            http://server.wattdepot.org/wattdepot/sensorprocess/egauge1.0
-                            <a class="btn right"
-                                onclick="$('#del_sensorprocess_response').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
+                            http://server.wattdepot.org/wattdepot/{group_id}/sensorprocess/egauge1.0
+                            
                         </div>
                         <div class="card-info-more"
                             id="del_sensorprocess_response"

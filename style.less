@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+// foo
 @contentBoxBottomMargin: 15px;
 @contentBoxBottomPadding: 10px;
 @gridGutterWidth:         20px;
@@ -104,4 +104,9 @@
     -webkit-border-top-right-radius: @radius;
     -moz-border-radius-topright: @radius;
     border-top-right-radius: @radius;
+}
+
+li.active>a, .nav-pills>li.active>ul>li.active>a:hover, .nav-pills>li.active>ul>li.active>a:focus {
+    color: #fff;
+    background-color: #428bca;
 }
