@@ -3,7 +3,7 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.restlet.resource.Get;
 import org.wattdepot3.datamodel.Sensor;
@@ -18,11 +18,11 @@ import org.wattdepot3.datamodel.Sensor;
 public interface DepositorySensorsResource {
 
   /**
-   * Defines GET /wattdepot/depository/{depository_id}/sensors/ API call.
+   * Defines GET /wattdepot/{group_id}/depository/{depository_id}/sensors/ API call.
    * 
    * @return An ArrayList of the Sensors that have sent measurements to the depository.
    */
   @Get("json")
   // Use JSON ast transport encoding.
-  public ArrayList<Sensor> retrieve();
+  public List<Sensor> retrieve();
 }

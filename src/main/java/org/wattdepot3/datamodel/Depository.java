@@ -119,6 +119,13 @@ public class Depository {
   }
 
   /**
+   * @return A list of the Sensors contributing Measurements to this depository.
+   */
+  public List<Sensor> getSensors() {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
    * @param sensor
    *          The Sensor making the measurements.
    * @param timestamp
@@ -249,7 +256,8 @@ public class Depository {
   }
 
   /**
-   * @param owner the owner to set
+   * @param owner
+   *          the owner to set
    */
   public void setOwner(UserGroup owner) {
     this.owner = owner;

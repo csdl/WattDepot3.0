@@ -19,6 +19,7 @@ import org.wattdepot3.server.restlet.AdminServerResource;
 import org.wattdepot3.server.restlet.DepositoriesServerResource;
 import org.wattdepot3.server.restlet.DepositoryMeasurementServerResource;
 import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
+import org.wattdepot3.server.restlet.DepositorySensorsServerResource;
 import org.wattdepot3.server.restlet.DepositoryServerResource;
 import org.wattdepot3.server.restlet.DepositoryValueServerResource;
 import org.wattdepot3.server.restlet.LocationServerResource;
@@ -86,11 +87,12 @@ public class WattDepotApplication extends Application {
     if (info != null) {
       UserGroup group = depot.getUsersGroup(info);
       if (group != null) {
-//        if (password.equals(info.getPassword())) {
-//          String id = "" + info.hashCode() + group.hashCode() + new Date().getTime();
-//          ret = new WebSession(id, info.getId(), group.getId());
-//          sessions.put(id, ret);
-//        }
+        // if (password.equals(info.getPassword())) {
+        // String id = "" + info.hashCode() + group.hashCode() + new
+        // Date().getTime();
+        // ret = new WebSession(id, info.getId(), group.getId());
+        // sessions.put(id, ret);
+        // }
       }
     }
     return ret;
@@ -159,6 +161,8 @@ public class WattDepotApplication extends Application {
         DepositoryMeasurementServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurements/",
         DepositoryMeasurementsServerResource.class);
+    router.attach("/wattdepot/{group_id}/depository/{depository_id}/sensors/",
+        DepositorySensorsServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/value/",
         DepositoryValueServerResource.class);
     router.attach("/wattdepot/{group_id}/depositories/", DepositoriesServerResource.class);

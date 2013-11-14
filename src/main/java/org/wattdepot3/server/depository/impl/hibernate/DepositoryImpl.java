@@ -84,43 +84,26 @@ public class DepositoryImpl extends Depository {
     return ret;
   }
 
-  /**
-   * @param meas
-   *          The measurement to store.
-   * @throws MeasurementTypeException
-   *           if the type of the measurement doesn't match the Depository
-   *           measurement type.
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.datamodel.Depository#getSensors()
    */
-  @SuppressWarnings("unchecked")
   @Override
-  public void putMeasurement(Measurement meas) throws MeasurementTypeException {
-    if (!meas.getMeasurementType().equals(getMeasurementType())) {
-      throw new MeasurementTypeException("Measurement's type " + meas.getMeasurementType()
-          + " does not match " + getMeasurementType());
-    }
-
+  public List<Sensor> getSensors() {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
-    // check the sensor
-    boolean haveSensor = false;
-    for (Sensor s : (List<Sensor>) session.createQuery("from Sensor").list()) {
-      if (s.getId().equals(meas.getSensor().getId())) {
-        haveSensor = true;
+    @SuppressWarnings("unchecked")
+    List<MeasurementImpl> result = (List<MeasurementImpl>) session
+        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
+        .list();
+    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    for (Measurement meas : result) {
+      if (!sensors.contains(meas.getSensor())) {
+        sensors.add(meas.getSensor());
       }
     }
-    if (!haveSensor) {
-      // ensure the sensor has an owner
-      Sensor measSensor = meas.getSensor();
-      if (measSensor.getOwner() == null) {
-        measSensor.setOwner(getOwner());
-      }
-      session.saveOrUpdate(meas.getSensor());
-    }
-    MeasurementImpl mImpl = new MeasurementImpl(meas);
-    mImpl.setDepository(this);
-    session.saveOrUpdate(mImpl);
-    session.getTransaction().commit();
-    session.close();
+    return sensors;
   }
 
   /**
@@ -363,6 +346,45 @@ public class DepositoryImpl extends Depository {
     session.getTransaction().commit();
     session.close();
     return ret;
+  }
+
+  /**
+   * @param meas
+   *          The measurement to store.
+   * @throws MeasurementTypeException
+   *           if the type of the measurement doesn't match the Depository
+   *           measurement type.
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public void putMeasurement(Measurement meas) throws MeasurementTypeException {
+    if (!meas.getMeasurementType().equals(getMeasurementType())) {
+      throw new MeasurementTypeException("Measurement's type " + meas.getMeasurementType()
+          + " does not match " + getMeasurementType());
+    }
+
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    // check the sensor
+    boolean haveSensor = false;
+    for (Sensor s : (List<Sensor>) session.createQuery("from Sensor").list()) {
+      if (s.getId().equals(meas.getSensor().getId())) {
+        haveSensor = true;
+      }
+    }
+    if (!haveSensor) {
+      // ensure the sensor has an owner
+      Sensor measSensor = meas.getSensor();
+      if (measSensor.getOwner() == null) {
+        measSensor.setOwner(getOwner());
+      }
+      session.saveOrUpdate(meas.getSensor());
+    }
+    MeasurementImpl mImpl = new MeasurementImpl(meas);
+    mImpl.setDepository(this);
+    session.saveOrUpdate(mImpl);
+    session.getTransaction().commit();
+    session.close();
   }
 
 }
