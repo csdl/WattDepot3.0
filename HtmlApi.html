@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>WattDepot3 HTML API</title>
+<title>WattDepot3 HTTP API</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link rel="stylesheet" href="dist/css/bootstrap.min.css">
@@ -18,7 +18,7 @@
             <header class="top-bar">
                 <h2>
                     <span><img alt="WattDepot logo"
-                        src="wattdepot-logo.png"> WattDepot3 HTML
+                        src="wattdepot-logo.png"> WattDepot3 HTTP
                         API: Overview</span>
                 </h2>
             </header>
@@ -40,7 +40,7 @@
                                         Models</a></li>
                             </ul></li>
                         <li><a href="SensorProcesses.html">Sensor
-                                Processes</a></li>
+                                Process Metadata</a></li>
                         <li><a href="WattDepositories.html">WattDepositories</a></li>
                     </ul>
                 </div>
@@ -82,12 +82,13 @@
                                 these groups for aggregation. We can
                                 group all the energy sensors in a
                                 building into a single group.</li>
-                            <li><strong>Sensor Processes</strong> A
-                                representation of how often to poll a
-                                Sensor. Processes that contact a Sensor
-                                and create Measurements should use the
-                                information in the SensorProcess to
-                                control their activities.</li>
+                            <li><strong>Sensor Process
+                                    Metadata</strong> A representation of how
+                                often to poll a Sensor. Processes that
+                                contact a Sensor and create Measurements
+                                should use the information in the
+                                SensorProcess Metadata to control their
+                                activities.</li>
                             <li><strong>WattDepositories</strong> -
                                 Are responsible for storing the
                                 measurements made by the Sensors. They
