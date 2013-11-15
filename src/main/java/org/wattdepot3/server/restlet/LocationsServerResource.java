@@ -3,9 +3,8 @@
  */
 package org.wattdepot3.server.restlet;
 
-import java.util.ArrayList;
-
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.restlet.LocationsResource;
 
 /**
@@ -23,13 +22,13 @@ public class LocationsServerResource extends WattDepotServerResource implements 
    * @see org.wattdepot3.restlet.LocationsResource#retrieve()
    */
   @Override
-  public ArrayList<Location> retrieve() {
+  public LocationList retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/locations/");
-    ArrayList<Location> ret = new ArrayList<Location>();
+    LocationList list = new LocationList();
     for (Location l : depot.getLocations(groupId)) {
-      ret.add(l);
+      list.getLocations().add(l);
     }
-    return ret;
+    return list;
   }
 
 }

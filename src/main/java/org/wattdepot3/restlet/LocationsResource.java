@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.LocationList;
 
 /**
  * LocationsResource - The HTTP API for Locations.
@@ -22,6 +20,6 @@ public interface LocationsResource {
    * @return a List of the defined Locations.
    */
   @Get("json")  // Use JSON as transport encoding.
-  public ArrayList<Location> retrieve();
+  public LocationList retrieve();
 
 }

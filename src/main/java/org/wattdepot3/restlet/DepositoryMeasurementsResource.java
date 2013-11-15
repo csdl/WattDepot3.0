@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.MeasurementList;
 
 /**
  * DepositorySensorsResource - HTTP Interface for getting the Measurements in
@@ -25,5 +23,5 @@ public interface DepositoryMeasurementsResource {
    */
   @Get("json")
   // Use JSON as transport encoding.
-  public ArrayList<Measurement> retrieve();
+  public MeasurementList retrieve();
 }

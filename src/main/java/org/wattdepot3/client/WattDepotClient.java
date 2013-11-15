@@ -6,17 +6,23 @@ package org.wattdepot3.client;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.MeasurementList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorProcess;
 import org.wattdepot3.exception.BadCredentialException;
@@ -26,7 +32,17 @@ import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.exception.NoMeasurementException;
 import org.wattdepot3.restlet.API;
 import org.wattdepot3.restlet.DepositoriesResource;
+import org.wattdepot3.restlet.DepositoryMeasurementResource;
+import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 import org.wattdepot3.restlet.DepositoryResource;
+import org.wattdepot3.restlet.LocationResource;
+import org.wattdepot3.restlet.LocationsResource;
+import org.wattdepot3.restlet.SensorGroupResource;
+import org.wattdepot3.restlet.SensorGroupsResource;
+import org.wattdepot3.restlet.SensorModelResource;
+import org.wattdepot3.restlet.SensorProcessResource;
+import org.wattdepot3.restlet.SensorResource;
+import org.wattdepot3.util.DateConvert;
 
 /**
  * WattDepotClient - high-level Java implementation that communicates with a
@@ -116,8 +132,20 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteDepository(Depository depository) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
+        + depository.getName());
+    DepositoryResource resource = client.wrap(DepositoryResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(depository + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
   }
 
   /*
@@ -129,8 +157,19 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteLocation(Location location) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + location.getId());
+    LocationResource resource = client.wrap(LocationResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(location + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
   }
 
   /*
@@ -143,8 +182,7 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void deleteMeasurement(Depository depository, Measurement measurement)
       throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    throw new RuntimeException("Deletion of Measurements not implemented.");
   }
 
   /*
@@ -156,8 +194,15 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteSensor(Sensor sensor) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_URI + sensor.getId());
+    SensorResource resource = client.wrap(SensorResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      e.printStackTrace();
+    }
+    client.release();
   }
 
   /*
@@ -169,8 +214,19 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteSensorGroup(SensorGroup group) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUP_URI + group.getId());
+    SensorGroupResource resource = client.wrap(SensorGroupResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(group + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
   }
 
   /*
@@ -182,8 +238,19 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteSensorModel(SensorModel model) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + model.getId());
+    SensorModelResource resource = client.wrap(SensorModelResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(model + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
   }
 
   /*
@@ -195,8 +262,20 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteSensorProcess(SensorProcess process) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
+        + process.getId());
+    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(process + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
   }
 
   /*
@@ -223,7 +302,18 @@ public class WattDepotClient implements WattDepotInterface {
   public Depository getDepository(String id) throws IdNotFoundException {
     ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + id);
     DepositoryResource resource = client.wrap(DepositoryResource.class);
-    Depository ret = resource.retrieve();
+    Depository ret = null;
+    try {
+      ret = resource.retrieve();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known Depository id.");
+      }
+    }
+    finally {
+      client.release();
+    }
     return ret;
   }
 
@@ -234,8 +324,21 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public Location getLocation(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-    return null;
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + id);
+    LocationResource resource = client.wrap(LocationResource.class);
+    Location ret = null;
+    try {
+      ret = resource.retrieve();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known Location id.");
+      }
+    }
+    finally {
+      client.release();
+    }
+    return ret;
   }
 
   /*
@@ -244,9 +347,12 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getLocations()
    */
   @Override
-  public List<Location> getLocations() {
-    // TODO Auto-generated method stub
-    return null;
+  public LocationList getLocations() {
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATIONS_URI);
+    LocationsResource resource = client.wrap(LocationsResource.class);
+    LocationList ret = resource.retrieve();
+    client.release();
+    return ret;
   }
 
   /*
@@ -258,9 +364,19 @@ public class WattDepotClient implements WattDepotInterface {
    * java.util.Date)
    */
   @Override
-  public List<Measurement> getMeasurements(Depository depository, Sensor sensor, Date start,
-      Date end) {
-    // TODO Auto-generated method stub
+  public MeasurementList getMeasurements(Depository depository, Sensor sensor, Date start, Date end) {
+    try {
+      ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
+          + depository.getName() + API.MEASUREMENTS_URI + "?sensor=" + sensor.getId() + "&start="
+          + DateConvert.convertDate(start) + "&end=" + DateConvert.convertDate(end));
+      DepositoryMeasurementsResource resource = client.wrap(DepositoryMeasurementsResource.class);
+      MeasurementList ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (DatatypeConfigurationException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 
@@ -271,7 +387,24 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public Sensor getSensor(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_URI + id);
+    SensorResource resource = client.wrap(SensorResource.class);
+    try {
+      Sensor ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known Sensor. ");
+      }
+      e.printStackTrace();
+    }
+    finally {
+      if (client != null) {
+        client.release();
+      }
+    }
     return null;
   }
 
@@ -283,7 +416,24 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorGroup getSensorGroup(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUP_URI + id);
+    SensorGroupResource resource = client.wrap(SensorGroupResource.class);
+    try {
+      SensorGroup ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known SensorGroup. ");
+      }
+      e.printStackTrace();
+    }
+    finally {
+      if (client != null) {
+        client.release();
+      }
+    }
     return null;
   }
 
@@ -293,9 +443,13 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getSensorGroups()
    */
   @Override
-  public List<SensorGroup> getSensorGroups() {
-    // TODO Auto-generated method stub
-    return null;
+  public SensorGroupList getSensorGroups() {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUP_URI);
+    SensorGroupsResource resource = client.wrap(SensorGroupsResource.class);
+    SensorGroupList ret = resource.retrieve();
+    client.release();
+    return ret;
+    
   }
 
   /*
@@ -306,7 +460,24 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorModel getSensorModel(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + id);
+    SensorModelResource resource = client.wrap(SensorModelResource.class);
+    try {
+      SensorModel ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known SensorModel. ");
+      }
+      e.printStackTrace();
+    }
+    finally {
+      if (client != null) {
+        client.release();
+      }
+    }
     return null;
   }
 
@@ -423,8 +594,11 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putDepository(Depository depository) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
+        + depository.getName());
+    DepositoryResource resource = client.wrap(DepositoryResource.class);
+    resource.store(depository);
+    client.release();
   }
 
   /*
@@ -436,8 +610,10 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putLocation(Location loc) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + loc.getId());
+    LocationResource resource = client.wrap(LocationResource.class);
+    resource.store(loc);
+    client.release();
   }
 
   /*
@@ -450,8 +626,20 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void putMeasurement(Depository depository, Measurement measurement)
       throws MeasurementTypeException {
-    // TODO Auto-generated method stub
-
+    if (!depository.getMeasurementType().equals(measurement.getMeasurementType())) {
+      throw new MeasurementTypeException("Depository " + depository.getName() + " stores "
+          + depository.getMeasurementType() + " not " + measurement.getMeasurementType());
+    }
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
+        + depository.getName() + "/" + API.MEASUREMENT_URI + measurement.getId());
+    DepositoryMeasurementResource resource = client.wrap(DepositoryMeasurementResource.class);
+    try {
+      resource.store(measurement);
+    }
+    catch (ResourceException e) {
+      e.printStackTrace();
+    }
+    client.release();
   }
 
   /*
@@ -515,8 +703,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void updateDepository(Depository depository) {
-    // TODO Auto-generated method stub
-
+    putDepository(depository);
   }
 
   /*
@@ -528,8 +715,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void updateLocation(Location location) {
-    // TODO Auto-generated method stub
-
+    putLocation(location);
   }
 
   /*

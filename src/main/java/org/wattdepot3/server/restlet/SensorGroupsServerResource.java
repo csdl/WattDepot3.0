@@ -3,10 +3,9 @@
  */
 package org.wattdepot3.server.restlet;
 
-import java.util.ArrayList;
-
 import org.wattdepot3.datamodel.SensorGroup;
-import org.wattdepot3.restlet.SensorGroupsResouce;
+import org.wattdepot3.datamodel.SensorGroupList;
+import org.wattdepot3.restlet.SensorGroupsResource;
 
 /**
  * SensorGroupsServerResource - Handles the SensorGroups HTTP API
@@ -16,7 +15,7 @@ import org.wattdepot3.restlet.SensorGroupsResouce;
  * 
  */
 public class SensorGroupsServerResource extends WattDepotServerResource implements
-    SensorGroupsResouce {
+    SensorGroupsResource {
 
   /*
    * (non-Javadoc)
@@ -24,11 +23,11 @@ public class SensorGroupsServerResource extends WattDepotServerResource implemen
    * @see org.wattdepot3.restlet.SensorGroupsResouce#retrieve()
    */
   @Override
-  public ArrayList<SensorGroup> retrieve() {
+  public SensorGroupList retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/sensorgroups/");
-    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
+    SensorGroupList ret = new SensorGroupList();
     for (SensorGroup sg : depot.getSensorGroups(groupId)) {
-      ret.add(sg);
+      ret.getGroups().add(sg);
     }
     return ret;
   }

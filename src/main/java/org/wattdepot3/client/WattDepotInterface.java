@@ -9,9 +9,12 @@ import java.util.List;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.MeasurementList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorProcess;
 import org.wattdepot3.exception.IdNotFoundException;
@@ -131,7 +134,7 @@ public interface WattDepotInterface {
   /**
    * @return The defined Locations.
    */
-  public List<Location> getLocations();
+  public LocationList getLocations();
 
   /**
    * @param depository
@@ -145,7 +148,7 @@ public interface WattDepotInterface {
    * @return The Measurements stored in the depository made by the sensor
    *         between start and end.
    */
-  public List<Measurement> getMeasurements(Depository depository, Sensor sensor, Date start,
+  public MeasurementList getMeasurements(Depository depository, Sensor sensor, Date start,
       Date end);
 
   /**
@@ -173,7 +176,7 @@ public interface WattDepotInterface {
   /**
    * @return The defined SensorGroups.
    */
-  public List<SensorGroup> getSensorGroups();
+  public SensorGroupList getSensorGroups();
 
   /**
    * Retrieves the SensorModel with the given id from the WattDepot Server.

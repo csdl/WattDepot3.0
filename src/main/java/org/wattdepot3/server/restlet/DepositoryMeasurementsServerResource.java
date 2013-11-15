@@ -4,7 +4,6 @@
 package org.wattdepot3.server.restlet;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -13,6 +12,7 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.MeasurementList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
@@ -52,11 +52,11 @@ public class DepositoryMeasurementsServerResource extends WattDepotServerResourc
    * @see org.wattdepot3.restlet.DepositoryMeasurementsResource#retrieve()
    */
   @Override
-  public ArrayList<Measurement> retrieve() {
+  public MeasurementList retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId
         + "}/measurements/?sensor={" + sensorId + "}&start={" + start + "}&end={" + end + "}");
     if (start != null && end != null) {
-      ArrayList<Measurement> ret = new ArrayList<Measurement>();
+      MeasurementList ret = new MeasurementList();
       try {
         Depository depository = depot.getWattDeposiory(depositoryId, groupId);
         if (depository != null) {
@@ -66,7 +66,7 @@ public class DepositoryMeasurementsServerResource extends WattDepotServerResourc
             Date endDate = DateConvert.parseCalStringToDate(end);
             if (startDate != null && endDate != null) {
               for (Measurement meas : depository.getMeasurements(sensor, startDate, endDate)) {
-                ret.add(meas);
+                ret.getMeasurements().add(meas);
               }
             }
             else {

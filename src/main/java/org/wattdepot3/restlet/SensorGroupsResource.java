@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorGroupList;
 
 /**
  * SensorGroupsResouce - HTTP Interface for SensorGroups.
@@ -14,13 +12,13 @@ import org.wattdepot3.datamodel.SensorGroup;
  * @author Cam Moore
  * 
  */
-public interface SensorGroupsResouce {
+public interface SensorGroupsResource {
   /**
    * Defines the GET /wattdepot/sensorgroups/ API call.
    * 
    * @return a List of the defined SensorGroups.
    */
   @Get("json") // Use JSON as transport encoding.
-  public ArrayList<SensorGroup> retrieve();
+  public SensorGroupList retrieve();
 
 }
