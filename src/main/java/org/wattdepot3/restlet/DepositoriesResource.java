@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.Depository;
+import org.wattdepot3.datamodel.DepositoryList;
 
 /**
  * LocationsResource - The HTTP API for Locations.
@@ -17,11 +15,11 @@ import org.wattdepot3.datamodel.Depository;
 public interface DepositoriesResource {
 
   /**
-   * Defines the GET /wattdepot/depositories/ API call.
+   * Defines the GET /wattdepot/{group_id}/depositories/ API call.
    * 
    * @return a List of the defined Locations.
    */
-  @Get("json")  // Return data as JSON
-  public ArrayList<Depository> retrieve();
+  @Get
+  public DepositoryList retrieve();
 
 }

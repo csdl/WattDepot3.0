@@ -121,7 +121,7 @@ public class Depository {
   /**
    * @return A list of the Sensors contributing Measurements to this depository.
    */
-  public List<Sensor> getSensors() {
+  public List<Sensor> listSensors() {
     throw new RuntimeException("Not implemented.");
   }
 

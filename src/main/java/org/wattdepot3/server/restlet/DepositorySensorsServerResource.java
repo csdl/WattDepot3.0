@@ -47,7 +47,7 @@ public class DepositorySensorsServerResource extends WattDepotServerResource imp
     try {
       depository = depot.getWattDeposiory(depositoryId, groupId);
       if (depository != null) {
-        return depository.getSensors();
+        return depository.listSensors();
       }
       else {
         setStatus(Status.CLIENT_ERROR_BAD_REQUEST, depositoryId + " not defined.");

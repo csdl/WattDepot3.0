@@ -3,6 +3,7 @@
  */
 package org.wattdepot3.server;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.restlet.Component;
 import org.restlet.Server;
@@ -44,7 +45,8 @@ public class WattDepotComponent extends Component {
     // configure the JacksonRepresentation so that it uses ISO-8601 compliant notation
     MeasurementImpl source = new MeasurementImpl();
     Representation rep = app.getConverterService().toRepresentation(source);
-    ((JacksonRepresentation) rep).getObjectMapper().configure(
+    ObjectMapper mapper = ((JacksonRepresentation) rep).getObjectMapper();
+    mapper.configure(
         SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     getDefaultHost().attachDefault(app);
     app.setComponent(this);

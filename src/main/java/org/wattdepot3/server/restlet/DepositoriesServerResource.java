@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.server.restlet;
 
-import java.util.ArrayList;
-
 import org.wattdepot3.datamodel.Depository;
-import org.wattdepot3.datamodel.UserGroup;
+import org.wattdepot3.datamodel.DepositoryList;
 import org.wattdepot3.restlet.DepositoriesResource;
 
 /**
@@ -24,15 +22,13 @@ public class DepositoriesServerResource extends WattDepotServerResource implemen
    * @see org.wattdepot3.restlet.DepositorysResource#retrieve()
    */
   @Override
-  public ArrayList<Depository> retrieve() {
+  public DepositoryList retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depositories/");
-    ArrayList<Depository> ret = new ArrayList<Depository>();
-    UserGroup fake = new UserGroup(groupId);
+    DepositoryList list = new DepositoryList();
     for (Depository d : depot.getWattDepositories(groupId)) {
-      d.setOwner(fake);
-      ret.add(d);
+      list.getDepositories().add(d);
     }
-    return ret;
+    return list;
   }
 
 }

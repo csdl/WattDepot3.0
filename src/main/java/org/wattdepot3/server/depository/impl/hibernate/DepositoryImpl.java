@@ -90,7 +90,7 @@ public class DepositoryImpl extends Depository {
    * @see org.wattdepot3.datamodel.Depository#getSensors()
    */
   @Override
-  public List<Sensor> getSensors() {
+  public List<Sensor> listSensors() {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     @SuppressWarnings("unchecked")
