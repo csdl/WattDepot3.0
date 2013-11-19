@@ -97,7 +97,10 @@ public class LocationServerResource extends WattDepotServerResource implements L
     try {
       depot.deleteLocation(locationId, groupId);
     }
-    catch (IdNotFoundException | MissMatchedOwnerException e) {
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
+    catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
     }
   }

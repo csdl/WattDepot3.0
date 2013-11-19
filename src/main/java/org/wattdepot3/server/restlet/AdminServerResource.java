@@ -14,7 +14,6 @@ import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
-import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
@@ -33,16 +32,6 @@ import org.wattdepot3.datamodel.UserInfo;
  * 
  */
 public class AdminServerResource extends WattDepotServerResource {
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.restlet.resource.Resource#doInit()
-   */
-  @Override
-  protected void doInit() throws ResourceException {
-    super.doInit();
-  }
 
   /**
    * @return The admin user interface as an HTML Representation.

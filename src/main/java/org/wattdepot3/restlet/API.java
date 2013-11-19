@@ -35,6 +35,12 @@ public class API {
   /** The URI to get all the Measurements. */
   public static final String MEASUREMENTS_URI = "measurements/";
   
+  /** The URI to manipulate a given MeasurementType. */
+  public static final String MEASUREMENT_TYPE_URI = "measurementtype/";
+
+  /** The URI to get all the MeasurementTypes. */
+  public static final String MEASUREMENT_TYPES_URI = "measurementtypes/";
+  
   /** The URI to manipulate a given Sensor. */
   public static final String SENSOR_URI = "sensor/";
 

@@ -3,6 +3,8 @@
  */
 package org.wattdepot3.datamodel;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * Location - position on the earth.
  * 
@@ -10,8 +12,10 @@ package org.wattdepot3.datamodel;
  * 
  */
 public class Location {
-  /** A unique id for the Location. */
-  private String id;
+  /** The name for the Location. */
+  private String name;
+  /** The unique slug for the locations used in URIs. */
+  private String slug;
   /** The Location's decimal Latitude. */
   private Double latitude;
   /** The Location's decimal Longitude. */
@@ -46,12 +50,27 @@ public class Location {
    */
   public Location(String uniqueId, Double latitude, Double longitude, Double altitude,
       String description, UserGroup owner) {
-    this.id = uniqueId;
+    this.name = uniqueId;
+    this.slug = Slug.slugify(this.name);
     this.latitude = latitude;
     this.longitude = longitude;
     this.altitude = altitude;
     this.description = description;
     this.owner = owner;
+  }
+
+  /**
+   * @return the slug
+   */
+  public String getSlug() {
+    return slug;
+  }
+
+  /**
+   * @param slug the slug to set
+   */
+  public void setSlug(String slug) {
+    this.slug = slug;
   }
 
   /*
@@ -71,12 +90,12 @@ public class Location {
       return false;
     }
     Location other = (Location) obj;
-    if (id == null) {
-      if (other.id != null) {
+    if (name == null) {
+      if (other.name != null) {
         return false;
       }
     }
-    else if (!id.equals(other.id)) {
+    else if (!name.equals(other.name)) {
       return false;
     }
     if (altitude == null) {
@@ -132,7 +151,7 @@ public class Location {
    * @return the id
    */
   public String getId() {
-    return id;
+    return name;
   }
 
   /**
@@ -210,7 +229,7 @@ public class Location {
    *          the id to set
    */
   public void setId(String id) {
-    this.id = id;
+    this.name = id;
   }
 
   /**

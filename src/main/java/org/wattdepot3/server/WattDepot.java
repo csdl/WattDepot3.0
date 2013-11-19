@@ -6,13 +6,17 @@ package org.wattdepot3.server;
 import java.util.List;
 import java.util.Set;
 
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
+
+import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorProcess;
-import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
@@ -27,6 +31,35 @@ import org.wattdepot3.exception.UniqueIdException;
  * 
  */
 public abstract class WattDepot {
+
+  /** The name of the Power MeasurementType. */
+  public static final String POWER_TYPE_NAME = "Power";
+  /** The name of the Energy MeasurementType. */
+  public static final String ENERGY_TYPE_NAME = "Energy";
+
+  /**
+   * Ensures the base set of MeasurementTypes are defined in WattDepot.
+   */
+  public void initializeMeasurementTypes() {
+    MeasurementType t = getMeasurementType(POWER_TYPE_NAME);
+    if (t == null) {
+      try {
+        defineMeasurementType(POWER_TYPE_NAME, SI.WATT.toString());
+      }
+      catch (UniqueIdException e) {
+        e.printStackTrace();
+      }
+    }
+    t = getMeasurementType(ENERGY_TYPE_NAME);
+    if (t == null) {
+      try {
+        defineMeasurementType(ENERGY_TYPE_NAME, SI.WATT.times(NonSI.HOUR).toString());
+      }
+      catch (UniqueIdException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 
   /**
    * Defines a new Location in WattDepot.
@@ -49,6 +82,21 @@ public abstract class WattDepot {
    */
   public abstract Location defineLocation(String id, Double latitude, Double longitude,
       Double altitude, String description, UserGroup owner) throws UniqueIdException;
+
+  /**
+   * Defines a new MeasurementType in WattDepot.
+   * 
+   * @param name
+   *          the name of the MeasurementType.
+   * @param units
+   *          the units for the MeasurementType. Must be a
+   *          javax.measure.unit.Unit toString() value.
+   * @return the defined MeasurementType.
+   * @throws UniqueIdException
+   *           if the slug derived from name is already defined.
+   */
+  public abstract MeasurementType defineMeasurementType(String name, String units)
+      throws UniqueIdException;
 
   /**
    * @param id
@@ -208,6 +256,16 @@ public abstract class WattDepot {
       MissMatchedOwnerException;
 
   /**
+   * Deletes the given measurement type.
+   * 
+   * @param slug
+   *          The unique id for the MeasurementType to delete.
+   * @throws IdNotFoundException
+   *           if the slug is not a known MeasurementType.
+   */
+  public abstract void deleteMeasurementType(String slug) throws IdNotFoundException;
+
+  /**
    * Deletes the given Sensor.
    * 
    * @param id
@@ -316,6 +374,18 @@ public abstract class WattDepot {
    *           if the groupId doesn't match the owner of the location.
    */
   public abstract Location getLocation(String id, String groupId) throws MissMatchedOwnerException;
+
+  /**
+   * @param slug
+   *          The unique id for the MeasurementType.
+   * @return The MeasurementType with the given slug.
+   */
+  public abstract MeasurementType getMeasurementType(String slug);
+
+  /**
+   * @return A List of the defined MeasurementTypes.
+   */
+  public abstract List<MeasurementType> getMeasurementTypes();
 
   /**
    * @param groupId
@@ -518,7 +588,16 @@ public abstract class WattDepot {
   public abstract Location updateLocation(Location loc);
 
   /**
-   * Updates the given location in the persistent store.
+   * Updates the given measurement type in the persistent store.
+   * 
+   * @param type
+   *          The updated MeasurementType.
+   * @return The updated MeasurementType from persistence.
+   */
+  public abstract MeasurementType updateMeasurementType(MeasurementType type);
+
+  /**
+   * Updates the given sensor in the persistent store.
    * 
    * @param sensor
    *          The updated Sensor.

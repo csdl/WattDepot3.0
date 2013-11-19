@@ -5,6 +5,8 @@ package org.wattdepot3.server.depository.impl.hibernate;
 
 import java.sql.Date;
 
+import javax.measure.unit.Unit;
+
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.Sensor;
@@ -48,11 +50,11 @@ public class MeasurementImpl extends Measurement {
    *          The time of the measurement.
    * @param value
    *          The value measured.
-   * @param measurementType
+   * @param units
    *          The type of the measurement.
    */
-  public MeasurementImpl(Sensor sensor, Date timestamp, Double value, String measurementType) {
-    super(sensor, timestamp, value, measurementType);
+  public MeasurementImpl(Sensor sensor, Date timestamp, Double value, Unit<?> units) {
+    super(sensor, timestamp, value, units);
   }
 
   /**
@@ -62,7 +64,7 @@ public class MeasurementImpl extends Measurement {
    *          the Measurement to clone.
    */
   public MeasurementImpl(Measurement meas) {
-    super(meas.getSensor(), meas.getDate(), meas.getValue(), meas.getMeasurementType());
+    super(meas.getSensor(), meas.getDate(), meas.getValue(), meas.units());
   }
 
 

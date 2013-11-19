@@ -5,6 +5,11 @@ package org.wattdepot3.datamodel;
 
 import java.util.Date;
 
+import javax.measure.unit.Unit;
+
+import org.jscience.physics.amount.Amount;
+
+//import javax.measure.unit.Unit;
 
 /**
  * Measurement - represents a measurement from a sensor.
@@ -18,7 +23,8 @@ public class Measurement {
   private Sensor sensor;
   private Date timestamp;
   private Double value;
-  private String measurementType;
+  private Amount<?> amount;
+  private Unit<?> units;
 
   /**
    * Hide the default constructor.
@@ -34,14 +40,15 @@ public class Measurement {
    *          The time of the measurement.
    * @param value
    *          The value measured.
-   * @param measurementType
+   * @param units
    *          The type of the measurement.
    */
-  public Measurement(Sensor sensor, Date timestamp, Double value, String measurementType) {
+  public Measurement(Sensor sensor, Date timestamp, Double value, Unit<?> units) {
     this.sensor = sensor;
-    this.timestamp = timestamp;
-    this.value = value;
-    this.measurementType = measurementType;
+    this.timestamp = new Date(timestamp.getTime());
+    this.amount = Amount.valueOf(value, units);
+    this.value = amount.getEstimatedValue();
+    this.units = units;
   }
 
   /**
@@ -52,7 +59,8 @@ public class Measurement {
   }
 
   /**
-   * @param id the id to set
+   * @param id
+   *          the id to set
    */
   public void setId(Long id) {
     this.id = id;
@@ -75,12 +83,12 @@ public class Measurement {
       return false;
     }
     Measurement other = (Measurement) obj;
-    if (measurementType == null) {
-      if (other.measurementType != null) {
+    if (units == null) {
+      if (other.units != null) {
         return false;
       }
     }
-    else if (!measurementType.equals(other.measurementType)) {
+    else if (!units.equals(other.units)) {
       return false;
     }
     if (sensor == null) {
@@ -114,7 +122,7 @@ public class Measurement {
    * @return the measurementType
    */
   public String getMeasurementType() {
-    return measurementType;
+    return amount.getUnit().toString();
   }
 
   /**
@@ -128,7 +136,7 @@ public class Measurement {
    * @return the timestamp
    */
   public Date getDate() {
-    return timestamp;
+    return new Date(timestamp.getTime());
   }
 
   /**
@@ -147,7 +155,7 @@ public class Measurement {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + ((measurementType == null) ? 0 : measurementType.hashCode());
+    result = prime * result + ((units == null) ? 0 : units.hashCode());
     result = prime * result + ((sensor == null) ? 0 : sensor.hashCode());
     result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
     result = prime * result + ((value == null) ? 0 : value.hashCode());
@@ -155,28 +163,46 @@ public class Measurement {
   }
 
   /**
-   * @param measurementType the measurementType to set
+   * The String measurementType must be a javax.measure.unit.Unit toString()
+   * value.
+   * 
+   * @see http://jscience.org/api/javax/measure/unit/NonSI.html or
+   *      http://jscience.org/api/javax/measure/unit/SI.html
+   * 
+   * @param measurementType
+   *          the measurementType to set
    */
   public void setMeasurementType(String measurementType) {
-    this.measurementType = measurementType;
+    this.units = Unit.valueOf(measurementType);
+    this.amount = Amount.valueOf(this.value, this.units);
   }
 
   /**
-   * @param sensor the sensor to set
+   * @return The units for this measurement.
+   */
+  public Unit<?> units() {
+    return this.units;
+  }
+
+  /**
+   * @param sensor
+   *          the sensor to set
    */
   public void setSensor(Sensor sensor) {
     this.sensor = sensor;
   }
 
   /**
-   * @param timestamp the timestamp to set
+   * @param timestamp
+   *          the timestamp to set
    */
   public void setDate(Date timestamp) {
-    this.timestamp = timestamp;
+    this.timestamp = new Date(timestamp.getTime());
   }
 
   /**
-   * @param value the value to set
+   * @param value
+   *          the value to set
    */
   public void setValue(Double value) {
     this.value = value;
@@ -190,7 +216,13 @@ public class Measurement {
   @Override
   public String toString() {
     return "Measurement [sensor=" + sensor + ", timestamp=" + timestamp + ", value=" + value
-        + ", measurementType=" + measurementType + "]";
+        + ", units=" + units + "]";
   }
 
+  // /**
+  // * @return The Units for this measurement.
+  // */
+  // public Unit<?> getType() {
+  // return amount.getUnit();
+  // }
 }

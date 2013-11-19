@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.measure.unit.Unit;
+
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
@@ -23,6 +26,7 @@ import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.server.WattDepot;
+import org.wattdepot3.util.Slug;
 
 /**
  * WattDepotImpl - Hibernate implementation of the WattDepot abstract class.
@@ -44,7 +48,7 @@ public class WattDepotImpl extends WattDepot {
       catch (UniqueIdException e1) {
         // what do we do here?
         e1.printStackTrace();
-      }      
+      }
     }
     else {
       updateUserPassword(adminPassword);
@@ -56,6 +60,7 @@ public class WattDepotImpl extends WattDepot {
       }
       catch (UniqueIdException e) {
         // what do we do here?
+        e.printStackTrace();
       }
     }
     else {
@@ -70,6 +75,7 @@ public class WattDepotImpl extends WattDepot {
       }
       catch (UniqueIdException e) {
         // what do we do here?
+        e.printStackTrace();
       }
     }
     else {
@@ -105,6 +111,31 @@ public class WattDepotImpl extends WattDepot {
     session.getTransaction().commit();
     session.close();
     return l;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#defineMeasurementType(java.lang.String,
+   * java.lang.String)
+   */
+  @Override
+  public MeasurementType defineMeasurementType(String name, String units) throws UniqueIdException {
+    String slug = Slug.slugify(name);
+    MeasurementType mt = null;
+    mt = getMeasurementType(slug);
+    if (mt != null) {
+      throw new UniqueIdException(slug + " is already a MeasurementType id.");
+    }
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    Unit<?> unit = Unit.valueOf(units);
+    mt = new MeasurementType(name, unit);
+    session.save(mt);
+    session.getTransaction().commit();
+    session.close();
+    return mt;
   }
 
   /*
@@ -338,6 +369,27 @@ public class WattDepotImpl extends WattDepot {
   /*
    * (non-Javadoc)
    * 
+   * @see
+   * org.wattdepot3.server.WattDepot#deleteMeasurementType(java.lang.String)
+   */
+  @Override
+  public void deleteMeasurementType(String slug) throws IdNotFoundException {
+    MeasurementType mt = getMeasurementType(slug);
+    if (mt != null) {
+      Session session = Manager.getFactory().openSession();
+      session.beginTransaction();
+      session.delete(mt);
+      session.getTransaction().commit();
+      session.close();
+    }
+    else {
+      throw new IdNotFoundException(slug + " was not found.");
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.server.WattDepot#deleteSensor(java.lang.String,
    * java.lang.String)
    */
@@ -459,7 +511,9 @@ public class WattDepotImpl extends WattDepot {
     session.close();
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.server.WattDepot#deleteUserPassword(java.lang.String)
    */
   @Override
@@ -550,6 +604,42 @@ public class WattDepotImpl extends WattDepot {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
         ret.add(d);
       }
+    }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getMeasurementType(java.lang.String)
+   */
+  @Override
+  public MeasurementType getMeasurementType(String slug) {
+    for (MeasurementType mt : getMeasurementTypes()) {
+      if (mt.getSlug().equals(slug)) {
+        return mt;
+      }
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getMeasurementTypes()
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public List<MeasurementType> getMeasurementTypes() {
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    @SuppressWarnings("rawtypes")
+    List result = session.createQuery("from MeasurementType").list();
+    session.getTransaction().commit();
+    session.close();
+    ArrayList<MeasurementType> ret = new ArrayList<MeasurementType>();
+    for (MeasurementType mt : (List<MeasurementType>) result) {
+      ret.add(mt);
     }
     return ret;
   }
@@ -1021,6 +1111,24 @@ public class WattDepotImpl extends WattDepot {
    * (non-Javadoc)
    * 
    * @see
+   * org.wattdepot3.server.WattDepot#updateMeasurementType(org.wattdepot3.datamodel
+   * .MeasurementType)
+   */
+  @Override
+  public MeasurementType updateMeasurementType(MeasurementType type) {
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    session.saveOrUpdate(type);
+    session.getTransaction().commit();
+    session.close();
+
+    return type;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.wattdepot3.server.WattDepot#updateSensor(org.wattdepot3.datamodel.Sensor
    * )
    */
@@ -1124,8 +1232,12 @@ public class WattDepotImpl extends WattDepot {
     return user;
   }
 
-  /* (non-Javadoc)
-   * @see org.wattdepot3.server.WattDepot#updateUserPassword(org.wattdepot3.datamodel.UserPassword)
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateUserPassword(org.wattdepot3.datamodel
+   * .UserPassword)
    */
   @Override
   public UserPassword updateUserPassword(UserPassword password) {

@@ -9,6 +9,7 @@ import java.util.List;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.exception.NoMeasurementException;
+import org.wattdepot3.util.Slug;
 
 /**
  * Depository - Stores measurements from Sensors of the matching measurement
@@ -20,7 +21,9 @@ import org.wattdepot3.exception.NoMeasurementException;
 public class Depository {
   /** Name of the Depository. */
   protected String name;
-  /** Measurement type stored in the Depository. */
+  /** The slug used in URIs. */
+  protected String slug;
+  /** Type of measurements stored in the Depository. */
   protected String measurementType;
   /** The owner of this depository. */
   protected UserGroup owner;
@@ -44,6 +47,7 @@ public class Depository {
    */
   public Depository(String name, String measurementType, UserGroup owner) {
     this.name = name;
+    this.slug = Slug.slugify(name);
     this.measurementType = measurementType;
     this.owner = owner;
   }
@@ -119,10 +123,10 @@ public class Depository {
   }
 
   /**
-   * @return A list of the Sensors contributing Measurements to this depository.
+   * @return the slug
    */
-  public List<Sensor> listSensors() {
-    throw new RuntimeException("Not implemented.");
+  public String getSlug() {
+    return slug;
   }
 
   /**
@@ -229,6 +233,13 @@ public class Depository {
   }
 
   /**
+   * @return A list of the Sensors contributing Measurements to this depository.
+   */
+  public List<Sensor> listSensors() {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
    * @param meas
    *          The measurement to store.
    * @throws MeasurementTypeException
@@ -261,6 +272,13 @@ public class Depository {
    */
   public void setOwner(UserGroup owner) {
     this.owner = owner;
+  }
+
+  /**
+   * @param slug the slug to set
+   */
+  public void setSlug(String slug) {
+    this.slug = slug;
   }
 
   /*

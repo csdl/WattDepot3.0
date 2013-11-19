@@ -5,7 +5,6 @@ package org.wattdepot3.client;
 
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
-import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.IdNotFoundException;
 
@@ -63,7 +62,7 @@ public class TestWattDepotClient {
     }
     
     try {
-      Sensor s = client.getSensor("badSensor");
+      client.getSensor("badSensor");
     }
     catch (IdNotFoundException e) {
       // TODO Auto-generated catch block

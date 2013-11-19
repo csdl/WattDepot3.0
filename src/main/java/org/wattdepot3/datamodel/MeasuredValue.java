@@ -70,14 +70,14 @@ public class MeasuredValue {
    * @return the date
    */
   public Date getDate() {
-    return date;
+    return new Date(date.getTime());
   }
 
   /**
    * @param date the date to set
    */
   public void setDate(Date date) {
-    this.date = date;
+    this.date = new Date(date.getTime());
   }
 
 }

@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.measure.unit.NonSI;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.resource.ClientResource;
@@ -38,8 +42,9 @@ public class MeasurementSource {
     Sensor s = new Sensor("sensor1", "uri1", null, null, null);
     Date now = new Date();
     System.out.println("Setting time to " + now.getTime());
-    Measurement m = new Measurement(s, new Timestamp(now.getTime()), Math.random() * 1000,
-        "energy");
+    Unit<?> watthour = SI.WATT.times(NonSI.HOUR);
+    System.out.println(watthour);
+    Measurement m = new Measurement(s, new Timestamp(now.getTime()), Math.random() * 1000, watthour);
     client.put(m);
   }
 

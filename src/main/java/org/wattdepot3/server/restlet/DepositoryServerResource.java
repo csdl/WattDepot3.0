@@ -87,7 +87,10 @@ public class DepositoryServerResource extends WattDepotServerResource implements
     try {
       depot.deleteWattDepository(depositoryId, groupId);
     }
-    catch (IdNotFoundException | MissMatchedOwnerException e) {
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
+    catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
     }
   }

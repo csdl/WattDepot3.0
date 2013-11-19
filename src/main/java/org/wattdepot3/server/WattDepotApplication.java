@@ -12,8 +12,6 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import org.restlet.security.ChallengeAuthenticator;
-import org.wattdepot3.datamodel.UserGroup;
-import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
 import org.wattdepot3.server.restlet.AdminServerResource;
 import org.wattdepot3.server.restlet.DepositoriesServerResource;
@@ -24,6 +22,8 @@ import org.wattdepot3.server.restlet.DepositoryServerResource;
 import org.wattdepot3.server.restlet.DepositoryValueServerResource;
 import org.wattdepot3.server.restlet.LocationServerResource;
 import org.wattdepot3.server.restlet.LocationsServerResource;
+import org.wattdepot3.server.restlet.MeasurementTypeServerResource;
+import org.wattdepot3.server.restlet.MeasurementTypesServerResource;
 import org.wattdepot3.server.restlet.SensorGroupServerResource;
 import org.wattdepot3.server.restlet.SensorGroupsServerResource;
 import org.wattdepot3.server.restlet.SensorModelServerResource;
@@ -58,6 +58,7 @@ public class WattDepotApplication extends Application {
     setAuthor("Cam Moore");
     // Use settings to instantiate the right WattDepot instance.
     depot = new WattDepotImpl();
+    depot.initializeMeasurementTypes();
     sessions = new HashMap<String, WebSession>();
   }
 
@@ -83,18 +84,18 @@ public class WattDepotApplication extends Application {
    */
   public WebSession createWebSession(String username, String password) {
     WebSession ret = null;
-    UserInfo info = depot.getUser(username);
-    if (info != null) {
-      UserGroup group = depot.getUsersGroup(info);
-      if (group != null) {
-        // if (password.equals(info.getPassword())) {
-        // String id = "" + info.hashCode() + group.hashCode() + new
-        // Date().getTime();
-        // ret = new WebSession(id, info.getId(), group.getId());
-        // sessions.put(id, ret);
-        // }
-      }
-    }
+//    UserInfo info = depot.getUser(username);
+//    if (info != null) {
+//      UserGroup group = depot.getUsersGroup(info);
+//      if (group != null) {
+//         if (password.equals(info.getPassword())) {
+//         String id = "" + info.hashCode() + group.hashCode() + new
+//         Date().getTime();
+//         ret = new WebSession(id, info.getId(), group.getId());
+//         sessions.put(id, ret);
+//         }
+//      }
+//    }
     return ret;
   }
 
@@ -153,6 +154,8 @@ public class WattDepotApplication extends Application {
     router.attach("/webroot/", directory);
     // router.attach("/wattdepot/", LoginPageServerResource.class);
     // router.attach("/wattdepot/login/", LoginServerResource.class);
+    router.attach("/wattdepot/measurementtype/{measurementtype_id}", MeasurementTypeServerResource.class);
+    router.attach("/wattdepot/measurementtypes/", MeasurementTypesServerResource.class);
     router.attach("/wattdepot/{group_id}/", AdminServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/", DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}",

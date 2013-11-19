@@ -39,7 +39,7 @@ public class UserPasswordServerResource extends WattDepotServerResource implemen
    */
   @Override
   public UserPassword retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/user/{" + userId + "}");
+    System.out.println("GET /wattdepot/{" + groupId + "}/userpassword/{" + userId + "}");
     UserPassword user = depot.getUserPassword(userId);
     if (user == null) {
       setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "User " + userId + " is not defined.");
@@ -61,7 +61,7 @@ public class UserPasswordServerResource extends WattDepotServerResource implemen
   @Override
   public void store(UserPassword user) {
     System.out.println("PUT /wattdepot/{" + groupId + "}/userpassword/ with " + user);
-    if (!depot.getUsers().contains(user)) {
+    if (!depot.getUserIds().contains(user.getId())) {
       try {
         depot.defineUserPassword(user.getId(), user.getPlainText());
       }

@@ -15,7 +15,7 @@ import org.wattdepot3.datamodel.LocationList;
 public interface LocationsResource {
 
   /**
-   * Defines the GET /wattdepot/locations/ API call.
+   * Defines the GET /wattdepot/{group_id}/locations/ API call.
    * 
    * @return a List of the defined Locations.
    */

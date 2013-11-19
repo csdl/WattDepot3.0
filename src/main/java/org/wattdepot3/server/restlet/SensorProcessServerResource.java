@@ -75,8 +75,11 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
           depot.defineSensorProcess(sensorprocess.getId(), sensorprocess.getSensor(),
               sensorprocess.getPollingInterval(), sensorprocess.getDepositoryId(), owner);
         }
-        catch (UniqueIdException | MissMatchedOwnerException e) {
-          setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+        catch (UniqueIdException e) {
+          setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+        }
+        catch (MissMatchedOwnerException e) {
+          setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
         }
       }
       else {
@@ -99,7 +102,10 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
     try {
       depot.deleteSensorProcess(sensorProcessId, groupId);
     }
-    catch (IdNotFoundException | MissMatchedOwnerException e) {
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
+    catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
     }
   }

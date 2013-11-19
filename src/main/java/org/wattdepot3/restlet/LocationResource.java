@@ -17,7 +17,7 @@ import org.wattdepot3.datamodel.Location;
 public interface LocationResource {
 
   /**
-   * Defines GET /wattdepot/location/{location_id} API call.
+   * Defines GET /wattdepot/{group_id}/location/{location_id} API call.
    * 
    * @return The Location with the given id. The id is sent in the request.
    */
@@ -25,7 +25,7 @@ public interface LocationResource {
   public Location retrieve();
 
   /**
-   * Defines the PUT /wattdepot/location/ API call.
+   * Defines the PUT /wattdepot/{group_id}/location/ API call.
    * 
    * @param location
    *          The Location to store.
@@ -34,7 +34,7 @@ public interface LocationResource {
   public void store(Location location);
 
   /**
-   * Defined the DEL /wattdepot/location/{location_id} API call. The id is sent
+   * Defined the DEL /wattdepot/{group_id}/location/{location_id} API call. The id is sent
    * in the request.
    */
   @Delete

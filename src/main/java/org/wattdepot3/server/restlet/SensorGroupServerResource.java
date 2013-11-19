@@ -75,8 +75,11 @@ public class SensorGroupServerResource extends WattDepotServerResource implement
         try {
           depot.defineSensorGroup(sensorgroup.getId(), sensorgroup.getSensors(), owner);
         }
-        catch (UniqueIdException | MissMatchedOwnerException e) {
-          setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+        catch (UniqueIdException e) {
+          setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+        }
+        catch (MissMatchedOwnerException e) {
+          setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
         }
       }
       else {
@@ -99,7 +102,10 @@ public class SensorGroupServerResource extends WattDepotServerResource implement
     try {
       depot.deleteSensorGroup(sensorGroupId, groupId);
     }
-    catch (IdNotFoundException | MissMatchedOwnerException e) {
+    catch (IdNotFoundException e) {
+      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
+    }
+    catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
     }
   }
