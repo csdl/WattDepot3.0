@@ -4,7 +4,6 @@
 package org.wattdepot3.client;
 
 import java.util.Date;
-import java.util.List;
 
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
@@ -17,6 +16,7 @@ import org.wattdepot3.datamodel.MeasurementTypeList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorGroupList;
+import org.wattdepot3.datamodel.SensorList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorModelList;
 import org.wattdepot3.datamodel.SensorProcess;
@@ -229,7 +229,7 @@ public interface WattDepotInterface {
   /**
    * @return The defined Sensors.
    */
-  public List<Sensor> getSensors();
+  public SensorList getSensors();
 
   /**
    * @param depository

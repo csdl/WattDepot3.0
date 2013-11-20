@@ -4,7 +4,6 @@
 package org.wattdepot3.client;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
@@ -18,6 +17,7 @@ import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.LocationList;
+import org.wattdepot3.datamodel.MeasuredValue;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementList;
 import org.wattdepot3.datamodel.MeasurementType;
@@ -25,6 +25,7 @@ import org.wattdepot3.datamodel.MeasurementTypeList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorGroupList;
+import org.wattdepot3.datamodel.SensorList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorModelList;
 import org.wattdepot3.datamodel.SensorProcess;
@@ -39,8 +40,11 @@ import org.wattdepot3.restlet.DepositoriesResource;
 import org.wattdepot3.restlet.DepositoryMeasurementResource;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 import org.wattdepot3.restlet.DepositoryResource;
+import org.wattdepot3.restlet.DepositoryValueResource;
 import org.wattdepot3.restlet.LocationResource;
 import org.wattdepot3.restlet.LocationsResource;
+import org.wattdepot3.restlet.MeasurementTypeResource;
+import org.wattdepot3.restlet.MeasurementTypesResource;
 import org.wattdepot3.restlet.SensorGroupResource;
 import org.wattdepot3.restlet.SensorGroupsResource;
 import org.wattdepot3.restlet.SensorModelResource;
@@ -48,6 +52,7 @@ import org.wattdepot3.restlet.SensorModelsResource;
 import org.wattdepot3.restlet.SensorProcessResource;
 import org.wattdepot3.restlet.SensorProcessesResource;
 import org.wattdepot3.restlet.SensorResource;
+import org.wattdepot3.restlet.SensorsResource;
 import org.wattdepot3.util.DateConvert;
 
 /**
@@ -114,21 +119,6 @@ public class WattDepotClient implements WattDepotInterface {
     }
   }
 
-  /**
-   * Creates a ClientResource for the given request. Calling code MUST release
-   * the ClientResource when finished.
-   * 
-   * @param requestString
-   *          A String, the request portion of the WattDepot HTTP API, such as "
-   * @return The client resource.
-   */
-  public ClientResource makeClient(String requestString) {
-    Reference reference = new Reference(this.wattDepotUri + requestString);
-    ClientResource client = new ClientResource(reference);
-    client.setChallengeResponse(authentication);
-    return client;
-  }
-
   /*
    * (non-Javadoc)
    * 
@@ -189,6 +179,26 @@ public class WattDepotClient implements WattDepotInterface {
   public void deleteMeasurement(Depository depository, Measurement measurement)
       throws IdNotFoundException {
     throw new RuntimeException("Deletion of Measurements not implemented.");
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.client.WattDepotInterface#deleteMeasurementType(org.wattdepot3
+   * .datamodel.MeasurementType)
+   */
+  @Override
+  public void deleteMeasurementType(MeasurementType type) {
+    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getSlug());
+    MeasurementTypeResource resource = client.wrap(MeasurementTypeResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      e.printStackTrace();
+    }
+    client.release();
   }
 
   /*
@@ -389,6 +399,20 @@ public class WattDepotClient implements WattDepotInterface {
   /*
    * (non-Javadoc)
    * 
+   * @see org.wattdepot3.client.WattDepotInterface#getMeasurementTypes()
+   */
+  @Override
+  public MeasurementTypeList getMeasurementTypes() {
+    ClientResource client = makeClient(API.MEASUREMENT_TYPES_URI);
+    MeasurementTypesResource resource = client.wrap(MeasurementTypesResource.class);
+    MeasurementTypeList ret = resource.retrieve();
+    client.release();
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.client.WattDepotInterface#getSensor(java.lang.String)
    */
   @Override
@@ -455,7 +479,7 @@ public class WattDepotClient implements WattDepotInterface {
     SensorGroupList ret = resource.retrieve();
     client.release();
     return ret;
-    
+
   }
 
   /*
@@ -550,9 +574,12 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getSensors()
    */
   @Override
-  public List<Sensor> getSensors() {
-    // TODO Auto-generated method stub
-    return null;
+  public SensorList getSensors() {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSORS_URI);
+    SensorsResource resource = client.wrap(SensorsResource.class);
+    SensorList ret = resource.retrieve();
+    client.release();
+    return ret;
   }
 
   /*
@@ -565,7 +592,19 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public Double getValue(Depository depository, Sensor sensor, Date timestamp)
       throws NoMeasurementException {
-    // TODO Auto-generated method stub
+    ClientResource client = null;
+    try {
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+          + API.VALUE_URI + "?sensor=" + sensor.getId() + "&timestamp="
+          + DateConvert.convertDate(timestamp));
+      DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
+      MeasuredValue ret = resource.retrieve();
+      client.release();
+      return ret.getValue();
+    }
+    catch (DatatypeConfigurationException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 
@@ -580,7 +619,19 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public Double getValue(Depository depository, Sensor sensor, Date start, Date end)
       throws NoMeasurementException {
-    // TODO Auto-generated method stub
+    ClientResource client = null;
+    try {
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+          + API.VALUE_URI + "?sensor=" + sensor.getId() + "&start="
+          + DateConvert.convertDate(start) + "&end=" + DateConvert.convertDate(end));
+      DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
+      MeasuredValue ret = resource.retrieve();
+      client.release();
+      return ret.getValue();
+    }
+    catch (DatatypeConfigurationException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 
@@ -595,7 +646,20 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public Double getValue(Depository depository, Sensor sensor, Date start, Date end, Long gapSeconds)
       throws NoMeasurementException, MeasurementGapException {
-    // TODO Auto-generated method stub
+    ClientResource client = null;
+    try {
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+          + API.VALUE_URI + "?sensor=" + sensor.getId() + "&start="
+          + DateConvert.convertDate(start) + "&end=" + DateConvert.convertDate(end) + "&gap="
+          + gapSeconds);
+      DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
+      MeasuredValue ret = resource.retrieve();
+      client.release();
+      return ret.getValue();
+    }
+    catch (DatatypeConfigurationException e) {
+      e.printStackTrace();
+    }
     return null;
   }
 
@@ -610,8 +674,35 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public Double getValue(Depository depository, Sensor sensor, Date timestamp, Long gapSeconds)
       throws NoMeasurementException, MeasurementGapException {
-    // TODO Auto-generated method stub
+    ClientResource client = null;
+    try {
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+          + API.VALUE_URI + "?sensor=" + sensor.getId() + "&timestamp="
+          + DateConvert.convertDate(timestamp) + "&gap=" + gapSeconds);
+      DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
+      MeasuredValue ret = resource.retrieve();
+      client.release();
+      return ret.getValue();
+    }
+    catch (DatatypeConfigurationException e) {
+      e.printStackTrace();
+    }
     return null;
+  }
+
+  /**
+   * Creates a ClientResource for the given request. Calling code MUST release
+   * the ClientResource when finished.
+   * 
+   * @param requestString
+   *          A String, the request portion of the WattDepot HTTP API, such as "
+   * @return The client resource.
+   */
+  public ClientResource makeClient(String requestString) {
+    Reference reference = new Reference(this.wattDepotUri + requestString);
+    ClientResource client = new ClientResource(reference);
+    client.setChallengeResponse(authentication);
+    return client;
   }
 
   /*
@@ -675,13 +766,30 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
+   * org.wattdepot3.client.WattDepotInterface#putMeasurementType(org.wattdepot3
+   * .datamodel.MeasurementType)
+   */
+  @Override
+  public void putMeasurementType(MeasurementType type) {
+    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getSlug());
+    MeasurementTypeResource resource = client.wrap(MeasurementTypeResource.class);
+    resource.store(type);
+    client.release();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.wattdepot3.client.WattDepotInterface#putSensor(org.wattdepot3.datamodel
    * .Sensor)
    */
   @Override
   public void putSensor(Sensor sensor) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_URI + sensor.getId());
+    SensorResource resource = client.wrap(SensorResource.class);
+    resource.store(sensor);
+    client.release();
   }
 
   /*
@@ -693,8 +801,10 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putSensorGroup(SensorGroup group) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUP_URI + group.getId());
+    SensorGroupResource resource = client.wrap(SensorGroupResource.class);
+    resource.store(group);
+    client.release();
   }
 
   /*
@@ -706,8 +816,10 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putSensorModel(SensorModel model) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + model.getId());
+    SensorModelResource resource = client.wrap(SensorModelResource.class);
+    resource.store(model);
+    client.release();
   }
 
   /*
@@ -719,8 +831,11 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putSensorProcess(SensorProcess process) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
+        + process.getId());
+    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    resource.store(process);
+    client.release();
   }
 
   /*
@@ -751,13 +866,24 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
+   * org.wattdepot3.client.WattDepotInterface#updateMeasurementType(org.wattdepot3
+   * .datamodel.MeasurementType)
+   */
+  @Override
+  public void updateMeasurementType(MeasurementType type) {
+    putMeasurementType(type);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.wattdepot3.client.WattDepotInterface#updateSensor(org.wattdepot3.datamodel
    * .Sensor)
    */
   @Override
   public void updateSensor(Sensor sensor) {
-    // TODO Auto-generated method stub
-
+    putSensor(sensor);
   }
 
   /*
@@ -769,8 +895,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void updateSensorGroup(SensorGroup group) {
-    // TODO Auto-generated method stub
-
+    putSensorGroup(group);
   }
 
   /*
@@ -782,8 +907,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void updateSensorModel(SensorModel model) {
-    // TODO Auto-generated method stub
-
+    putSensorModel(model);
   }
 
   /*
@@ -795,44 +919,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void updateSensorProcess(SensorProcess process) {
-    // TODO Auto-generated method stub
-
-  }
-
-  /* (non-Javadoc)
-   * @see org.wattdepot3.client.WattDepotInterface#deleteMeasurementType(org.wattdepot3.datamodel.MeasurementType)
-   */
-  @Override
-  public void deleteMeasurementType(MeasurementType type) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  /* (non-Javadoc)
-   * @see org.wattdepot3.client.WattDepotInterface#getMeasurementTypes()
-   */
-  @Override
-  public MeasurementTypeList getMeasurementTypes() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  /* (non-Javadoc)
-   * @see org.wattdepot3.client.WattDepotInterface#putMeasurementType(org.wattdepot3.datamodel.MeasurementType)
-   */
-  @Override
-  public void putMeasurementType(MeasurementType type) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  /* (non-Javadoc)
-   * @see org.wattdepot3.client.WattDepotInterface#updateMeasurementType(org.wattdepot3.datamodel.MeasurementType)
-   */
-  @Override
-  public void updateMeasurementType(MeasurementType type) {
-    // TODO Auto-generated method stub
-    
+    putSensorProcess(process);
   }
 
 }
