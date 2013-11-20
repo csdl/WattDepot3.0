@@ -39,6 +39,10 @@ function getKnownDepository(id) {
     return DEPOSITORIES[id];
 };
 
+function getKnownMeasurementType(id) {
+    return MEASUREMENTTYPES[id];
+};
+
 function buildDepository(id) {
     var depInfo = getKnownDepository(id);
     var owner = getKnownUserGroup(depInfo['ownerId']);
@@ -269,11 +273,12 @@ function deleteUserGroup() {
 // ****************** Depositories **************************
 function putNewDepository() {
     var id = $("input[name='depository_name']").val();
-    var type = $("input[name='depository_type']").val();
+    var selected_type = $("select[name='depository_type']").val();
+    var measType = getKnownMeasurementType(selected_type);
     var owner = getKnownUserGroup(GROUPID);
     var depo = {
         "name" : id,
-        "measurementType" : type,
+        "measurementType" : measType,
         "owner" : owner
     };
     setSelectedTab('depositories');

@@ -12,6 +12,7 @@ import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 import org.jscience.physics.amount.Amount;
+import org.wattdepot3.util.UnitsHelper;
 /**
  * JScience - Testing the JScience classes.
  * 
@@ -58,6 +59,12 @@ public class JScience {
     for (Unit<?> u : NonSI.getInstance().getUnits()) {
       System.out.println(u);
     }
+    
+    System.out.println("WattDepot Measurement Types:");
+    for (String key : UnitsHelper.quantities.keySet()) {
+      System.out.println(key);
+    }
   }
 
+  
 }

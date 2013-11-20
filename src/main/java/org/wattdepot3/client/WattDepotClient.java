@@ -20,11 +20,15 @@ import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementList;
+import org.wattdepot3.datamodel.MeasurementType;
+import org.wattdepot3.datamodel.MeasurementTypeList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.datamodel.SensorModelList;
 import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.SensorProcessList;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MeasurementGapException;
@@ -40,7 +44,9 @@ import org.wattdepot3.restlet.LocationsResource;
 import org.wattdepot3.restlet.SensorGroupResource;
 import org.wattdepot3.restlet.SensorGroupsResource;
 import org.wattdepot3.restlet.SensorModelResource;
+import org.wattdepot3.restlet.SensorModelsResource;
 import org.wattdepot3.restlet.SensorProcessResource;
+import org.wattdepot3.restlet.SensorProcessesResource;
 import org.wattdepot3.restlet.SensorResource;
 import org.wattdepot3.util.DateConvert;
 
@@ -487,9 +493,12 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getSensorModels()
    */
   @Override
-  public List<SensorModel> getSensorModels() {
-    // TODO Auto-generated method stub
-    return null;
+  public SensorModelList getSensorModels() {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODELS_URI);
+    SensorModelsResource resource = client.wrap(SensorModelsResource.class);
+    SensorModelList ret = resource.retrieve();
+    client.release();
+    return ret;
   }
 
   /*
@@ -500,7 +509,24 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorProcess getSensorProcess(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI + id);
+    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    try {
+      SensorProcess ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known SensorProcess. ");
+      }
+      e.printStackTrace();
+    }
+    finally {
+      if (client != null) {
+        client.release();
+      }
+    }
     return null;
   }
 
@@ -510,9 +536,12 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getSensorProcesses()
    */
   @Override
-  public List<SensorProcess> getSensorProcesses() {
-    // TODO Auto-generated method stub
-    return null;
+  public SensorProcessList getSensorProcesses() {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESSES_URI);
+    SensorProcessesResource resource = client.wrap(SensorProcessesResource.class);
+    SensorProcessList ret = resource.retrieve();
+    client.release();
+    return ret;
   }
 
   /*
@@ -768,6 +797,42 @@ public class WattDepotClient implements WattDepotInterface {
   public void updateSensorProcess(SensorProcess process) {
     // TODO Auto-generated method stub
 
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotInterface#deleteMeasurementType(org.wattdepot3.datamodel.MeasurementType)
+   */
+  @Override
+  public void deleteMeasurementType(MeasurementType type) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotInterface#getMeasurementTypes()
+   */
+  @Override
+  public MeasurementTypeList getMeasurementTypes() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotInterface#putMeasurementType(org.wattdepot3.datamodel.MeasurementType)
+   */
+  @Override
+  public void putMeasurementType(MeasurementType type) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotInterface#updateMeasurementType(org.wattdepot3.datamodel.MeasurementType)
+   */
+  @Override
+  public void updateMeasurementType(MeasurementType type) {
+    // TODO Auto-generated method stub
+    
   }
 
 }

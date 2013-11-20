@@ -8,9 +8,9 @@
             <column name="NAME" />
             <generator class="assigned" />
         </id>
-        <property name="measurementType" type="java.lang.String">
+        <many-to-one name="measurementType" class="org.wattdepot3.datamodel.MeasurementType" fetch="join">
             <column name="MEASUREMENTTYPE" />
-        </property>
+        </many-to-one>
         <many-to-one name="owner" class="org.wattdepot3.datamodel.UserGroup" fetch="join">
             <column name="OWNER" />
         </many-to-one>

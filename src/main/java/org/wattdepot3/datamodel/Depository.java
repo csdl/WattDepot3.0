@@ -24,7 +24,7 @@ public class Depository {
   /** The slug used in URIs. */
   protected String slug;
   /** Type of measurements stored in the Depository. */
-  protected String measurementType;
+  protected MeasurementType measurementType;
   /** The owner of this depository. */
   protected UserGroup owner;
 
@@ -45,7 +45,7 @@ public class Depository {
    * @param owner
    *          the owner of the location.
    */
-  public Depository(String name, String measurementType, UserGroup owner) {
+  public Depository(String name, MeasurementType measurementType, UserGroup owner) {
     this.name = name;
     this.slug = Slug.slugify(name);
     this.measurementType = measurementType;
@@ -104,7 +104,7 @@ public class Depository {
   /**
    * @return the measurementType
    */
-  public String getMeasurementType() {
+  public MeasurementType getMeasurementType() {
     return measurementType;
   }
 
@@ -254,7 +254,7 @@ public class Depository {
    * @param measurementType
    *          the measurementType to set
    */
-  public void setMeasurementType(String measurementType) {
+  public void setMeasurementType(MeasurementType measurementType) {
     this.measurementType = measurementType;
   }
 

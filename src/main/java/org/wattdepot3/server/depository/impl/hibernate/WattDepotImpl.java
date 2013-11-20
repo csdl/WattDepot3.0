@@ -323,7 +323,7 @@ public class WattDepotImpl extends WattDepot {
    * java.lang.String, java.lang.String, org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public Depository defineWattDepository(String name, String measurementType, UserGroup owner)
+  public Depository defineWattDepository(String name, MeasurementType measurementType, UserGroup owner)
       throws UniqueIdException {
     Depository d = null;
     try {

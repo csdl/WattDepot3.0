@@ -3,10 +3,8 @@
  */
 package org.wattdepot3.restlet;
 
-import java.util.ArrayList;
-
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.datamodel.SensorModelList;
 
 /**
  * SensorModelsResouce - HTTP Interface for SensorModels.
@@ -14,14 +12,14 @@ import org.wattdepot3.datamodel.SensorModel;
  * @author Cam Moore
  *
  */
-public interface SensorModelsResouce {
+public interface SensorModelsResource {
   /**
    * Defines the GET /wattdepot/sensormodels/ API call.
    * 
    * @return a List of the defined SensorModels.
    */
   @Get("json") // Use JSON as transport encoding.
-  public ArrayList<SensorModel> retrieve();
+  public SensorModelList retrieve();
 
 
 }

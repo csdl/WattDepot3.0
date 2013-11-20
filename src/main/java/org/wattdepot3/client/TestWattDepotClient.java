@@ -43,23 +43,23 @@ public class TestWattDepotClient {
       System.out.println(d.getOwner());
     }
 
-    Depository depo1 = new Depository("test-energy", "energy", null);
-    client.putDepository(depo1);
-    depos = client.getDepositories();
-    for (Depository d : depos.getDepositories()) {
-      System.out.println(d.getName());
-    }
-    try {
-      client.deleteDepository(depo1);
-    }
-    catch (IdNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    depos = client.getDepositories();
-    for (Depository d : depos.getDepositories()) {
-      System.out.println(d.getName());
-    }
+//    Depository depo1 = new Depository("test-energy", "energy", null);
+//    client.putDepository(depo1);
+//    depos = client.getDepositories();
+//    for (Depository d : depos.getDepositories()) {
+//      System.out.println(d.getName());
+//    }
+//    try {
+//      client.deleteDepository(depo1);
+//    }
+//    catch (IdNotFoundException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    }
+//    depos = client.getDepositories();
+//    for (Depository d : depos.getDepositories()) {
+//      System.out.println(d.getName());
+//    }
     
     try {
       client.getSensor("badSensor");

@@ -17,6 +17,7 @@ import org.restlet.resource.Get;
 import org.restlet.security.User;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorModel;
@@ -60,6 +61,7 @@ public class AdminServerResource extends WattDepotServerResource {
     List<SensorModel> sensorModels = depot.getSensorModels(groupId);
     List<SensorGroup> sensorGroups = depot.getSensorGroups(groupId);
     List<SensorProcess> sensorProcesses = depot.getSensorProcesses(groupId);
+    List<MeasurementType> measurementTypes = depot.getMeasurementTypes();
     dataModel.put("users", users);
     dataModel.put("groups", groups);
     dataModel.put("groupId", groupId);
@@ -69,6 +71,7 @@ public class AdminServerResource extends WattDepotServerResource {
     dataModel.put("sensorgroups", sensorGroups);
     dataModel.put("sensormodels", sensorModels);
     dataModel.put("sensorprocesses", sensorProcesses);
+    dataModel.put("measurementtypes", measurementTypes);
     Representation rep = new ClientResource(LocalReference.createClapReference(getClass()
         .getPackage()) + "/Admin.ftl").get();
 

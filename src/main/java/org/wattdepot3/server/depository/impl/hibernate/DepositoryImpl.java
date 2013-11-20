@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
+import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.MeasurementGapException;
@@ -50,7 +51,7 @@ public class DepositoryImpl extends Depository {
    * @param owner
    *          The owner.
    */
-  public DepositoryImpl(String name, String measurementType, UserGroup owner) {
+  public DepositoryImpl(String name, MeasurementType measurementType, UserGroup owner) {
     super(name, measurementType, owner);
   }
 
@@ -358,7 +359,7 @@ public class DepositoryImpl extends Depository {
   @SuppressWarnings("unchecked")
   @Override
   public void putMeasurement(Measurement meas) throws MeasurementTypeException {
-    if (!meas.getMeasurementType().equals(getMeasurementType())) {
+    if (!meas.getMeasurementType().equals(getMeasurementType().getUnits())) {
       throw new MeasurementTypeException("Measurement's type " + meas.getMeasurementType()
           + " does not match " + getMeasurementType());
     }

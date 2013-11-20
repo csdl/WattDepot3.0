@@ -18,7 +18,7 @@ public class MeasuredValue {
   /** The value of the measurement. */
   private Double value;
   /** The type of the measurement. */
-  private String measurementType;
+  private MeasurementType measurementType;
   /** The time of the measured value. */
   private Date date;
 
@@ -39,7 +39,7 @@ public class MeasuredValue {
    * @param measurementType
    *          The type of the measurement.
    */
-  public MeasuredValue(String sensorId, Double value, String measurementType) {
+  public MeasuredValue(String sensorId, Double value, MeasurementType measurementType) {
     this.sensorId = sensorId;
     this.value = value;
     this.measurementType = measurementType;
@@ -62,7 +62,7 @@ public class MeasuredValue {
   /**
    * @return the measurementType
    */
-  public String getMeasurementType() {
+  public MeasurementType getMeasurementType() {
     return measurementType;
   }
 

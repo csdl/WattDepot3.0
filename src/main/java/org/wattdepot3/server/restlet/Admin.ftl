@@ -153,7 +153,7 @@ $(function(){
                     </thead>
                     <tbody>
                     <#list depositories as d>
-                        <tr><td>${d.name}</td><td>${d.measurementType}</td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
+                        <tr><td>${d.name}</td><td><#if d.getMeasurementType()??>${d.measurementType.name} (${d.measurementType.units})</#if></td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_depository_dialog(event, '${d.name}');"></span>
                             </td>
@@ -645,6 +645,60 @@ $(function(){
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
 
+<!-- Add Depository -->
+<div class="modal fade" id="addDepositoryModal" tabindex="-1"
+    role="dialog" aria-labelledby="addDepositoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add/Edit Depository</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Depository
+                                Name</label>
+                            <div class="col-md-9">
+                                <input type="text"
+                                    name="depository_name"
+                                    class="form-control">
+                                <p class="help-block">Unique name.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Depository
+                                Measurement Type</label>
+                            <div class="col-md-9">
+                                <select class="form-control" name="depository_type">
+                                <#list measurementtypes as mt>
+                                    <option value="${mt.slug}">${mt.name}</option>
+                                </#list>
+                                </select>
+                                <p class="help-block">The type of measurement the depository stores.</p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="putNewDepository();">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
 </div>
 <script>
 $(document).ready(function () {
@@ -697,6 +751,10 @@ SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "sensors": [
 var SENSORPROCESSES = {};
 <#list sensorprocesses as sp>
 SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}"};
+</#list>
+var MEASUREMENTTYPES = {};
+<#list measurementtypes as mt>
+MEASUREMENTTYPES["${mt.slug}"] = {"slug": "${mt.slug}", "name": "${mt.name}", "units": "${mt.units}"};
 </#list>
 </script>
 </body>

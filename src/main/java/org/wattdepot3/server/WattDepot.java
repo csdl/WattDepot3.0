@@ -6,9 +6,6 @@ package org.wattdepot3.server;
 import java.util.List;
 import java.util.Set;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.MeasurementType;
@@ -23,6 +20,8 @@ import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
+import org.wattdepot3.util.Slug;
+import org.wattdepot3.util.UnitsHelper;
 
 /**
  * WattDepot abstract interface.
@@ -41,22 +40,15 @@ public abstract class WattDepot {
    * Ensures the base set of MeasurementTypes are defined in WattDepot.
    */
   public void initializeMeasurementTypes() {
-    MeasurementType t = getMeasurementType(POWER_TYPE_NAME);
-    if (t == null) {
-      try {
-        defineMeasurementType(POWER_TYPE_NAME, SI.WATT.toString());
-      }
-      catch (UniqueIdException e) {
-        e.printStackTrace();
-      }
-    }
-    t = getMeasurementType(ENERGY_TYPE_NAME);
-    if (t == null) {
-      try {
-        defineMeasurementType(ENERGY_TYPE_NAME, SI.WATT.times(NonSI.HOUR).toString());
-      }
-      catch (UniqueIdException e) {
-        e.printStackTrace();
+    for (String key : UnitsHelper.quantities.keySet()) {
+      MeasurementType mt = getMeasurementType(Slug.slugify(key));
+      if (mt == null) {
+        try {
+          defineMeasurementType(key, UnitsHelper.quantities.get(key).toString());
+        }
+        catch (UniqueIdException e) {
+          e.printStackTrace();
+        }
       }
     }
   }
@@ -237,7 +229,7 @@ public abstract class WattDepot {
    * @throws UniqueIdException
    *           if the id is already used for another WattDepository.
    */
-  public abstract Depository defineWattDepository(String name, String measurementType,
+  public abstract Depository defineWattDepository(String name, MeasurementType measurementType,
       UserGroup owner) throws UniqueIdException;
 
   /**

@@ -23,7 +23,7 @@ public class Slug {
   public static String slugify(String str) {
     String ret = null;
     ret = str.toLowerCase();
-    ret = ret.replace("_", "");
+    ret = ret.replace(" ", "_");
     ret = ret.replace("!", "");
     ret = ret.replace("@", "");
     ret = ret.replace("#", "");
@@ -38,6 +38,20 @@ public class Slug {
     ret = ret.replace("+", "");
     ret = ret.replace("`", "");
     ret = ret.replace("~", "");
+    ret = ret.replace(",", "");
+    ret = ret.replace("<", "");
+    ret = ret.replace(".", "");
+    ret = ret.replace(">", "");
+    ret = ret.replace("/", "");
+    ret = ret.replace("?", "");
+    ret = ret.replace(";", "");
+    ret = ret.replace(":", "");
+    ret = ret.replace("[", "");
+    ret = ret.replace("{", "");
+    ret = ret.replace("]", "");
+    ret = ret.replace("}", "");
+    ret = ret.replace("\\", "");
+    ret = ret.replace("|", "");
     return ret;
   }
 }

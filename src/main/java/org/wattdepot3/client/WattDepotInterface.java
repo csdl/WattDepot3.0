@@ -12,11 +12,15 @@ import org.wattdepot3.datamodel.Location;
 import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementList;
+import org.wattdepot3.datamodel.MeasurementType;
+import org.wattdepot3.datamodel.MeasurementTypeList;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorModel;
+import org.wattdepot3.datamodel.SensorModelList;
 import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.SensorProcessList;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
@@ -63,6 +67,14 @@ public interface WattDepotInterface {
    */
   public void deleteMeasurement(Depository depository, Measurement measurement)
       throws IdNotFoundException;
+
+  /**
+   * Deletes the given MeasurementType.
+   * 
+   * @param type
+   *          the measurement type to delete.
+   */
+  public void deleteMeasurementType(MeasurementType type);
 
   /**
    * Deletes the given Sensor.
@@ -148,8 +160,12 @@ public interface WattDepotInterface {
    * @return The Measurements stored in the depository made by the sensor
    *         between start and end.
    */
-  public MeasurementList getMeasurements(Depository depository, Sensor sensor, Date start,
-      Date end);
+  public MeasurementList getMeasurements(Depository depository, Sensor sensor, Date start, Date end);
+
+  /**
+   * @return The defined MeasurementTypes.
+   */
+  public MeasurementTypeList getMeasurementTypes();
 
   /**
    * Retrieves the Sensor with the given id from the WattDepot Server.
@@ -192,7 +208,7 @@ public interface WattDepotInterface {
   /**
    * @return The defined SensorModels.
    */
-  public List<SensorModel> getSensorModels();
+  public SensorModelList getSensorModels();
 
   /**
    * Retrieves the SensorProcess with the given id from the WattDepot Server.
@@ -208,7 +224,7 @@ public interface WattDepotInterface {
   /**
    * @return The defined SensorProcesses.
    */
-  public List<SensorProcess> getSensorProcesses();
+  public SensorProcessList getSensorProcesses();
 
   /**
    * @return The defined Sensors.
@@ -318,6 +334,14 @@ public interface WattDepotInterface {
       throws MeasurementTypeException;
 
   /**
+   * Stores the given MeasurementType in the WattDepot Server.
+   * 
+   * @param type
+   *          the MeasurementType.
+   */
+  public void putMeasurementType(MeasurementType type);
+
+  /**
    * Stores the given Sensor in the WattDepot Server.
    * 
    * @param sensor
@@ -364,6 +388,14 @@ public interface WattDepotInterface {
    *          the Location to update.
    */
   public void updateLocation(Location location);
+
+  /**
+   * Updates the given MeasurementType in the WattDepot Server.
+   * 
+   * @param type
+   *          the MeasurementType to update.
+   */
+  public void updateMeasurementType(MeasurementType type);
 
   /**
    * Updates the given Sensor in the WattDepot Server.
