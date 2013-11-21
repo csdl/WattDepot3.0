@@ -1,7 +1,7 @@
 /**
  * TestWattDepotClient.java created on Nov 20, 2013 by Cam Moore.
  */
-package org.wattdepot3.client;
+package org.wattdepot3.client.restlet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -76,7 +76,7 @@ public class TestWattDepotClient {
 
   /**
    * Test method for
-   * {@link org.wattdepot3.client.WattDepotClient#WattDepotClient(java.lang.String, java.lang.String, java.lang.String)}
+   * {@link org.wattdepot3.client.restlet.WattDepotClient#WattDepotClient(java.lang.String, java.lang.String, java.lang.String)}
    * .
    */
   @Test

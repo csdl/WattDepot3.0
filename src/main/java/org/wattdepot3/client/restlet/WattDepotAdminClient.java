@@ -1,9 +1,10 @@
 /**
  * WattDepotAdminClient.java created on Nov 14, 2013 by Cam Moore.
  */
-package org.wattdepot3.client;
+package org.wattdepot3.client.restlet;
 
 import org.restlet.resource.ClientResource;
+import org.wattdepot3.client.WattDepotAdminInterface;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;

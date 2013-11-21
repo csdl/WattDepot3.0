@@ -22,7 +22,7 @@ import javax.measure.unit.UnitFormat;
  */
 public class UnitsHelper {
   /** Holds the defined units. */
-  public static Map<String, Unit<?>> quantities = new HashMap<String, Unit<?>>();
+  public static final Map<String, Unit<?>> quantities = new HashMap<String, Unit<?>>();
 
   static {
     UnitFormat format = UnitFormat.getInstance();

@@ -1,7 +1,7 @@
 /**
  * WattDepotClient.java created on Nov 14, 2013 by Cam Moore.
  */
-package org.wattdepot3.client;
+package org.wattdepot3.client.restlet;
 
 import java.util.Date;
 
@@ -13,6 +13,7 @@ import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
+import org.wattdepot3.client.WattDepotInterface;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
 import org.wattdepot3.datamodel.Location;
