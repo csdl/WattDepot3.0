@@ -178,7 +178,16 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void deleteMeasurement(Depository depository, Measurement measurement)
       throws IdNotFoundException {
-    throw new RuntimeException("Deletion of Measurements not implemented.");
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
+        + depository.getName() + "/" + API.MEASUREMENT_URI + measurement.getId());
+    DepositoryMeasurementResource resource = client.wrap(DepositoryMeasurementResource.class);
+    try {
+      resource.remove(measurement);
+    }
+    catch (ResourceException e) {
+      e.printStackTrace();
+    }
+    client.release();
   }
 
   /*

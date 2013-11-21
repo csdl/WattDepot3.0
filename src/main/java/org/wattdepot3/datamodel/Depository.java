@@ -102,6 +102,15 @@ public class Depository {
   }
 
   /**
+   * @param sensor
+   *          the Sensor.
+   * @return A list of all the measurements made by the Sensor.
+   */
+  public List<Measurement> getMeasurements(Sensor sensor) {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
    * @return the measurementType
    */
   public MeasurementType getMeasurementType() {
@@ -275,7 +284,8 @@ public class Depository {
   }
 
   /**
-   * @param slug the slug to set
+   * @param slug
+   *          the slug to set
    */
   public void setSlug(String slug) {
     this.slug = slug;
@@ -289,6 +299,14 @@ public class Depository {
   @Override
   public String toString() {
     return "Depository [name=" + name + ", measurementType=" + measurementType + "]";
+  }
+
+  /**
+   * @param meas
+   *          The measurement to delete.
+   */
+  public void deleteMeasurement(Measurement meas) {
+    throw new RuntimeException("Not implemented.");
   }
 
 }

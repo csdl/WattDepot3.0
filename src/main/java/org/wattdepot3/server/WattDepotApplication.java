@@ -84,18 +84,18 @@ public class WattDepotApplication extends Application {
    */
   public WebSession createWebSession(String username, String password) {
     WebSession ret = null;
-//    UserInfo info = depot.getUser(username);
-//    if (info != null) {
-//      UserGroup group = depot.getUsersGroup(info);
-//      if (group != null) {
-//         if (password.equals(info.getPassword())) {
-//         String id = "" + info.hashCode() + group.hashCode() + new
-//         Date().getTime();
-//         ret = new WebSession(id, info.getId(), group.getId());
-//         sessions.put(id, ret);
-//         }
-//      }
-//    }
+    // UserInfo info = depot.getUser(username);
+    // if (info != null) {
+    // UserGroup group = depot.getUsersGroup(info);
+    // if (group != null) {
+    // if (password.equals(info.getPassword())) {
+    // String id = "" + info.hashCode() + group.hashCode() + new
+    // Date().getTime();
+    // ret = new WebSession(id, info.getId(), group.getId());
+    // sessions.put(id, ret);
+    // }
+    // }
+    // }
     return ret;
   }
 
@@ -154,13 +154,16 @@ public class WattDepotApplication extends Application {
     router.attach("/webroot/", directory);
     // router.attach("/wattdepot/", LoginPageServerResource.class);
     // router.attach("/wattdepot/login/", LoginServerResource.class);
-    router.attach("/wattdepot/measurementtype/{measurementtype_id}", MeasurementTypeServerResource.class);
+    router.attach("/wattdepot/measurementtype/{measurementtype_id}",
+        MeasurementTypeServerResource.class);
     router.attach("/wattdepot/measurementtypes/", MeasurementTypesServerResource.class);
     router.attach("/wattdepot/{group_id}/", AdminServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/", DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}",
         DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurement/",
+        DepositoryMeasurementServerResource.class);
+    router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurement/{meas_id}",
         DepositoryMeasurementServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/measurements/",
         DepositoryMeasurementsServerResource.class);

@@ -21,6 +21,7 @@ import org.wattdepot3.restlet.DepositoryMeasurementResource;
 public class DepositoryMeasurementServerResource extends WattDepotServerResource implements
     DepositoryMeasurementResource {
   private String depositoryId;
+  private String measId;
 
   /*
    * (non-Javadoc)
@@ -31,6 +32,7 @@ public class DepositoryMeasurementServerResource extends WattDepotServerResource
   protected void doInit() throws ResourceException {
     super.doInit();
     this.depositoryId = getAttribute("depository_id");
+    this.measId = getAttribute("meas_id");
   }
 
   /*
@@ -59,6 +61,27 @@ public class DepositoryMeasurementServerResource extends WattDepotServerResource
     catch (MeasurementTypeException e) {
       setStatus(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
     }
+  }
+
+  /* (non-Javadoc)
+   * @see org.wattdepot3.restlet.DepositoryMeasurementResource#remove(org.wattdepot3.datamodel.Measurement)
+   */
+  @Override
+  public void remove(Measurement meas) {
+    System.out.println("DEL /wattdepot/{" + groupId + "}/depository/{" + depositoryId
+        + "}/measurement/{" + measId + "} with " + meas);
+    try {
+      Depository depository = depot.getWattDeposiory(depositoryId, groupId);
+      if (depository != null) {
+        depository.deleteMeasurement(meas);
+      }
+      else {
+        setStatus(Status.CLIENT_ERROR_BAD_REQUEST, depositoryId + " does not exist.");
+      }
+    }
+    catch (MissMatchedOwnerException e) {
+      setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
+    }    
   }
 
 }

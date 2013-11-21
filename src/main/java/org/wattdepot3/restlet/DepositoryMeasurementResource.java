@@ -3,6 +3,7 @@
  */
 package org.wattdepot3.restlet;
 
+import org.restlet.resource.Delete;
 import org.restlet.resource.Put;
 import org.wattdepot3.datamodel.Measurement;
 
@@ -24,5 +25,15 @@ public interface DepositoryMeasurementResource {
    */
   @Put
   public void store(Measurement meas);
+
+  /**
+   * Defined the DEL
+   * /wattdepot/{group_id}/depository/{depository_id}/measurement/ API call.
+   * 
+   * @param meas
+   *          The Measurement to delete.
+   */
+  @Delete
+  public void remove(Measurement meas);
 
 }

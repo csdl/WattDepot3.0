@@ -56,6 +56,22 @@ public class DepositoryImpl extends Depository {
     super(name, measurementType, owner);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.datamodel.Depository#deleteMeasurement(org.wattdepot3.datamodel
+   * .Measurement)
+   */
+  @Override
+  public void deleteMeasurement(Measurement meas) {
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    session.delete(meas);
+    session.getTransaction().commit();
+    session.close();
+  }
+
   /**
    * @param sensor
    *          The Sensor.
@@ -84,6 +100,33 @@ public class DepositoryImpl extends Depository {
     session.getTransaction().commit();
     session.close();
     return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.datamodel.Depository#getMeasurements(org.wattdepot3.datamodel
+   * .Sensor)
+   */
+  @Override
+  public List<Measurement> getMeasurements(Sensor sensor) {
+    List<Measurement> ret = new ArrayList<Measurement>();
+    Session session = Manager.getFactory().openSession();
+    session.beginTransaction();
+    @SuppressWarnings("unchecked")
+    List<MeasurementImpl> measurements = (List<MeasurementImpl>) session
+        .createQuery("FROM MeasurementImpl WHERE depository = :depository")
+        .setParameter("depository", this).list();
+    for (MeasurementImpl meas : measurements) {
+      if (meas.getSensor().equals(sensor)) {
+        ret.add(meas);
+      }
+    }
+    session.getTransaction().commit();
+    session.close();
+    return ret;
+
   }
 
   /*

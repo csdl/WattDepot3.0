@@ -13,6 +13,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
@@ -516,7 +517,7 @@ public class WattDepotImpl extends WattDepot {
     }
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
-    session.delete(g);
+    deleteUserGroup(session, g);
     session.getTransaction().commit();
     session.close();
   }
@@ -1274,5 +1275,40 @@ public class WattDepotImpl extends WattDepot {
     session.save(sensor.getLocation());
     session.save(sensor.getModel());
     session.save(sensor);
+  }
+
+  /**
+   * Deletes all the objects that have group as their owner.
+   * 
+   * @param session
+   *          The Session, a transaction must be in progress.
+   * @param group
+   *          The UserGroup to delete.
+   */
+  private void deleteUserGroup(Session session, UserGroup group) {
+    for (SensorProcess sp : getSensorProcesses(group.getId())) {
+      session.delete(sp);
+    }
+    for (SensorGroup sg : getSensorGroups(group.getId())) {
+      session.delete(sg);
+    }
+    for (Depository d : getWattDepositories(group.getId())) {
+      for (Sensor s : d.listSensors()) {
+        for (Measurement m : d.getMeasurements(s)) {
+          session.delete(m);
+        }
+      }
+      session.delete(d);
+    }
+    for (Sensor s : getSensors(group.getId())) {
+      session.delete(s);
+    }
+    for (SensorModel sm : getSensorModels(group.getId())) {
+      session.delete(sm);
+    }
+    for (Location l : getLocations(group.getId())) {
+      session.delete(l);
+    }
+    session.delete(group);
   }
 }

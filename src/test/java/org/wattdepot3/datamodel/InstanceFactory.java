@@ -41,7 +41,7 @@ public class InstanceFactory {
   /**
    * @return A Measurement instance for testing.
    */
-  public static Measurement getMeasurement() {
+  public static Measurement getMeasurementOne() {
     try {
       Date measTime = DateConvert.parseCalStringToDate("2013-11-20T14:35:27.925-1000");
       Double value = 100.0;
@@ -58,6 +58,45 @@ public class InstanceFactory {
     return null;
   }
 
+  /**
+   * @return A Measurement instance for testing.
+   */
+  public static Measurement getMeasurementThree() {
+    try {
+      Date measTime = DateConvert.parseCalStringToDate("2013-11-20T14:45:37.925-1000");
+      Double value = 100.0;
+      return new Measurement(getSensor(), measTime, value, getMeasurementType().unit());
+    }
+    catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (DatatypeConfigurationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /**
+   * @return A Measurement instance for testing.
+   */
+  public static Measurement getMeasurementTwo() {
+    try {
+      Date measTime = DateConvert.parseCalStringToDate("2013-11-20T14:35:37.925-1000");
+      Double value = 100.0;
+      return new Measurement(getSensor(), measTime, value, getMeasurementType().unit());
+    }
+    catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (DatatypeConfigurationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return null;
+  }
   /**
    * @return A MeasurementType instance for testing.
    */
