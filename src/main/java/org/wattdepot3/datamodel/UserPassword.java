@@ -163,4 +163,13 @@ public class UserPassword {
   public void setPassword(String plainText) {
     this.encryptedPassword = passwordEncryptor.encryptPassword(plainText);
   }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "UserPassword [id=" + id + ", encryptedPassword=" + encryptedPassword + "]";
+  }
+  
 }

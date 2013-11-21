@@ -44,13 +44,18 @@ public class DepositoryServerResource extends WattDepotServerResource implements
   @Override
   public Depository retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/depository/{" + depositoryId + "}");
+    Depository depo = null;
     try {
-      return depot.getWattDeposiory(depositoryId, groupId);
+      depo = depot.getWattDeposiory(depositoryId, groupId);
     }
     catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, e.getMessage());
     }
-    return null;
+    if (depo == null) {
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "Depository " + depositoryId
+          + " is not defined.");
+    }
+    return depo;
   }
 
   /*

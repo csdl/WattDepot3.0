@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementType;
+import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.MeasurementGapException;
@@ -127,7 +128,8 @@ public class DepositoryImpl extends Depository {
         .createQuery(
             "FROM MeasurementImpl WHERE date = :time AND measurementType = :measType"
                 + " AND depository = :name").setParameter("time", timestamp)
-        .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+        .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+        .list();
     if (result.size() > 0) {
       for (MeasurementImpl meas : result) {
         if (meas.getSensor().equals(sensor)) {
@@ -142,13 +144,15 @@ public class DepositoryImpl extends Depository {
           .createQuery(
               "FROM MeasurementImpl WHERE date <= :time AND measurementType = :measType"
                   + " AND depository = :name").setParameter("time", timestamp)
-          .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+          .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+          .list();
       @SuppressWarnings("unchecked")
       List<MeasurementImpl> after = (List<MeasurementImpl>) session
           .createQuery(
               "FROM MeasurementImpl WHERE date >= :time AND measurementType = :measType"
                   + " AND depository = :name").setParameter("time", timestamp)
-          .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+          .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+          .list();
       MeasurementImpl justBefore = null;
       for (MeasurementImpl b : before) {
         if (b.getSensor().equals(sensor)) {
@@ -273,7 +277,8 @@ public class DepositoryImpl extends Depository {
         .createQuery(
             "FROM MeasurementImpl WHERE date = :time AND measurementType = :measType"
                 + " AND depository = :name").setParameter("time", timestamp)
-        .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+        .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+        .list();
     if (result.size() > 0) {
       for (MeasurementImpl meas : result) {
         if (meas.getSensor().equals(sensor)) {
@@ -288,13 +293,15 @@ public class DepositoryImpl extends Depository {
           .createQuery(
               "FROM MeasurementImpl WHERE date <= :time AND measurementType = :measType"
                   + " AND depository = :name").setParameter("time", timestamp)
-          .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+          .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+          .list();
       @SuppressWarnings("unchecked")
       List<MeasurementImpl> after = (List<MeasurementImpl>) session
           .createQuery(
               "FROM MeasurementImpl WHERE date >= :time AND measurementType = :measType"
                   + " AND depository = :name").setParameter("time", timestamp)
-          .setParameter("measType", getMeasurementType()).setParameter("name", this).list();
+          .setParameter("measType", getMeasurementType().getUnits()).setParameter("name", this)
+          .list();
       MeasurementImpl justBefore = null;
       for (MeasurementImpl b : before) {
         if (b.getSensor().equals(sensor)) {
@@ -379,13 +386,30 @@ public class DepositoryImpl extends Depository {
       if (measSensor.getOwner() == null) {
         measSensor.setOwner(getOwner());
       }
-      session.saveOrUpdate(meas.getSensor());
+      saveSensor(session, measSensor);
     }
     MeasurementImpl mImpl = new MeasurementImpl(meas);
     mImpl.setDepository(this);
     session.saveOrUpdate(mImpl);
     session.getTransaction().commit();
     session.close();
+  }
+
+  /**
+   * Use this method after beginning a transaction.
+   * 
+   * @param session
+   *          The Session, a transaction must be in progress.
+   * @param sensor
+   *          The Sensor to save.
+   */
+  private void saveSensor(Session session, Sensor sensor) {
+    for (Property p : sensor.getProperties()) {
+      session.saveOrUpdate(p);
+    }
+    session.saveOrUpdate(sensor.getLocation());
+    session.saveOrUpdate(sensor.getModel());
+    session.saveOrUpdate(sensor);
   }
 
 }

@@ -10,6 +10,7 @@ import javax.measure.quantity.Power;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
+import javax.measure.unit.UnitFormat;
 
 import org.jscience.physics.amount.Amount;
 import org.wattdepot3.util.UnitsHelper;

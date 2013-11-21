@@ -67,4 +67,20 @@ public class API {
   
   /** The URI for getting a 'measured' value. */
   public static final String VALUE_URI = "value/";
+  
+  /** The URI for manipulating a given UserInfo. */
+  public static final String USER_URI = "user/";
+
+  /** The URI for manipulating a given UserInfo. */
+  public static final String USERS_URI = "users/";
+
+  /** The URI for manipulating a given UserGroup. */
+  public static final String USER_GROUP_URI = "usergroup/";
+
+  /** The URI for manipulating a given UserGroup. */
+  public static final String USER_GROUPS_URI = "usergroups/";
+
+  /** The URI for manipulating a given UserGroup. */
+  public static final String USER_PASSWORD_URI = "userpassword/";
+
 }

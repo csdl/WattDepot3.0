@@ -160,7 +160,7 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     s = new Sensor(id, uri, l, sm, owner);
-    session.save(s);
+    saveSensor(session, s);
     session.getTransaction().commit();
     session.close();
     return s;
@@ -188,6 +188,9 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     sg = new SensorGroup(id, sensors, owner);
+    for (Sensor s : sensors) {
+      saveSensor(session, s);
+    }
     session.save(sg);
     session.getTransaction().commit();
     session.close();
@@ -246,6 +249,7 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     sp = new SensorProcess(id, sensor, pollingInterval, depositoryId, owner);
+    saveSensor(session, sensor);
     session.save(sp);
     session.getTransaction().commit();
     session.close();
@@ -267,6 +271,9 @@ public class WattDepotImpl extends WattDepot {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
     for (UserInfo u : users) {
+      for (Property p : u.getProperties()) {
+        session.saveOrUpdate(p);
+      }
       session.saveOrUpdate(u);
     }
     g = new UserGroup(id, users);
@@ -294,6 +301,9 @@ public class WattDepotImpl extends WattDepot {
     session.beginTransaction();
     u = new UserInfo(id, firstName, lastName, email, admin, properties);
     session.saveOrUpdate(u);
+    for (Property p : properties) {
+      session.saveOrUpdate(p);
+    }
     session.getTransaction().commit();
     session.close();
     return u;
@@ -323,8 +333,8 @@ public class WattDepotImpl extends WattDepot {
    * java.lang.String, java.lang.String, org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public Depository defineWattDepository(String name, MeasurementType measurementType, UserGroup owner)
-      throws UniqueIdException {
+  public Depository defineWattDepository(String name, MeasurementType measurementType,
+      UserGroup owner) throws UniqueIdException {
     Depository d = null;
     try {
       d = getWattDeposiory(name, owner.getId());
@@ -1249,4 +1259,20 @@ public class WattDepotImpl extends WattDepot {
     return password;
   }
 
+  /**
+   * Use this method after beginning a transaction.
+   * 
+   * @param session
+   *          The Session, a transaction must be in progress.
+   * @param sensor
+   *          The Sensor to save.
+   */
+  private void saveSensor(Session session, Sensor sensor) {
+    for (Property p : sensor.getProperties()) {
+      session.save(p);
+    }
+    session.save(sensor.getLocation());
+    session.save(sensor.getModel());
+    session.save(sensor);
+  }
 }

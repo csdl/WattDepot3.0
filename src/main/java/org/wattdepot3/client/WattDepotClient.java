@@ -333,6 +333,13 @@ public class WattDepotClient implements WattDepotInterface {
     return ret;
   }
 
+  /**
+   * @return the groupId
+   */
+  public String getGroupId() {
+    return groupId;
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -392,6 +399,36 @@ public class WattDepotClient implements WattDepotInterface {
     }
     catch (DatatypeConfigurationException e) {
       e.printStackTrace();
+    }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.client.WattDepotInterface#getMeasurementType(java.lang.String
+   * )
+   */
+  @Override
+  public MeasurementType getMeasurementType(String id) throws IdNotFoundException {
+    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + id);
+    MeasurementTypeResource resource = client.wrap(MeasurementTypeResource.class);
+    try {
+      MeasurementType ret = resource.retrieve();
+      client.release();
+      return ret;
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(id + " is not a known MeasurementType. ");
+      }
+      e.printStackTrace();
+    }
+    finally {
+      if (client != null) {
+        client.release();
+      }
     }
     return null;
   }
@@ -474,7 +511,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorGroupList getSensorGroups() {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUP_URI);
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_GROUPS_URI);
     SensorGroupsResource resource = client.wrap(SensorGroupsResource.class);
     SensorGroupList ret = resource.retrieve();
     client.release();
@@ -594,7 +631,7 @@ public class WattDepotClient implements WattDepotInterface {
       throws NoMeasurementException {
     ClientResource client = null;
     try {
-      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName() + "/"
           + API.VALUE_URI + "?sensor=" + sensor.getId() + "&timestamp="
           + DateConvert.convertDate(timestamp));
       DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
@@ -621,7 +658,7 @@ public class WattDepotClient implements WattDepotInterface {
       throws NoMeasurementException {
     ClientResource client = null;
     try {
-      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName() + "/"
           + API.VALUE_URI + "?sensor=" + sensor.getId() + "&start="
           + DateConvert.convertDate(start) + "&end=" + DateConvert.convertDate(end));
       DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
@@ -648,7 +685,7 @@ public class WattDepotClient implements WattDepotInterface {
       throws NoMeasurementException, MeasurementGapException {
     ClientResource client = null;
     try {
-      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName() + "/"
           + API.VALUE_URI + "?sensor=" + sensor.getId() + "&start="
           + DateConvert.convertDate(start) + "&end=" + DateConvert.convertDate(end) + "&gap="
           + gapSeconds);
@@ -676,7 +713,7 @@ public class WattDepotClient implements WattDepotInterface {
       throws NoMeasurementException, MeasurementGapException {
     ClientResource client = null;
     try {
-      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName()
+      client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getName() + "/"
           + API.VALUE_URI + "?sensor=" + sensor.getId() + "&timestamp="
           + DateConvert.convertDate(timestamp) + "&gap=" + gapSeconds);
       DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
@@ -691,6 +728,13 @@ public class WattDepotClient implements WattDepotInterface {
   }
 
   /**
+   * @return the wattDepotUri
+   */
+  public String getWattDepotUri() {
+    return wattDepotUri;
+  }
+
+  /**
    * Creates a ClientResource for the given request. Calling code MUST release
    * the ClientResource when finished.
    * 
@@ -699,6 +743,7 @@ public class WattDepotClient implements WattDepotInterface {
    * @return The client resource.
    */
   public ClientResource makeClient(String requestString) {
+    System.out.println(requestString);
     Reference reference = new Reference(this.wattDepotUri + requestString);
     ClientResource client = new ClientResource(reference);
     client.setChallengeResponse(authentication);
@@ -746,12 +791,12 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void putMeasurement(Depository depository, Measurement measurement)
       throws MeasurementTypeException {
-    if (!depository.getMeasurementType().equals(measurement.getMeasurementType())) {
+    if (!depository.getMeasurementType().getUnits().equals(measurement.getMeasurementType())) {
       throw new MeasurementTypeException("Depository " + depository.getName() + " stores "
           + depository.getMeasurementType() + " not " + measurement.getMeasurementType());
     }
     ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
-        + depository.getName() + "/" + API.MEASUREMENT_URI + measurement.getId());
+        + depository.getName() + "/" + API.MEASUREMENT_URI);
     DepositoryMeasurementResource resource = client.wrap(DepositoryMeasurementResource.class);
     try {
       resource.store(measurement);

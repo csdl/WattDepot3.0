@@ -3,11 +3,16 @@
  */
 package org.wattdepot3.client;
 
+import org.restlet.resource.ClientResource;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.restlet.API;
+import org.wattdepot3.restlet.UserGroupResource;
+import org.wattdepot3.restlet.UserInfoResource;
+import org.wattdepot3.restlet.UserPasswordResource;
 
 /**
  * WattDepotAdminClient - Admin level client.
@@ -35,7 +40,9 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
   public WattDepotAdminClient(String serverUri, String username, String password)
       throws BadCredentialException {
     super(serverUri, username, password);
-    // TODO Auto-generated constructor stub
+    if (!getGroupId().equals("admin")) {
+      throw new BadCredentialException("Wrong group.");
+    }
   }
 
   /*
@@ -46,8 +53,10 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
    */
   @Override
   public void deleteUser(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_URI + id);
+    UserInfoResource resource = client.wrap(UserInfoResource.class);
+    resource.remove();
+    client.release();
   }
 
   /*
@@ -59,8 +68,21 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
    */
   @Override
   public void deleteUserGroup(String id) throws IdNotFoundException {
-    // TODO Auto-generated method stub
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_GROUP_URI + id);
+    UserGroupResource resource = client.wrap(UserGroupResource.class);
+    resource.remove();
+    client.release();
+  }
 
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotAdminInterface#deleteUserPassword(java.lang.String)
+   */
+  @Override
+  public void deleteUserPassword(String id) throws IdNotFoundException {
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_PASSWORD_URI + id);
+    UserPasswordResource resource = client.wrap(UserPasswordResource.class);
+    resource.remove();
+    client.release();
   }
 
   /*
@@ -72,8 +94,10 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
    */
   @Override
   public void putUser(UserInfo user) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_URI + user.getId());
+    UserInfoResource resource = client.wrap(UserInfoResource.class);
+    resource.store(user);
+    client.release();
   }
 
   /*
@@ -85,8 +109,10 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
    */
   @Override
   public void putUserGroup(UserGroup group) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_GROUP_URI + group.getId());
+    UserGroupResource resource = client.wrap(UserGroupResource.class);
+    resource.store(group);
+    client.release();
   }
 
   /*
@@ -98,8 +124,10 @@ public class WattDepotAdminClient extends WattDepotClient implements WattDepotAd
    */
   @Override
   public void putUserPassword(UserPassword password) {
-    // TODO Auto-generated method stub
-
+    ClientResource client = makeClient(getGroupId() + "/" + API.USER_PASSWORD_URI + password.getId());
+    UserPasswordResource resource = client.wrap(UserPasswordResource.class);
+    resource.store(password);
+    client.release();
   }
 
 }

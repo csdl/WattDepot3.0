@@ -37,6 +37,14 @@ public interface WattDepotAdminInterface extends WattDepotInterface {
   public void deleteUserGroup(String id) throws IdNotFoundException;
 
   /**
+   * @param id
+   *          the unique id of the UserPassword.
+   * @throws IdNotFoundException
+   *           if the UserPassword is not found.
+   */
+  public void deleteUserPassword(String id) throws IdNotFoundException;
+
+  /**
    * Stores the given user in the WattDepot Server.
    * 
    * @param user

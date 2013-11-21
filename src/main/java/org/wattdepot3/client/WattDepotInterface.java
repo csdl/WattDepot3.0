@@ -168,6 +168,15 @@ public interface WattDepotInterface {
   public MeasurementTypeList getMeasurementTypes();
 
   /**
+   * @param id
+   *          the unique id for the MeasurementType.
+   * @return The MeasurementType.
+   * @exception IdNotFoundException
+   *              if the given id is not a MeasurementType's id.
+   */
+  public MeasurementType getMeasurementType(String id) throws IdNotFoundException;
+
+  /**
    * Retrieves the Sensor with the given id from the WattDepot Server.
    * 
    * @param id

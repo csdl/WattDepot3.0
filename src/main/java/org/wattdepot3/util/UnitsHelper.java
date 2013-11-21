@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
+import javax.measure.unit.UnitFormat;
 
 /**
  * UnitsHelper - Utility class that helps build measurement types.
@@ -24,6 +25,9 @@ public class UnitsHelper {
   public static Map<String, Unit<?>> quantities = new HashMap<String, Unit<?>>();
 
   static {
+    UnitFormat format = UnitFormat.getInstance();
+    format.alias(SI.MICRO(Unit.ONE), "ppm");
+    format.label(SI.MICRO(Unit.ONE), "ppm");    
     quantities.put(buildName("Power", SI.WATT), SI.WATT);
     quantities.put(buildName("Energy", SI.WATT.times(NonSI.HOUR)), SI.WATT.times(NonSI.HOUR));
     quantities.put(buildName("Frequency", SI.HERTZ), SI.HERTZ);
@@ -37,6 +41,8 @@ public class UnitsHelper {
         NonSI.LITER.divide(SI.SECOND));
     quantities.put(buildName("Mass", SI.KILOGRAM), SI.KILOGRAM);
     quantities.put(buildName("Mass", NonSI.POUND), NonSI.POUND);
+    quantities.put(buildName("Humidity", NonSI.PERCENT), NonSI.PERCENT);
+    quantities.put(buildName("Concentration", SI.MICRO(Unit.ONE)), SI.MICRO(Unit.ONE));
 
   }
 
