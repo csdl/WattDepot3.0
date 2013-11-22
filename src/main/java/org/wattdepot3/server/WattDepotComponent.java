@@ -45,7 +45,8 @@ public class WattDepotComponent extends Component {
     // configure the JacksonRepresentation so that it uses ISO-8601 compliant notation
     MeasurementImpl source = new MeasurementImpl();
     Representation rep = app.getConverterService().toRepresentation(source);
-    ObjectMapper mapper = ((JacksonRepresentation) rep).getObjectMapper();
+    @SuppressWarnings("rawtypes")
+	ObjectMapper mapper = ((JacksonRepresentation) rep).getObjectMapper();
     mapper.configure(
         SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     getDefaultHost().attachDefault(app);

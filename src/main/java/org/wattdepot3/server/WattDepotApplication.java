@@ -12,7 +12,6 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import org.restlet.security.ChallengeAuthenticator;
-import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
 import org.wattdepot3.server.restlet.AdminServerResource;
 import org.wattdepot3.server.restlet.DepositoriesServerResource;
 import org.wattdepot3.server.restlet.DepositoryMeasurementServerResource;
@@ -56,9 +55,6 @@ public class WattDepotApplication extends Application {
     setName("WattDepot Application");
     setDescription("WattDepot HTTP API implementation");
     setAuthor("Cam Moore");
-    // Use settings to instantiate the right WattDepot instance.
-    depot = new WattDepotImpl();
-    depot.initializeMeasurementTypes();
     sessions = new HashMap<String, WebSession>();
   }
 

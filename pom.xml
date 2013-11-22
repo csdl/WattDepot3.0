@@ -31,6 +31,7 @@
         <hibernate-core.version>4.2.4.Final</hibernate-core.version>
         <httpunit.version>1.7</httpunit.version>
         <icu4j.version>52.1</icu4j.version>
+		<jackson.version>1.8.5</jackson.version>
         <jasypt.version>1.9.1</jasypt.version>
         <jcs.version>1.3</jcs.version>
         <jscience.version>4.3.1</jscience.version>
@@ -40,6 +41,7 @@
         <opencsv.version>2.3</opencsv.version>
         <pool.version>1.6</pool.version>
         <postgres.version>9.1-901-1.jdbc4</postgres.version>
+		<rabbitmq.version>3.2.1</rabbitmq.version>
         <restlet.version>2.1.2</restlet.version>
 
         <!-- Maven Plugin Versions -->
@@ -109,6 +111,16 @@
             <artifactId>icu4j</artifactId>
             <version>${icu4j.version}</version>
         </dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>${rabbitmq.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
         <dependency>
             <groupId>httpunit</groupId>
             <artifactId>httpunit</artifactId>
@@ -234,6 +246,10 @@
             <name>Local repository that contains modbus</name>
             <url>file://${project.basedir}/repository</url>
         </repository>
+		<repository>
+			<id>codehaus</id>
+			<url>http://repository.codehaus.org/org/codehaus</url>
+		</repository>
     </repositories>
     <reporting>
         <plugins>
