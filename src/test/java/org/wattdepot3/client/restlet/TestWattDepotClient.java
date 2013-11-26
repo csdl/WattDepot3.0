@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.InstanceFactory;
-import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.MeasurementTypeList;
@@ -24,8 +24,8 @@ import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorModelList;
-import org.wattdepot3.datamodel.SensorProcess;
-import org.wattdepot3.datamodel.SensorProcessList;
+import org.wattdepot3.datamodel.CollectorMetaData;
+import org.wattdepot3.datamodel.CollectorMetaDataList;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
@@ -141,10 +141,10 @@ public class TestWattDepotClient {
    */
   @Test
   public void testLocation() {
-    Location loc = InstanceFactory.getLocation();
+    SensorLocation loc = InstanceFactory.getLocation();
     test.putLocation(loc);
     try {
-      Location ret = test.getLocation(loc.getId());
+      SensorLocation ret = test.getLocation(loc.getId());
       assertEquals(loc, ret);
       test.deleteLocation(ret);
       try {
@@ -265,20 +265,20 @@ public class TestWattDepotClient {
   }
 
   /**
-   * Test method for SensorProcesses.
+   * Test method for CollectorMetaDataes.
    */
   @Test
-  public void testSensorProcess() {
-    SensorProcess model = InstanceFactory.getSensorProcess();
-    test.putSensorProcess(model);
-    SensorProcessList list = test.getSensorProcesses();
-    assertTrue(list.getProcesses().contains(model));
+  public void testCollectorMetaData() {
+    CollectorMetaData data = InstanceFactory.getCollectorMetaData();
+    test.putCollectorMetaData(data);
+    CollectorMetaDataList list = test.getCollectorMetaDatas();
+    assertTrue(list.getDatas().contains(data));
     try {
-      SensorProcess ret = test.getSensorProcess(model.getId());
-      assertEquals(model, ret);
-      test.deleteSensorProcess(model);
+      CollectorMetaData ret = test.getCollectorMetaData(data.getId());
+      assertEquals(data, ret);
+      test.deleteCollectorMetaData(data);
       try {
-        ret = test.getSensorProcess(model.getId());
+        ret = test.getCollectorMetaData(data.getId());
         assertNull(ret);
       }
       catch (IdNotFoundException e) {
@@ -286,7 +286,7 @@ public class TestWattDepotClient {
       }
     }
     catch (IdNotFoundException e) {
-      fail("Should have " + model);
+      fail("Should have " + data);
     }
   }
 

@@ -60,10 +60,10 @@ public class API {
   public static final String SENSOR_MODELS_URI = "sensormodels/";
 
   /** The URI to manipulate a given SensorProcess. */
-  public static final String SENSOR_PROCESS_URI = "sensorprocess/";
+  public static final String SENSOR_PROCESS_URI = "collectormetadata/";
 
   /** The URI to get all SensorProcesses. */
-  public static final String SENSOR_PROCESSES_URI = "sensorprocesses/";
+  public static final String SENSOR_PROCESSES_URI = "collectormetadatas/";
   
   /** The URI for getting a 'measured' value. */
   public static final String VALUE_URI = "value/";

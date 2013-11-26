@@ -5,12 +5,12 @@ package org.wattdepot3.server.restlet;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
-import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
-import org.wattdepot3.restlet.LocationResource;
+import org.wattdepot3.restlet.SensorLocationResource;
 
 /**
  * LocationResource - WattDepot 3 Location Resource handles the Location HTTP
@@ -20,7 +20,7 @@ import org.wattdepot3.restlet.LocationResource;
  * @author Cam Moore
  * 
  */
-public class LocationServerResource extends WattDepotServerResource implements LocationResource {
+public class SensorLocationServerResource extends WattDepotServerResource implements SensorLocationResource {
 
   private String locationId;
 
@@ -41,9 +41,9 @@ public class LocationServerResource extends WattDepotServerResource implements L
    * @see org.wattdepot3.restlet.LocationResource#retrieve()
    */
   @Override
-  public Location retrieve() {
+  public SensorLocation retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/location/{" + locationId + "}");
-    Location loc = null;
+    SensorLocation loc = null;
     try {
       loc = depot.getLocation(locationId, groupId);
     }
@@ -64,21 +64,21 @@ public class LocationServerResource extends WattDepotServerResource implements L
    * .Location)
    */
   @Override
-  public void store(Location location) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/location/ with " + location);
+  public void store(SensorLocation sensorLocation) {
+    System.out.println("PUT /wattdepot/{" + groupId + "}/location/ with " + sensorLocation);
     UserGroup owner = depot.getUserGroup(groupId);
     if (owner != null) {
-      if (!depot.getLocationIds(groupId).contains(location.getId())) {
+      if (!depot.getLocationIds(groupId).contains(sensorLocation.getId())) {
         try {
-          depot.defineLocation(location.getId(), location.getLatitude(), location.getLongitude(),
-              location.getAltitude(), location.getDescription(), owner);
+          depot.defineLocation(sensorLocation.getId(), sensorLocation.getLatitude(), sensorLocation.getLongitude(),
+              sensorLocation.getAltitude(), sensorLocation.getDescription(), owner);
         }
         catch (UniqueIdException e) {
           setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
         }
       }
       else {
-        depot.updateLocation(location);
+        depot.updateLocation(sensorLocation);
       }
     }
     else {

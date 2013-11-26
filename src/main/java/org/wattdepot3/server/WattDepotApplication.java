@@ -19,16 +19,16 @@ import org.wattdepot3.server.restlet.DepositoryMeasurementsServerResource;
 import org.wattdepot3.server.restlet.DepositorySensorsServerResource;
 import org.wattdepot3.server.restlet.DepositoryServerResource;
 import org.wattdepot3.server.restlet.DepositoryValueServerResource;
-import org.wattdepot3.server.restlet.LocationServerResource;
-import org.wattdepot3.server.restlet.LocationsServerResource;
+import org.wattdepot3.server.restlet.SensorLocationServerResource;
+import org.wattdepot3.server.restlet.SensorLocationsServerResource;
 import org.wattdepot3.server.restlet.MeasurementTypeServerResource;
 import org.wattdepot3.server.restlet.MeasurementTypesServerResource;
 import org.wattdepot3.server.restlet.SensorGroupServerResource;
 import org.wattdepot3.server.restlet.SensorGroupsServerResource;
 import org.wattdepot3.server.restlet.SensorModelServerResource;
 import org.wattdepot3.server.restlet.SensorModelsServerResource;
-import org.wattdepot3.server.restlet.SensorProcessServerResource;
-import org.wattdepot3.server.restlet.SensorProcessesServerResource;
+import org.wattdepot3.server.restlet.CollectorMetaDataServerResource;
+import org.wattdepot3.server.restlet.CollectorMetaDatasServerResource;
 import org.wattdepot3.server.restlet.SensorServerResource;
 import org.wattdepot3.server.restlet.SensorsServerResource;
 import org.wattdepot3.server.restlet.UserGroupServerResource;
@@ -168,9 +168,9 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/{group_id}/depository/{depository_id}/value/",
         DepositoryValueServerResource.class);
     router.attach("/wattdepot/{group_id}/depositories/", DepositoriesServerResource.class);
-    router.attach("/wattdepot/{group_id}/location/", LocationServerResource.class);
-    router.attach("/wattdepot/{group_id}/location/{location_id}", LocationServerResource.class);
-    router.attach("/wattdepot/{group_id}/locations/", LocationsServerResource.class);
+    router.attach("/wattdepot/{group_id}/location/", SensorLocationServerResource.class);
+    router.attach("/wattdepot/{group_id}/location/{location_id}", SensorLocationServerResource.class);
+    router.attach("/wattdepot/{group_id}/locations/", SensorLocationsServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorgroup/", SensorGroupServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorgroup/{sensorgroup_id}",
         SensorGroupServerResource.class);
@@ -179,10 +179,10 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/{group_id}/sensormodel/{sensormodel_id}",
         SensorModelServerResource.class);
     router.attach("/wattdepot/{group_id}/sensormodels/", SensorModelsServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensorprocess/", SensorProcessServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensorprocess/{sensorprocess_id}",
-        SensorProcessServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensorprocesses/", SensorProcessesServerResource.class);
+    router.attach("/wattdepot/{group_id}/collectormetadata/", CollectorMetaDataServerResource.class);
+    router.attach("/wattdepot/{group_id}/collectormetadata/{collectormetadata_id}",
+        CollectorMetaDataServerResource.class);
+    router.attach("/wattdepot/{group_id}/collectormetadatas/", CollectorMetaDatasServerResource.class);
     router.attach("/wattdepot/{group_id}/sensor/", SensorServerResource.class);
     router.attach("/wattdepot/{group_id}/sensor/{sensor_id}", SensorServerResource.class);
     router.attach("/wattdepot/{group_id}/sensors/", SensorsServerResource.class);

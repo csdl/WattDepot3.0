@@ -1,27 +1,29 @@
 /**
- * SensorProcessServerResource.java created on Oct 18, 2013 by Cam Moore.
+ * CollectorMetaDataServerResource.java created on Oct 18, 2013 by Cam Moore.
  */
 package org.wattdepot3.server.restlet;
 
+import java.util.logging.Level;
+
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
-import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
-import org.wattdepot3.restlet.SensorProcessResource;
+import org.wattdepot3.restlet.CollectorMetaDataResource;
 
 /**
- * SensorProcessServerResource - Handles the SensorProcess HTTP API
+ * CollectorMetaDataServerResource - Handles the CollectorMetaData HTTP API
  * (("/wattdepot/{group_id}/sensorprocess/",
  * "/wattdepot/{group_id}/sensorprocess/{sensorprocess_id}").
  * 
  * @author Cam Moore
  * 
  */
-public class SensorProcessServerResource extends WattDepotServerResource implements
-    SensorProcessResource {
+public class CollectorMetaDataServerResource extends WattDepotServerResource implements
+    CollectorMetaDataResource {
 
   /** The sensorprocess_id from the request. */
   private String sensorProcessId;
@@ -34,26 +36,27 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
   @Override
   protected void doInit() throws ResourceException {
     super.doInit();
-    this.sensorProcessId = getAttribute("sensorprocess_id");
+    this.sensorProcessId = getAttribute("collectormetadata_id");
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.restlet.SensorProcessResource#retrieve()
+   * @see org.wattdepot3.restlet.CollectorMetaDataResource#retrieve()
    */
   @Override
-  public SensorProcess retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/sensorprocess/{" + sensorProcessId + "}");
-    SensorProcess process = null;
+  public CollectorMetaData retrieve() {
+    getLogger().log(Level.INFO,
+        "GET /wattdepot/{" + groupId + "}/collectormetadata/{" + sensorProcessId + "}");
+    CollectorMetaData process = null;
     try {
-      process = depot.getSensorProcess(sensorProcessId, groupId);
+      process = depot.getCollectorMetaData(sensorProcessId, groupId);
     }
     catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FORBIDDEN, e.getMessage());
     }
     if (process == null) {
-      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "SensorProcess " + sensorProcessId
+      setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "CollectorMetaData " + sensorProcessId
           + " is not defined.");
     }
     return process;
@@ -62,17 +65,18 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.restlet.SensorProcessResource#store(org.wattdepot3
-   * .datamodel.SensorProcess)
+   * @see org.wattdepot3.restlet.CollectorMetaDataResource#store(org.wattdepot3
+   * .datamodel.CollectorMetaData)
    */
   @Override
-  public void store(SensorProcess sensorprocess) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/sensorprocess/ with " + sensorprocess);
+  public void store(CollectorMetaData sensorprocess) {
+    getLogger().log(Level.INFO,
+        "PUT /wattdepot/{" + groupId + "}/sensorprocess/ with " + sensorprocess);
     UserGroup owner = depot.getUserGroup(groupId);
     if (owner != null) {
-      if (!depot.getSensorProcessIds(groupId).contains(sensorprocess.getId())) {
+      if (!depot.getCollectorMetaDataIds(groupId).contains(sensorprocess.getId())) {
         try {
-          depot.defineSensorProcess(sensorprocess.getId(), sensorprocess.getSensor(),
+          depot.defineCollectorMetaData(sensorprocess.getId(), sensorprocess.getSensor(),
               sensorprocess.getPollingInterval(), sensorprocess.getDepositoryId(), owner);
         }
         catch (UniqueIdException e) {
@@ -83,7 +87,7 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
         }
       }
       else {
-        depot.updateSensorProcess(sensorprocess);
+        depot.updateCollectorMetaData(sensorprocess);
       }
     }
     else {
@@ -94,13 +98,14 @@ public class SensorProcessServerResource extends WattDepotServerResource impleme
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.restlet.SensorProcessResource#remove()
+   * @see org.wattdepot3.restlet.CollectorMetaDataResource#remove()
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/sensorprocess/{" + sensorProcessId + "}");
+    getLogger().log(Level.INFO,
+        "DEL /wattdepot/{" + groupId + "}/sensorprocess/{" + sensorProcessId + "}");
     try {
-      depot.deleteSensorProcess(sensorProcessId, groupId);
+      depot.deleteCollectorMetaData(sensorProcessId, groupId);
     }
     catch (IdNotFoundException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());

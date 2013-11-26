@@ -4,7 +4,7 @@
 package org.wattdepot3.restlet;
 
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.LocationList;
+import org.wattdepot3.datamodel.SensorLocationList;
 
 /**
  * LocationsResource - The HTTP API for Locations.
@@ -12,7 +12,7 @@ import org.wattdepot3.datamodel.LocationList;
  * @author Cam Moore
  * 
  */
-public interface LocationsResource {
+public interface SensorLocationsResource {
 
   /**
    * Defines the GET /wattdepot/{group_id}/locations/ API call.
@@ -20,6 +20,6 @@ public interface LocationsResource {
    * @return a List of the defined Locations.
    */
   @Get("json")  // Use JSON as transport encoding.
-  public LocationList retrieve();
+  public SensorLocationList retrieve();
 
 }

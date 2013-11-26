@@ -4,7 +4,7 @@
 package org.wattdepot3.restlet;
 
 import org.restlet.resource.Get;
-import org.wattdepot3.datamodel.SensorProcessList;
+import org.wattdepot3.datamodel.CollectorMetaDataList;
 
 /**
  * SensorProcessesResouce - HTTP Interface for SensorProcesses.
@@ -12,13 +12,13 @@ import org.wattdepot3.datamodel.SensorProcessList;
  * @author Cam Moore
  * 
  */
-public interface SensorProcessesResource {
+public interface CollectorMetaDatasResource {
   /**
    * Defines the GET /wattdepot/sensorprocesses/ API call.
    * 
    * @return a List of the defined SensorProcesses.
    */
   @Get("json") // Use JSON as transport encoding.
-  public SensorProcessList retrieve();
+  public CollectorMetaDataList retrieve();
 
 }

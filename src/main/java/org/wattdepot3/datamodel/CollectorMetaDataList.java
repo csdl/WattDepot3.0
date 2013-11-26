@@ -11,27 +11,27 @@ import java.util.ArrayList;
  * @author Cam Moore
  *
  */
-public class SensorProcessList {
-  private ArrayList<SensorProcess> processes;
+public class CollectorMetaDataList {
+  private ArrayList<CollectorMetaData> processes;
   
   /**
    * Default Constructor.
    */
-  public SensorProcessList() {
-    processes = new ArrayList<SensorProcess>();
+  public CollectorMetaDataList() {
+    processes = new ArrayList<CollectorMetaData>();
   }
 
   /**
    * @return the models
    */
-  public ArrayList<SensorProcess> getProcesses() {
+  public ArrayList<CollectorMetaData> getDatas() {
     return processes;
   }
 
   /**
    * @param models the models to set
    */
-  public void setProcesses(ArrayList<SensorProcess> models) {
+  public void setDatas(ArrayList<CollectorMetaData> models) {
     this.processes = models;
   }
 

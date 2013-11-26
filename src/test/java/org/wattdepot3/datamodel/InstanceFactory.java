@@ -33,8 +33,8 @@ public class InstanceFactory {
   /**
    * @return A Location instance for testing.
    */
-  public static Location getLocation() {
-    return new Location("test_location_id", new Double(21.294642), new Double(-157.812727),
+  public static SensorLocation getLocation() {
+    return new SensorLocation("test_location_id", new Double(21.294642), new Double(-157.812727),
         new Double(30), "Hale Aloha Ilima residence hall 6th floor", getUserGroup());
   }
 
@@ -138,10 +138,10 @@ public class InstanceFactory {
   }
 
   /**
-   * @return A SensorProcess instance for testing.
+   * @return A CollectorMetaData instance for testing.
    */
-  public static SensorProcess getSensorProcess() {
-    return new SensorProcess("sensor_process_id", getSensor(), 10L, "test_depository_id",
+  public static CollectorMetaData getCollectorMetaData() {
+    return new CollectorMetaData("collector_data_id", getSensor(), 10L, "test_depository_id",
         getUserGroup());
   }
 

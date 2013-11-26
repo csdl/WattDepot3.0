@@ -11,7 +11,7 @@ import org.wattdepot3.util.Slug;
  * @author Cam Moore
  * 
  */
-public class Location {
+public class SensorLocation {
   /** The name for the Location. */
   private String name;
   /** The unique slug for the locations used in URIs. */
@@ -30,7 +30,7 @@ public class Location {
   /**
    * Default constructor.
    */
-  public Location() {
+  public SensorLocation() {
 
   }
 
@@ -48,7 +48,7 @@ public class Location {
    * @param owner
    *          the owner of the location.
    */
-  public Location(String uniqueId, Double latitude, Double longitude, Double altitude,
+  public SensorLocation(String uniqueId, Double latitude, Double longitude, Double altitude,
       String description, UserGroup owner) {
     this.name = uniqueId;
     this.slug = Slug.slugify(this.name);
@@ -89,7 +89,7 @@ public class Location {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    Location other = (Location) obj;
+    SensorLocation other = (SensorLocation) obj;
     if (name == null) {
       if (other.name != null) {
         return false;

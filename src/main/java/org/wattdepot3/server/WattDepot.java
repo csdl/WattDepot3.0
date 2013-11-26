@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.wattdepot3.datamodel.Depository;
-import org.wattdepot3.datamodel.Location;
+import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorModel;
-import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
@@ -37,37 +37,28 @@ public abstract class WattDepot {
   public static final String ENERGY_TYPE_NAME = "Energy";
 
   /**
-   * Ensures the base set of MeasurementTypes are defined in WattDepot.
+   * Defines a new CollectorMetaData. This does not start any processes.
+   * 
+   * @param id
+   *          The unique id.
+   * @param sensor
+   *          The Sensor to poll.
+   * @param pollingInterval
+   *          The polling interval.
+   * @param depositoryId
+   *          The id of the depository to use.
+   * @param owner
+   *          the owner of the CollectorMetaData.
+   * @return The defined CollectorMetaData.
+   * @throws UniqueIdException
+   *           if the id is already used for another CollectorMetaData.
+   * @throws MissMatchedOwnerException
+   *           if the given owner doesn't match the owners of the Sensor or
+   *           Depository.
    */
-  public void initializeMeasurementTypes() {
-    for (String key : UnitsHelper.quantities.keySet()) {
-      MeasurementType mt = getMeasurementType(Slug.slugify(key));
-      if (mt == null) {
-        try {
-          defineMeasurementType(key, UnitsHelper.quantities.get(key).toString());
-        }
-        catch (UniqueIdException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-  }
+  public abstract CollectorMetaData defineCollectorMetaData(String id, Sensor sensor, Long pollingInterval,
+      String depositoryId, UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
 
-  /**
-   * @return the sessionClose
-   */
-  public int getSessionClose() {
-    throw new RuntimeException("Not implemented.");
-  }
-
-  /**
-   * @return the sessionOpen
-   */
-  public int getSessionOpen() {
-    throw new RuntimeException("Not implemented.");
-  }
-
-  
   /**
    * Defines a new Location in WattDepot.
    * 
@@ -87,7 +78,7 @@ public abstract class WattDepot {
    * @throws UniqueIdException
    *           if the id is already used for another Location.
    */
-  public abstract Location defineLocation(String id, Double latitude, Double longitude,
+  public abstract SensorLocation defineLocation(String id, Double latitude, Double longitude,
       Double altitude, String description, UserGroup owner) throws UniqueIdException;
 
   /**
@@ -105,6 +96,7 @@ public abstract class WattDepot {
   public abstract MeasurementType defineMeasurementType(String name, String units)
       throws UniqueIdException;
 
+  
   /**
    * @param id
    *          The unique id.
@@ -123,7 +115,7 @@ public abstract class WattDepot {
    *           if the given owner doesn't match the owners of the Location or
    *           SensorModel.
    */
-  public abstract Sensor defineSensor(String id, String uri, Location l, SensorModel sm,
+  public abstract Sensor defineSensor(String id, String uri, SensorLocation l, SensorModel sm,
       UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
 
   /**
@@ -161,29 +153,6 @@ public abstract class WattDepot {
    */
   public abstract SensorModel defineSensorModel(String id, String protocol, String type,
       String version, UserGroup owner) throws UniqueIdException;
-
-  /**
-   * Defines a new SensorProcess. This does not start any processes.
-   * 
-   * @param id
-   *          The unique id.
-   * @param sensor
-   *          The Sensor to poll.
-   * @param pollingInterval
-   *          The polling interval.
-   * @param depositoryId
-   *          The id of the depository to use.
-   * @param owner
-   *          the owner of the SensorProcess.
-   * @return The defined SensorProcess.
-   * @throws UniqueIdException
-   *           if the id is already used for another SensorProcess.
-   * @throws MissMatchedOwnerException
-   *           if the given owner doesn't match the owners of the Sensor or
-   *           Depository.
-   */
-  public abstract SensorProcess defineSensorProcess(String id, Sensor sensor, Long pollingInterval,
-      String depositoryId, UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
 
   /**
    * @param id
@@ -246,6 +215,21 @@ public abstract class WattDepot {
    */
   public abstract Depository defineWattDepository(String name, MeasurementType measurementType,
       UserGroup owner) throws UniqueIdException;
+
+  /**
+   * Deletes the given CollectorMetaData.
+   * 
+   * @param id
+   *          The unique id of the CollectorMetaData.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @throws IdNotFoundException
+   *           If the id is not known or defined.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
+   */
+  public abstract void deleteCollectorMetaData(String id, String groupId) throws IdNotFoundException,
+      MissMatchedOwnerException;
 
   /**
    * Deletes the given location.
@@ -318,21 +302,6 @@ public abstract class WattDepot {
       MissMatchedOwnerException;
 
   /**
-   * Deletes the given SensorProcess.
-   * 
-   * @param id
-   *          The unique id of the SensorProcess.
-   * @param groupId
-   *          the group id of the user making the request.
-   * @throws IdNotFoundException
-   *           If the id is not known or defined.
-   * @throws MissMatchedOwnerException
-   *           if the groupId doesn't match the owner of the sensor process.
-   */
-  public abstract void deleteSensorProcess(String id, String groupId) throws IdNotFoundException,
-      MissMatchedOwnerException;
-
-  /**
    * @param id
    *          The unique id of the User.
    * @throws IdNotFoundException
@@ -373,6 +342,32 @@ public abstract class WattDepot {
 
   /**
    * @param id
+   *          The unique id for the CollectorMetaData.
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The CollectorMetaData with the given id.
+   * @throws MissMatchedOwnerException
+   *           if the groupId doesn't match the owner of the sensor process.
+   */
+  public abstract CollectorMetaData getCollectorMetaData(String id, String groupId)
+      throws MissMatchedOwnerException;
+
+  /**
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined CollectorMetaDataes owned by the given group id.
+   */
+  public abstract List<CollectorMetaData> getCollectorMetaDatas(String groupId);
+
+  /**
+   * @param groupId
+   *          the id of the owner UserGroup.
+   * @return A list of the defined CollectorMetaData Ids.
+   */
+  public abstract List<String> getCollectorMetaDataIds(String groupId);
+
+  /**
+   * @param id
    *          The unique id for the Location.
    * @param groupId
    *          the group id of the user making the request.
@@ -380,19 +375,7 @@ public abstract class WattDepot {
    * @throws MissMatchedOwnerException
    *           if the groupId doesn't match the owner of the location.
    */
-  public abstract Location getLocation(String id, String groupId) throws MissMatchedOwnerException;
-
-  /**
-   * @param slug
-   *          The unique id for the MeasurementType.
-   * @return The MeasurementType with the given slug.
-   */
-  public abstract MeasurementType getMeasurementType(String slug);
-
-  /**
-   * @return A List of the defined MeasurementTypes.
-   */
-  public abstract List<MeasurementType> getMeasurementTypes();
+  public abstract SensorLocation getLocation(String id, String groupId) throws MissMatchedOwnerException;
 
   /**
    * @param groupId
@@ -406,7 +389,19 @@ public abstract class WattDepot {
    *          the group id of the user making the request.
    * @return The known/defined Locations owned by the given group id.
    */
-  public abstract List<Location> getLocations(String groupId);
+  public abstract List<SensorLocation> getLocations(String groupId);
+
+  /**
+   * @param slug
+   *          The unique id for the MeasurementType.
+   * @return The MeasurementType with the given slug.
+   */
+  public abstract MeasurementType getMeasurementType(String slug);
+
+  /**
+   * @return A List of the defined MeasurementTypes.
+   */
+  public abstract List<MeasurementType> getMeasurementTypes();
 
   /**
    * @param id
@@ -479,37 +474,25 @@ public abstract class WattDepot {
   public abstract List<SensorModel> getSensorModels(String groupId);
 
   /**
-   * @param id
-   *          The unique id for the SensorProcess.
-   * @param groupId
-   *          the group id of the user making the request.
-   * @return The SensorProcess with the given id.
-   * @throws MissMatchedOwnerException
-   *           if the groupId doesn't match the owner of the sensor process.
-   */
-  public abstract SensorProcess getSensorProcess(String id, String groupId)
-      throws MissMatchedOwnerException;
-
-  /**
-   * @param groupId
-   *          the group id of the user making the request.
-   * @return The known/defined SensorProcesses owned by the given group id.
-   */
-  public abstract List<SensorProcess> getSensorProcesses(String groupId);
-
-  /**
-   * @param groupId
-   *          the id of the owner UserGroup.
-   * @return A list of the defined SensorProcess Ids.
-   */
-  public abstract List<String> getSensorProcessIds(String groupId);
-
-  /**
    * @param groupId
    *          the group id of the user making the request.
    * @return The known/defined Sensors owned by the given group id.
    */
   public abstract List<Sensor> getSensors(String groupId);
+
+  /**
+   * @return the sessionClose
+   */
+  public int getSessionClose() {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
+   * @return the sessionOpen
+   */
+  public int getSessionOpen() {
+    throw new RuntimeException("Not implemented.");
+  }
 
   /**
    * @param id
@@ -586,13 +569,39 @@ public abstract class WattDepot {
   public abstract List<String> getWattDepositoryIds(String groupId);
 
   /**
+   * Ensures the base set of MeasurementTypes are defined in WattDepot.
+   */
+  public void initializeMeasurementTypes() {
+    for (String key : UnitsHelper.quantities.keySet()) {
+      MeasurementType mt = getMeasurementType(Slug.slugify(key));
+      if (mt == null) {
+        try {
+          defineMeasurementType(key, UnitsHelper.quantities.get(key).toString());
+        }
+        catch (UniqueIdException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  /**
+   * Updates the given sensor process in the persistent store.
+   * 
+   * @param process
+   *          The updated CollectorMetaData.
+   * @return The updated process from persistence.
+   */
+  public abstract CollectorMetaData updateCollectorMetaData(CollectorMetaData process);
+
+  /**
    * Updates the given location in the persistent store.
    * 
    * @param loc
    *          The updated Location.
    * @return The updated location from persistence.
    */
-  public abstract Location updateLocation(Location loc);
+  public abstract SensorLocation updateLocation(SensorLocation loc);
 
   /**
    * Updates the given measurement type in the persistent store.
@@ -629,15 +638,6 @@ public abstract class WattDepot {
    * @return The updated model from persistence.
    */
   public abstract SensorModel updateSensorModel(SensorModel model);
-
-  /**
-   * Updates the given sensor process in the persistent store.
-   * 
-   * @param process
-   *          The updated SensorProcess.
-   * @return The updated process from persistence.
-   */
-  public abstract SensorProcess updateSensorProcess(SensorProcess process);
 
   /**
    * @param group

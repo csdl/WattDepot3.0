@@ -18,7 +18,7 @@ public class Sensor {
   /** The URI to the sensor. */
   private String uri;
   /** The location of the sensor. */
-  private Location location;
+  private SensorLocation sensorLocation;
   /** The model of the sensor. */
   private SensorModel model;
   /** Additional properties of the sensor. */
@@ -38,17 +38,17 @@ public class Sensor {
    *          The unique id.
    * @param uri
    *          The URI to the meter.
-   * @param location
+   * @param sensorLocation
    *          The meter's location.
    * @param model
    *          The meter's model.
    * @param owner
    *          the owner of the sensor.
    */
-  public Sensor(String uniqueId, String uri, Location location, SensorModel model, UserGroup owner) {
+  public Sensor(String uniqueId, String uri, SensorLocation sensorLocation, SensorModel model, UserGroup owner) {
     this.id = uniqueId;
     this.uri = uri;
-    this.location = location;
+    this.sensorLocation = sensorLocation;
     this.model = model;
     this.properties = new HashSet<Property>();
     this.owner = owner;
@@ -89,12 +89,12 @@ public class Sensor {
     else if (!id.equals(other.id)) {
       return false;
     }
-    if (location == null) {
-      if (other.location != null) {
+    if (sensorLocation == null) {
+      if (other.sensorLocation != null) {
         return false;
       }
     }
-    else if (!location.equals(other.location)) {
+    else if (!sensorLocation.equals(other.sensorLocation)) {
       return false;
     }
     if (model == null) {
@@ -142,8 +142,8 @@ public class Sensor {
   /**
    * @return the location
    */
-  public Location getLocation() {
-    return location;
+  public SensorLocation getLocation() {
+    return sensorLocation;
   }
 
   /**
@@ -198,7 +198,7 @@ public class Sensor {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((id == null) ? 0 : id.hashCode());
-    result = prime * result + ((location == null) ? 0 : location.hashCode());
+    result = prime * result + ((sensorLocation == null) ? 0 : sensorLocation.hashCode());
     result = prime * result + ((model == null) ? 0 : model.hashCode());
     result = prime * result + ((owner == null) ? 0 : owner.hashCode());
     result = prime * result + ((properties == null) ? 0 : properties.hashCode());
@@ -242,11 +242,11 @@ public class Sensor {
   }
 
   /**
-   * @param location
+   * @param sensorLocation
    *          the location to set
    */
-  public void setLocation(Location location) {
-    this.location = location;
+  public void setLocation(SensorLocation sensorLocation) {
+    this.sensorLocation = sensorLocation;
   }
 
   /**
@@ -287,7 +287,7 @@ public class Sensor {
    */
   @Override
   public String toString() {
-    return "Sensor [id=" + getId() + ", uri=" + uri + ", location=" + location + ", model=" + model
+    return "Sensor [id=" + getId() + ", uri=" + uri + ", location=" + sensorLocation + ", model=" + model
         + ", properties=" + properties + "]";
   }
 

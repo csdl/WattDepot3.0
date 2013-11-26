@@ -187,7 +187,7 @@ Opens: ${opens} Closes: ${closes}
                     </thead>
                     <tbody>
                     <#list sensors as s>
-                        <tr><td>${s.id}</td><td>${s.uri}</td><td><#if s.getLocation()??>${s.location.id}</#if></td><td><#if s.getModel()??>${s.model.id}</#if></td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
+                        <tr><td>${s.id}</td><td>${s.uri}</td><td><#if s.getSensorLocation()??>${s.sensorLocation.id}</#if></td><td><#if s.getModel()??>${s.model.id}</#if></td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_sensor_dialog(event, '${s.id}');"></span>
                             </td>

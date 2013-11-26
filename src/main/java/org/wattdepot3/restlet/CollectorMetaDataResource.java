@@ -6,7 +6,7 @@ package org.wattdepot3.restlet;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
-import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.CollectorMetaData;
 
 /**
  * SensorProcessResource - HTTP Interface for data process SensorProcess.
@@ -14,7 +14,7 @@ import org.wattdepot3.datamodel.SensorProcess;
  * @author Cam Moore
  * 
  */
-public interface SensorProcessResource {
+public interface CollectorMetaDataResource {
 
   /**
    * Defines GET /wattdepot/sensorprocess/{sensorprocess_id} API call.
@@ -22,7 +22,7 @@ public interface SensorProcessResource {
    * @return The SensorProcess with the given id. The id is sent in the request.
    */
   @Get("json") // Use JSON as transport encoding.
-  public SensorProcess retrieve();
+  public CollectorMetaData retrieve();
 
   /**
    * Defines the PUT /wattdepot/sensorprocess/ API call.
@@ -31,7 +31,7 @@ public interface SensorProcessResource {
    *          The SensorProcess to store.
    */
   @Put
-  public void store(SensorProcess sensorprocess);
+  public void store(CollectorMetaData sensorprocess);
 
   /**
    * Defined the DEL /wattdepot/sensorprocess/{sensorprocess_id} API call. The

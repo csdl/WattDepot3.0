@@ -14,10 +14,10 @@ import org.restlet.data.Status;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.client.WattDepotInterface;
+import org.wattdepot3.datamodel.CollectorMetaData;
+import org.wattdepot3.datamodel.CollectorMetaDataList;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
-import org.wattdepot3.datamodel.Location;
-import org.wattdepot3.datamodel.LocationList;
 import org.wattdepot3.datamodel.MeasuredValue;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementList;
@@ -27,31 +27,31 @@ import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
 import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorList;
+import org.wattdepot3.datamodel.SensorLocation;
+import org.wattdepot3.datamodel.SensorLocationList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorModelList;
-import org.wattdepot3.datamodel.SensorProcess;
-import org.wattdepot3.datamodel.SensorProcessList;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.exception.NoMeasurementException;
 import org.wattdepot3.restlet.API;
+import org.wattdepot3.restlet.CollectorMetaDataResource;
+import org.wattdepot3.restlet.CollectorMetaDatasResource;
 import org.wattdepot3.restlet.DepositoriesResource;
 import org.wattdepot3.restlet.DepositoryMeasurementResource;
 import org.wattdepot3.restlet.DepositoryMeasurementsResource;
 import org.wattdepot3.restlet.DepositoryResource;
 import org.wattdepot3.restlet.DepositoryValueResource;
-import org.wattdepot3.restlet.LocationResource;
-import org.wattdepot3.restlet.LocationsResource;
 import org.wattdepot3.restlet.MeasurementTypeResource;
 import org.wattdepot3.restlet.MeasurementTypesResource;
 import org.wattdepot3.restlet.SensorGroupResource;
 import org.wattdepot3.restlet.SensorGroupsResource;
+import org.wattdepot3.restlet.SensorLocationResource;
+import org.wattdepot3.restlet.SensorLocationsResource;
 import org.wattdepot3.restlet.SensorModelResource;
 import org.wattdepot3.restlet.SensorModelsResource;
-import org.wattdepot3.restlet.SensorProcessResource;
-import org.wattdepot3.restlet.SensorProcessesResource;
 import org.wattdepot3.restlet.SensorResource;
 import org.wattdepot3.restlet.SensorsResource;
 import org.wattdepot3.util.DateConvert;
@@ -153,15 +153,15 @@ public class WattDepotClient implements WattDepotInterface {
    * datamodel.Location)
    */
   @Override
-  public void deleteLocation(Location location) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + location.getId());
-    LocationResource resource = client.wrap(LocationResource.class);
+  public void deleteLocation(SensorLocation sensorLocation) throws IdNotFoundException {
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + sensorLocation.getId());
+    SensorLocationResource resource = client.wrap(SensorLocationResource.class);
     try {
       resource.remove();
     }
     catch (ResourceException e) {
       if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
-        throw new IdNotFoundException(location + " is not stored in WattDepot.");
+        throw new IdNotFoundException(sensorLocation + " is not stored in WattDepot.");
       }
     }
     finally {
@@ -283,14 +283,14 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#deleteSensorProcess(org.wattdepot3
-   * .datamodel.SensorProcess)
+   * org.wattdepot3.client.WattDepotInterface#deleteCollectorMetaData(org.wattdepot3
+   * .datamodel.CollectorMetaData)
    */
   @Override
-  public void deleteSensorProcess(SensorProcess process) throws IdNotFoundException {
+  public void deleteCollectorMetaData(CollectorMetaData process) throws IdNotFoundException {
     ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
         + process.getId());
-    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
     try {
       resource.remove();
     }
@@ -356,10 +356,10 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getLocation(java.lang.String)
    */
   @Override
-  public Location getLocation(String id) throws IdNotFoundException {
+  public SensorLocation getLocation(String id) throws IdNotFoundException {
     ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + id);
-    LocationResource resource = client.wrap(LocationResource.class);
-    Location ret = null;
+    SensorLocationResource resource = client.wrap(SensorLocationResource.class);
+    SensorLocation ret = null;
     try {
       ret = resource.retrieve();
     }
@@ -380,10 +380,10 @@ public class WattDepotClient implements WattDepotInterface {
    * @see org.wattdepot3.client.WattDepotInterface#getLocations()
    */
   @Override
-  public LocationList getLocations() {
+  public SensorLocationList getLocations() {
     ClientResource client = makeClient(this.groupId + "/" + API.LOCATIONS_URI);
-    LocationsResource resource = client.wrap(LocationsResource.class);
-    LocationList ret = resource.retrieve();
+    SensorLocationsResource resource = client.wrap(SensorLocationsResource.class);
+    SensorLocationList ret = resource.retrieve();
     client.release();
     return ret;
   }
@@ -576,20 +576,20 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#getSensorProcess(java.lang.String)
+   * org.wattdepot3.client.WattDepotInterface#getCollectorMetaData(java.lang.String)
    */
   @Override
-  public SensorProcess getSensorProcess(String id) throws IdNotFoundException {
+  public CollectorMetaData getCollectorMetaData(String id) throws IdNotFoundException {
     ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI + id);
-    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
     try {
-      SensorProcess ret = resource.retrieve();
+      CollectorMetaData ret = resource.retrieve();
       client.release();
       return ret;
     }
     catch (ResourceException e) {
       if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
-        throw new IdNotFoundException(id + " is not a known SensorProcess. ");
+        throw new IdNotFoundException(id + " is not a known CollectorMetaData. ");
       }
       e.printStackTrace();
     }
@@ -604,13 +604,13 @@ public class WattDepotClient implements WattDepotInterface {
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.client.WattDepotInterface#getSensorProcesses()
+   * @see org.wattdepot3.client.WattDepotInterface#getCollectorMetaDatas()
    */
   @Override
-  public SensorProcessList getSensorProcesses() {
+  public CollectorMetaDataList getCollectorMetaDatas() {
     ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESSES_URI);
-    SensorProcessesResource resource = client.wrap(SensorProcessesResource.class);
-    SensorProcessList ret = resource.retrieve();
+    CollectorMetaDatasResource resource = client.wrap(CollectorMetaDatasResource.class);
+    CollectorMetaDataList ret = resource.retrieve();
     client.release();
     return ret;
   }
@@ -785,9 +785,9 @@ public class WattDepotClient implements WattDepotInterface {
    * .Location)
    */
   @Override
-  public void putLocation(Location loc) {
+  public void putLocation(SensorLocation loc) {
     ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + loc.getId());
-    LocationResource resource = client.wrap(LocationResource.class);
+    SensorLocationResource resource = client.wrap(SensorLocationResource.class);
     resource.store(loc);
     client.release();
   }
@@ -882,14 +882,14 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#putSensorProcess(org.wattdepot3
-   * .datamodel.SensorProcess)
+   * org.wattdepot3.client.WattDepotInterface#putCollectorMetaData(org.wattdepot3
+   * .datamodel.CollectorMetaData)
    */
   @Override
-  public void putSensorProcess(SensorProcess process) {
+  public void putCollectorMetaData(CollectorMetaData process) {
     ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
         + process.getId());
-    SensorProcessResource resource = client.wrap(SensorProcessResource.class);
+    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
     resource.store(process);
     client.release();
   }
@@ -914,8 +914,8 @@ public class WattDepotClient implements WattDepotInterface {
    * datamodel.Location)
    */
   @Override
-  public void updateLocation(Location location) {
-    putLocation(location);
+  public void updateLocation(SensorLocation sensorLocation) {
+    putLocation(sensorLocation);
   }
 
   /*
@@ -970,12 +970,12 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#updateSensorProcess(org.wattdepot3
-   * .datamodel.SensorProcess)
+   * org.wattdepot3.client.WattDepotInterface#updateCollectorMetaData(org.wattdepot3
+   * .datamodel.CollectorMetaData)
    */
   @Override
-  public void updateSensorProcess(SensorProcess process) {
-    putSensorProcess(process);
+  public void updateCollectorMetaData(CollectorMetaData process) {
+    putCollectorMetaData(process);
   }
 
 }

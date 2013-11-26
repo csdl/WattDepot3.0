@@ -9,7 +9,7 @@ import org.apache.commons.validator.UrlValidator;
 import org.wattdepot3.client.restlet.WattDepotClient;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.Sensor;
-import org.wattdepot3.datamodel.SensorProcess;
+import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.BadSensorUriException;
 import org.wattdepot3.exception.IdNotFoundException;
@@ -27,7 +27,7 @@ public abstract class MultiThreadedCollector extends TimerTask {
   /** Flag for debugging messages. */
   protected boolean debug;
   /** The metadata about the collector. */
-  protected SensorProcess metaData;
+  protected CollectorMetaData metaData;
 
   /** The client used to communicate with the WattDepot server. */
   protected WattDepotClient client;
@@ -42,7 +42,7 @@ public abstract class MultiThreadedCollector extends TimerTask {
    * @param password
    *          The password for the user.
    * @param processId
-   *          The SensorProcessId used to initialize this collector.
+   *          The CollectorMetaDataId used to initialize this collector.
    * @param debug
    *          flag for debugging messages.
    * @throws BadCredentialException
@@ -57,7 +57,7 @@ public abstract class MultiThreadedCollector extends TimerTask {
       BadSensorUriException {
     this.client = new WattDepotClient(serverUri, username, password);
     this.debug = debug;
-    this.metaData = client.getSensorProcess(processId);
+    this.metaData = client.getCollectorMetaData(processId);
     validate();
   }
 
@@ -86,9 +86,9 @@ public abstract class MultiThreadedCollector extends TimerTask {
       BadSensorUriException {
     this.client = new WattDepotClient(serverUri, username, password);
     this.debug = debug;
-    this.metaData = new SensorProcess(Slug.slugify(sensor.getId() + " " + pollingInterval + " "
+    this.metaData = new CollectorMetaData(Slug.slugify(sensor.getId() + " " + pollingInterval + " "
         + depository.getName()), sensor, pollingInterval, depository.getName(), null);
-    client.putSensorProcess(metaData);
+    client.putCollectorMetaData(metaData);
     validate();
   }
 

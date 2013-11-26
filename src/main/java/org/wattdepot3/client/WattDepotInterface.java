@@ -7,8 +7,8 @@ import java.util.Date;
 
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.DepositoryList;
-import org.wattdepot3.datamodel.Location;
-import org.wattdepot3.datamodel.LocationList;
+import org.wattdepot3.datamodel.SensorLocation;
+import org.wattdepot3.datamodel.SensorLocationList;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementList;
 import org.wattdepot3.datamodel.MeasurementType;
@@ -19,8 +19,8 @@ import org.wattdepot3.datamodel.SensorGroupList;
 import org.wattdepot3.datamodel.SensorList;
 import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorModelList;
-import org.wattdepot3.datamodel.SensorProcess;
-import org.wattdepot3.datamodel.SensorProcessList;
+import org.wattdepot3.datamodel.CollectorMetaData;
+import org.wattdepot3.datamodel.CollectorMetaDataList;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
@@ -48,12 +48,12 @@ public interface WattDepotInterface {
   /**
    * Deletes the given Location.
    * 
-   * @param location
+   * @param sensorLocation
    *          the Location to delete.
    * @throws IdNotFoundException
    *           if the Location is not found in the server.
    */
-  public void deleteLocation(Location location) throws IdNotFoundException;
+  public void deleteLocation(SensorLocation sensorLocation) throws IdNotFoundException;
 
   /**
    * Deletes the given measurement from the given depository.
@@ -107,14 +107,14 @@ public interface WattDepotInterface {
   public void deleteSensorModel(SensorModel model) throws IdNotFoundException;
 
   /**
-   * Deletes the given SensorProcess.
+   * Deletes the given CollectorMetaData.
    * 
    * @param process
-   *          the SensorProcess to delete.
+   *          the CollectorMetaData to delete.
    * @throws IdNotFoundException
-   *           if the SensorProcess is not found in the server.
+   *           if the CollectorMetaData is not found in the server.
    */
-  public void deleteSensorProcess(SensorProcess process) throws IdNotFoundException;
+  public void deleteCollectorMetaData(CollectorMetaData process) throws IdNotFoundException;
 
   /**
    * @return The defined Depositories.
@@ -141,12 +141,12 @@ public interface WattDepotInterface {
    * @exception IdNotFoundException
    *              if the given id is not a Location's id.
    */
-  public Location getLocation(String id) throws IdNotFoundException;
+  public SensorLocation getLocation(String id) throws IdNotFoundException;
 
   /**
    * @return The defined Locations.
    */
-  public LocationList getLocations();
+  public SensorLocationList getLocations();
 
   /**
    * @param depository
@@ -220,20 +220,20 @@ public interface WattDepotInterface {
   public SensorModelList getSensorModels();
 
   /**
-   * Retrieves the SensorProcess with the given id from the WattDepot Server.
+   * Retrieves the CollectorMetaData with the given id from the WattDepot Server.
    * 
    * @param id
-   *          The SensorProcess's id.
-   * @return the SensorProcess with the given id or null.
+   *          The CollectorMetaData's id.
+   * @return the CollectorMetaData with the given id or null.
    * @exception IdNotFoundException
-   *              if the given id is not a SensorProcess's id.
+   *              if the given id is not a CollectorMetaData's id.
    */
-  public SensorProcess getSensorProcess(String id) throws IdNotFoundException;
+  public CollectorMetaData getCollectorMetaData(String id) throws IdNotFoundException;
 
   /**
-   * @return The defined SensorProcesses.
+   * @return The defined CollectorMetaDatas.
    */
-  public SensorProcessList getSensorProcesses();
+  public CollectorMetaDataList getCollectorMetaDatas();
 
   /**
    * @return The defined Sensors.
@@ -328,7 +328,7 @@ public interface WattDepotInterface {
    * @param loc
    *          the Location.
    */
-  public void putLocation(Location loc);
+  public void putLocation(SensorLocation loc);
 
   /**
    * @param depository
@@ -375,12 +375,12 @@ public interface WattDepotInterface {
   public void putSensorModel(SensorModel model);
 
   /**
-   * Stores the given SensorProcess in the WattDepot Server.
+   * Stores the given CollectorMetaData in the WattDepot Server.
    * 
    * @param process
-   *          the SensorProcess.
+   *          the CollectorMetaData.
    */
-  public void putSensorProcess(SensorProcess process);
+  public void putCollectorMetaData(CollectorMetaData process);
 
   /**
    * Updates the given Depository in the WattDepot Server.
@@ -393,10 +393,10 @@ public interface WattDepotInterface {
   /**
    * Updates the given Location in the WattDepot Server.
    * 
-   * @param location
+   * @param sensorLocation
    *          the Location to update.
    */
-  public void updateLocation(Location location);
+  public void updateLocation(SensorLocation sensorLocation);
 
   /**
    * Updates the given MeasurementType in the WattDepot Server.
@@ -431,10 +431,10 @@ public interface WattDepotInterface {
   public void updateSensorModel(SensorModel model);
 
   /**
-   * Updates the given SensorProcess in the WattDepot Server.
+   * Updates the given CollectorMetaData in the WattDepot Server.
    * 
    * @param process
-   *          The SensorProcess to update.
+   *          The CollectorMetaData to update.
    */
-  public void updateSensorProcess(SensorProcess process);
+  public void updateCollectorMetaData(CollectorMetaData process);
 }

@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Cam Moore
  * 
  */
-public class SensorProcess {
+public class CollectorMetaData {
   /** A unique id for the SensorProcess. */
   private String id;
   /** The sensor making the measurements. */
@@ -30,7 +30,7 @@ public class SensorProcess {
   /**
    * Hide the default constructor.
    */
-  protected SensorProcess() {
+  protected CollectorMetaData() {
 
   }
 
@@ -46,7 +46,7 @@ public class SensorProcess {
    * @param owner
    *          the owner of the sensor process.
    */
-  public SensorProcess(String id, Sensor sensor, Long poll, String depositoryId, UserGroup owner) {
+  public CollectorMetaData(String id, Sensor sensor, Long poll, String depositoryId, UserGroup owner) {
     this.id = id;
     this.sensor = sensor;
     this.pollingInterval = poll;
@@ -81,7 +81,7 @@ public class SensorProcess {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    SensorProcess other = (SensorProcess) obj;
+    CollectorMetaData other = (CollectorMetaData) obj;
     if (depositoryId == null) {
       if (other.depositoryId != null) {
         return false;
@@ -280,6 +280,16 @@ public class SensorProcess {
    */
   public void setSensor(Sensor sensor) {
     this.sensor = sensor;
+  }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "CollectorMetaData [id=" + id + ", sensor=" + sensor + ", pollingInterval="
+        + pollingInterval + ", depositoryId=" + depositoryId + ", properties=" + properties
+        + ", owner=" + owner + "]";
   }
 
 }

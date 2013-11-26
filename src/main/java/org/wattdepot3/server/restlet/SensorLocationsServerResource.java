@@ -3,9 +3,9 @@
  */
 package org.wattdepot3.server.restlet;
 
-import org.wattdepot3.datamodel.Location;
-import org.wattdepot3.datamodel.LocationList;
-import org.wattdepot3.restlet.LocationsResource;
+import org.wattdepot3.datamodel.SensorLocation;
+import org.wattdepot3.datamodel.SensorLocationList;
+import org.wattdepot3.restlet.SensorLocationsResource;
 
 /**
  * LocationsServerResource - ServerResource that handles the URI
@@ -14,7 +14,7 @@ import org.wattdepot3.restlet.LocationsResource;
  * @author Cam Moore
  * 
  */
-public class LocationsServerResource extends WattDepotServerResource implements LocationsResource {
+public class SensorLocationsServerResource extends WattDepotServerResource implements SensorLocationsResource {
 
   /*
    * (non-Javadoc)
@@ -22,10 +22,10 @@ public class LocationsServerResource extends WattDepotServerResource implements 
    * @see org.wattdepot3.restlet.LocationsResource#retrieve()
    */
   @Override
-  public LocationList retrieve() {
+  public SensorLocationList retrieve() {
     System.out.println("GET /wattdepot/{" + groupId + "}/locations/");
-    LocationList list = new LocationList();
-    for (Location l : depot.getLocations(groupId)) {
+    SensorLocationList list = new SensorLocationList();
+    for (SensorLocation l : depot.getLocations(groupId)) {
       list.getLocations().add(l);
     }
     return list;
