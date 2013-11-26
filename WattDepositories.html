@@ -197,52 +197,16 @@
                         </div>
                     </section>
                 </div>
-                <!--                 <div class="card">
-                    <section id="get_depository_sensors_short">
-                        <header>
-                            <h3>
-                                <span class="big-type">GET</span>
-                                /wattdepot/{group_id}/depository/{depository_id}/sensors/?short=true
-                            </h3>
-                        </header>
-                        <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/sensors/?short=true
-                            <a class="btn right"
-                                onclick="$('#get_depository_response_sensors_short').slideToggle()"><b>Response
-                                    <span class="caret"></span>
-                            </b></a>
-                        </div>
-                        <div class="card-info-more"
-                            id="get_depository_response_sensors_short"
-                            display="none">
-                            <pre>
-              <code>
-[
-   &quot;ilima-6-telco&quot;,
-   &quot;ilima-6-elect&quot;
-]
-              </code>
-            </pre>
-                        </div>
-                        <div class="card-description">
-                            <p>Get the list of Sensors that sent
-                                measurements to the WattDepository with
-                                the given depository_id in shortened
-                                format. Shortend format uses sensor ids
-                                instead of full sensors.</p>
-                        </div>
-                    </section>
-                </div> -->
                 <div class="card">
                     <section id="get_depository_sensor_value">
                         <header>
                             <h4>
                                 <span class="big-type">GET</span>
-                                /wattdepot/{group_id}/depository/{depository_id}/value/?sensor={sensor_id}&amp;time={timestamp}
+                                /wattdepot/{group_id}/depository/{depository_id}/value/?sensor={sensor_id}&amp;timestamp={timestamp}
                             </h4>
                         </header>
                         <div class="card-info">
-                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/value/?sensor=ilima-6-telco&amp;time=2013-07-28T09:00:00.000-10:00
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/ilima-energy1/value/?sensor=ilima-6-telco&amp;timestamp=2013-07-28T09:00:00.000-10:00
                             <a class="btn right"
                                 onclick="$('#get_depository_response_sensor_value').slideToggle()"><b>Response
                                     <span class="caret"></span>
@@ -430,14 +394,14 @@
                         <header>
                             <h2>
                                 <span class="big-type">PUT</span>
-                                /wattdepot/{group_id}/depositories/
+                                /wattdepot/{group_id}/depository/
                             </h2>
                         </header>
                         <div class="card-info">curl -X PUT -H
                             "ContentType: application/json" -d '{"name":
                             "Ilima energy consumption",
                             "measurementType": "energy"}'
-                            http://server.wattdepot.org/wattdepot/{group_id}/depositories/
+                            http://server.wattdepot.org/wattdepot/{group_id}/depository/
 
                         </div>
                         <div class="card-info-more"
@@ -480,10 +444,7 @@
                             display="none">
                             <pre>
               <code>
-{
-   &quot;status&quot;: 200,
-   &quot;message&quot;: &quot;OK&quot;
-}
+
               </code>
             </pre>
                         </div>
@@ -512,10 +473,6 @@
                             id="del_depository_response" display="none">
                             <pre>
               <code>
-{
-   &quot;status&quot;: 200,
-   &quot;message&quot;: &quot;OK&quot;
-}
               </code>
             </pre>
                         </div>
