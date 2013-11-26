@@ -39,8 +39,8 @@
                                 <li><a href="SensorModels.html">Sensor
                                         Models</a></li>
                             </ul></li>
-                        <li><a href="SensorProcesses.html">Sensor
-                                Process Metadata</a></li>
+                        <li><a href="SensorProcesses.html">Collector
+                                Metadata</a></li>
                         <li><a href="WattDepositories.html">WattDepositories</a></li>
                     </ul>
                 </div>
@@ -68,10 +68,10 @@
                                         the sensor (e.g. Latitude,
                                         Longitude, Altitude,
                                         Description).</li>
-                                    <li><strong>Sensor
-                                            Models</strong> A description of the
-                                        type of sensor, the protocol and
-                                        version it is using.</li>
+                                    <li><strong>Models</strong> A
+                                        description of the type of
+                                        sensor, the protocol and version
+                                        it is using.</li>
                                     <li><strong>List of
                                             Properties</strong> - A potentially
                                         empty list of properties that
@@ -82,13 +82,14 @@
                                 these groups for aggregation. We can
                                 group all the energy sensors in a
                                 building into a single group.</li>
-                            <li><strong>Sensor Process
-                                    Metadata</strong> A representation of how
-                                often to poll a Sensor. Processes that
-                                contact a Sensor and create Measurements
-                                should use the information in the
-                                SensorProcess Metadata to control their
-                                activities.</li>
+                            <li><strong>Collector Metadata</strong>
+                                Collectors are processes that contact a
+                                Sensor and produce measurements.
+                                Collector Metadata is a representation
+                                of how often to poll a Sensor and which
+                                WattDepository to store the Measurements
+                                in. Collectors should use the Collector
+                                Metadata to control their activities.</li>
                             <li><strong>WattDepositories</strong> -
                                 Are responsible for storing the
                                 measurements made by the Sensors. They
@@ -194,17 +195,17 @@
                                         id.</span> </a></li>
                             <li><a
                                 href="SensorProcesss.html#get_sensorprocesses"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/sensorprocesses/</b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/collectormetadatas/</b>
                                     <span class="description">Get
                                         a full list of the defined
-                                        SensorProcesss.</span> </a></li>
+                                        Collector Metadatas.</span> </a></li>
                             <li><a
                                 href="SensorProcesss.html#get_sensorprocesse"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/sensorprocess/<span
-                                        class="token">{sensorprocess_id}</span></b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/collectormetadata/<span
+                                        class="token">{collectormetadata_id}</span></b>
                                     <span class="description">Get
-                                        the SensorProcess with the given
-                                        id.</span> </a></li>
+                                        the Collector Metadata with the
+                                        given id.</span> </a></li>
                             <li><a href="Sensors.html#get_sensors"><span
                                     class="request-type">GET</span> <b>/wattdepot/{group_id}/sensors/</b>
                                     <span class="description">Get
@@ -230,20 +231,20 @@
                                         shortened format.</span> </a></li> -->
                             <li><a
                                 href="WattDepositories.html#get_wattdepositories"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepositories/</b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depositories/</b>
                                     <span class="description">Get
                                         a full list of the defined
                                         WattDepositories.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#get_wattdepository"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepository/<span
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depository/<span
                                         class="token">{wattdepository_id}</span></b>
                                     <span class="description">Get
                                         the WattDepository with the
                                         given id.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#get_wattdepository_sensors"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepository/<span
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depository/<span
                                         class="token">{wattdepository_id}/sensors/</span></b>
                                     <span class="description">Get
                                         a list of sensors that sent
@@ -261,8 +262,8 @@
                                         in a shortened format.</span> </a></li> -->
                             <li><a
                                 href="WattDepositories.html#get_wattdepository_sensor_value"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepository/<span
-                                        class="token">{wattdepository_id}/sensors/{sensor_id}/value/{timestamp}</span></b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depository/<span
+                                        class="token">{wattdepository_id}/value/?sensor={sensor_id}&{timestamp}</span></b>
                                     <span class="description">Get
                                         measurement value for the given
                                         sensor at the given time. This
@@ -270,8 +271,8 @@
                                         value.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#get_wattdepository_sensor_value2"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepository/<span
-                                        class="token">{wattdepository_id}/sensors/{sensor_id}/value/?start={timestamp},end={timestamp}</span></b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depository/<span
+                                        class="token">{wattdepository_id}/value/?sensor={sensor_id}&start={timestamp}&end={timestamp}</span></b>
                                     <span class="description">Get
                                         measurement value for the given
                                         sensor over the time period. The
@@ -279,8 +280,8 @@
                                         from the value at end.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#get_wattdepository_sensor_measurements"><span
-                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/wattdepository/<span
-                                        class="token">{wattdepository_id}/sensors/{sensor_id}/measurements/?start={timestamp},end={timestamp}</span></b>
+                                    class="request-type">GET</span> <b>/wattdepot/{group_id}/depository/<span
+                                        class="token">{wattdepository_id}/measurements/?sensor={sensor_id}&start={timestamp}&end={timestamp}</span></b>
                                     <span class="description">Get
                                         measurements for the given
                                         sensor over the time period.</span> </a></li>
@@ -289,42 +290,42 @@
                         <ul>
                             <li><a
                                 href="Locations.html#post_location"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/locations/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/location/</b>
                                     <span class="description">Create
                                         a new Location. It must have a
                                         unique id.</span> </a></li>
                             <li><a
                                 href="SensorGroups.html#post_sensorgroup"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensorgroups/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensorgroup/</b>
                                     <span class="description">Create
                                         a new SensorGroup. It must have
                                         a unique id.</span> </a></li>
                             <li><a
                                 href="SensorModels.html#post_sensormodel"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensormodels/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensormodel/</b>
                                     <span class="description">Create
                                         a new SensorModel. It must have
                                         a unique id.</span> </a></li>
                             <li><a
                                 href="SensorProcesss.html#post_sensorprocess"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensorprocesses/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/collectormetadata/</b>
                                     <span class="description">Create
                                         a new SensorProcess. It must
                                         have a unique id.</span> </a></li>
                             <li><a href="Sensors.html#post_sensor"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensors/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/sensor/</b>
                                     <span class="description">Create
                                         a new Sensor. It must have a
                                         unique id.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#post_wattdepository"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/wattdepositories/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/depository/</b>
                                     <span class="description">Create
                                         a new WattDepository. It must
                                         have a unique id.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#post_wattdepository"><span
-                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/wattdepositories/{wattdepository_id}/</b>
+                                    class="request-type">POST</span> <b>/wattdepot/{group_id}/depository/{wattdepository_id}/measurement/</b>
                                     <span class="description">Add
                                         the measurement to the given
                                         WattDepository.</span> </a></li>
@@ -333,40 +334,40 @@
                         <ul>
                             <li><a
                                 href="Locations.html#del_location"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/locations/<span
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/location/<span
                                         class="token">{location_id}</span></b>
                                     <span class="description">Remove
                                         the Location with the given id.</span>
                             </a></li>
                             <li><a
                                 href="SensorGroups.html#del_sensorgroup"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensorgroups/<span
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensorgroup/<span
                                         class="token">{sensorgroup_id}</span></b>
                                     <span class="description">Remove
                                         the SensorGroup with the given
                                         id.</span> </a></li>
                             <li><a
                                 href="SensorModels.html#del_sensormodel"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensormodels/<span
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensormodel/<span
                                         class="token">{sensormodel_id}</span></b>
                                     <span class="description">Remove
                                         the SensorModel with the given
                                         id.</span> </a></li>
                             <li><a
                                 href="SensorProcesss.html#del_sensorprocesse"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensorprocesses/<span
-                                        class="token">{sensorprocess_id}</span></b>
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/collectormetadata/<span
+                                        class="token">{collectormetadata_id}</span></b>
                                     <span class="description">Remove
-                                        the SensorProcess with the given
-                                        id.</span> </a></li>
+                                        the Collector Metadata with the
+                                        given id.</span> </a></li>
                             <li><a href="Sensors.html#del_sensor"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensors/<span
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/sensor/<span
                                         class="token">{sensor_id}</span></b>
                                     <span class="description">Remove
                                         the Sensor with the given id.</span> </a></li>
                             <li><a
                                 href="WattDepositories.html#del_wattdepository"><span
-                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/wattdepositories/<span
+                                    class="request-type">DEL</span> <b>/wattdepot/{group_id}/depository/<span
                                         class="token">{wattdepository_id}</span></b>
                                     <span class="description">Remove
                                         the WattDepository with the
