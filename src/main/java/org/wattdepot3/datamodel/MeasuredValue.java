@@ -80,4 +80,25 @@ public class MeasuredValue {
     this.date = new Date(date.getTime());
   }
 
+  /**
+   * @param sensorId the sensorId to set
+   */
+  public void setSensorId(String sensorId) {
+    this.sensorId = sensorId;
+  }
+
+  /**
+   * @param value the value to set
+   */
+  public void setValue(Double value) {
+    this.value = value;
+  }
+
+  /**
+   * @param measurementType the measurementType to set
+   */
+  public void setMeasurementType(MeasurementType measurementType) {
+    this.measurementType = measurementType;
+  }
+
 }

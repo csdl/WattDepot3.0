@@ -647,7 +647,9 @@ public class WattDepotClient implements WattDepotInterface {
       DepositoryValueResource resource = client.wrap(DepositoryValueResource.class);
       MeasuredValue ret = resource.retrieve();
       client.release();
-      return ret.getValue();
+      if (ret != null) {
+        return ret.getValue();
+      }
     }
     catch (DatatypeConfigurationException e) {
       e.printStackTrace();
@@ -753,7 +755,6 @@ public class WattDepotClient implements WattDepotInterface {
    * @return The client resource.
    */
   public ClientResource makeClient(String requestString) {
-    System.out.println(requestString);
     Reference reference = new Reference(this.wattDepotUri + requestString);
     ClientResource client = new ClientResource(reference);
     client.setChallengeResponse(authentication);

@@ -42,11 +42,38 @@ import org.wattdepot3.exception.NoMeasurementException;
 public class TestWattDepotClient {
 
   /** The handle on the client. */
-  private WattDepotAdminClient admin;
-  private WattDepotClient test;
-  private UserInfo testUser = InstanceFactory.getUserInfo();
-  private UserPassword testPassword = InstanceFactory.getUserPassword();
-  private UserGroup testGroup = InstanceFactory.getUserGroup();
+  private static WattDepotAdminClient admin;
+  private static WattDepotClient test;
+  private static UserInfo testUser = InstanceFactory.getUserInfo();
+  private static UserPassword testPassword = InstanceFactory.getUserPassword();
+  private static UserGroup testGroup = InstanceFactory.getUserGroup();
+
+  /**
+   * @throws java.lang.Exception
+   *           if there is a problem.
+   */
+//  @BeforeClass
+//  public static void setUpClass() throws Exception {
+//    System.out.println("setUp()");
+//    admin = new WattDepotAdminClient("http://localhost:8119/", "admin", "admin");
+//    admin.putUserPassword(testPassword);
+//    admin.putUser(testUser);
+//    admin.putUserGroup(testGroup);
+//    admin.putMeasurementType(InstanceFactory.getMeasurementType());
+//    test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
+//        testPassword.getPlainText());
+//  }
+
+  /**
+   * @throws java.lang.Exception
+   *           if there is a problem.
+   */
+//  @AfterClass
+//  public static void tearDownClass() throws Exception {
+//    System.out.println("tearDown()");
+//    admin.deleteUser(testPassword.getId());
+//    admin.deleteUserGroup(testGroup.getId());
+//  }
 
   /**
    * @throws java.lang.Exception
@@ -55,12 +82,12 @@ public class TestWattDepotClient {
   @Before
   public void setUp() throws Exception {
     System.out.println("setUp()");
-    this.admin = new WattDepotAdminClient("http://localhost:8119/", "admin", "admin");
-    this.admin.putUserPassword(testPassword);
-    this.admin.putUser(testUser);
-    this.admin.putUserGroup(testGroup);
-    this.admin.putMeasurementType(InstanceFactory.getMeasurementType());
-    this.test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
+    admin = new WattDepotAdminClient("http://localhost:8119/", "admin", "admin");
+    admin.putUserPassword(testPassword);
+    admin.putUser(testUser);
+    admin.putUserGroup(testGroup);
+    admin.putMeasurementType(InstanceFactory.getMeasurementType());
+    test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
         testPassword.getPlainText());
   }
 
@@ -70,10 +97,10 @@ public class TestWattDepotClient {
    */
   @After
   public void tearDown() throws Exception {
+    System.out.println("tearDown()");
     admin.deleteUser(testPassword.getId());
     admin.deleteUserGroup(testGroup.getId());
   }
-
   /**
    * Test method for
    * {@link org.wattdepot3.client.restlet.WattDepotClient#WattDepotClient(java.lang.String, java.lang.String, java.lang.String)}
@@ -81,7 +108,7 @@ public class TestWattDepotClient {
    */
   @Test
   public void testWattDepotClient() {
-    assertNotNull(this.test);
+    assertNotNull(test);
   }
 
   /**
@@ -273,10 +300,11 @@ public class TestWattDepotClient {
     Measurement m1 = InstanceFactory.getMeasurementOne();
     try {
       test.putMeasurement(depo, m1);
-      m1 = InstanceFactory.getMeasurementTwo();
+      m1 = InstanceFactory.getMeasurementThree();
       test.putMeasurement(depo, m1);
+      m1 = InstanceFactory.getMeasurementTwo();
       Double val = test.getValue(depo, m1.getSensor(), m1.getDate());
-      assertTrue(m1.getValue().equals(val));
+      assertTrue("Got " + val + " was expecting " + m1.getValue(), m1.getValue().equals(val));
     }
     catch (MeasurementTypeException e) {
       fail(e.getMessage());

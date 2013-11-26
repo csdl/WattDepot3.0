@@ -111,9 +111,25 @@ public class DepositoryImpl extends Depository {
    */
   @Override
   public List<Measurement> getMeasurements(Sensor sensor) {
-    List<Measurement> ret = new ArrayList<Measurement>();
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
+    List<Measurement> ret = getMeasurements(session, sensor);
+    session.getTransaction().commit();
+    session.close();
+    return ret;
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.datamodel.Depository#getMeasurements(org.hibernate.Session,
+   * org.wattdepot3.datamodel.Sensor)
+   */
+  @Override
+  public List<Measurement> getMeasurements(Session session, Sensor sensor) {
+    List<Measurement> ret = new ArrayList<Measurement>();
     @SuppressWarnings("unchecked")
     List<MeasurementImpl> measurements = (List<MeasurementImpl>) session
         .createQuery("FROM MeasurementImpl WHERE depository = :depository")
@@ -123,8 +139,6 @@ public class DepositoryImpl extends Depository {
         ret.add(meas);
       }
     }
-    session.getTransaction().commit();
-    session.close();
     return ret;
 
   }
@@ -138,6 +152,27 @@ public class DepositoryImpl extends Depository {
   public List<Sensor> listSensors() {
     Session session = Manager.getFactory().openSession();
     session.beginTransaction();
+    @SuppressWarnings("unchecked")
+    List<MeasurementImpl> result = (List<MeasurementImpl>) session
+        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
+        .list();
+    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    for (Measurement meas : result) {
+      if (!sensors.contains(meas.getSensor())) {
+        sensors.add(meas.getSensor());
+      }
+    }
+    session.getTransaction().commit();
+    session.close();
+    return sensors;
+  }
+
+  /**
+   * @param session
+   *          The Session with an open transaction.
+   * @return A List of Sensors contributing measurements to this depository.
+   */
+  public List<Sensor> listSensors(Session session) {
     @SuppressWarnings("unchecked")
     List<MeasurementImpl> result = (List<MeasurementImpl>) session
         .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
@@ -229,13 +264,19 @@ public class DepositoryImpl extends Depository {
             ret = val1 + (slope * toDate);
           }
           else if (justBefore == null && justAfter == null) {
+            session.getTransaction().commit();
+            session.close();            
             throw new NoMeasurementException("Cannot find measurements before or after "
                 + timestamp);
           }
           else if (justBefore == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new NoMeasurementException("Cannot find measurement before " + timestamp);
           }
           else if (justAfter == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new NoMeasurementException("Cannot find measurement after " + timestamp);
           }
         }
@@ -373,6 +414,8 @@ public class DepositoryImpl extends Depository {
             Long t2 = justAfter.getDate().getTime();
             Long deltaT = t2 - t1;
             if ((deltaT / 1000) > gapSeconds) {
+              session.getTransaction().commit();
+              session.close();
               throw new MeasurementGapException("Gap of " + (deltaT / 1000) + "s is longer than "
                   + gapSeconds);
             }
@@ -382,13 +425,19 @@ public class DepositoryImpl extends Depository {
             ret = val1 + (slope * toDate);
           }
           else if (justBefore == null && justAfter == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new NoMeasurementException("Cannot find measurements before or after "
                 + timestamp);
           }
           else if (justBefore == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new NoMeasurementException("Cannot find measurement before " + timestamp);
           }
           else if (justAfter == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new NoMeasurementException("Cannot find measurement after " + timestamp);
           }
         }

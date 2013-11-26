@@ -27,9 +27,12 @@ import org.wattdepot3.server.depository.impl.hibernate.MeasurementImpl;
 public class WattDepotComponent extends Component {
 
   /**
-   * Default constructor. Sets up the WattDepotComponent.
+   * Sets up the WattDepotComponent with the given WattDepot.
+   * 
+   * @param depot
+   *          The persitent store.
    */
-  public WattDepotComponent() {
+  public WattDepotComponent(WattDepot depot) {
     setName("WattDepot HTTP API Server");
     setDescription("WattDepot3 RESTful server.");
     setAuthor("Cam Moore");
@@ -42,13 +45,14 @@ public class WattDepotComponent extends Component {
     server.getContext().getParameters().set("tracing", "true");
 
     WattDepotApplication app = new WattDepotApplication();
-    // configure the JacksonRepresentation so that it uses ISO-8601 compliant notation
+    app.setDepot(depot);
+    // configure the JacksonRepresentation so that it uses ISO-8601 compliant
+    // notation
     MeasurementImpl source = new MeasurementImpl();
     Representation rep = app.getConverterService().toRepresentation(source);
     @SuppressWarnings("rawtypes")
-	ObjectMapper mapper = ((JacksonRepresentation) rep).getObjectMapper();
-    mapper.configure(
-        SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
+    ObjectMapper mapper = ((JacksonRepresentation) rep).getObjectMapper();
+    mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
     getDefaultHost().attachDefault(app);
     app.setComponent(this);
 
@@ -76,13 +80,4 @@ public class WattDepotComponent extends Component {
     getLogService().setLogPropertiesRef("clap://system/org/wattdepot3/server/log.properties");
   }
 
-  /**
-   * @param args
-   *          Command line arguments.
-   * @throws Exception
-   *           if there is a problem with starting the Component.
-   */
-  public static void main(String[] args) throws Exception {
-    new WattDepotComponent().start();
-  }
 }

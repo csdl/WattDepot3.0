@@ -54,6 +54,21 @@ public abstract class WattDepot {
   }
 
   /**
+   * @return the sessionClose
+   */
+  public int getSessionClose() {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
+   * @return the sessionOpen
+   */
+  public int getSessionOpen() {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  
+  /**
    * Defines a new Location in WattDepot.
    * 
    * @param id

@@ -28,6 +28,6 @@ public interface DepositoryValueResource {
    * @return The MeasuredValue.
    */
   @Get("json")
-  // Use JSON ast transport encoding.
+  // Use JSON as transport encoding.
   public MeasuredValue retrieve();
 }

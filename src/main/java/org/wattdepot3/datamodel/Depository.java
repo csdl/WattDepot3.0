@@ -6,6 +6,7 @@ package org.wattdepot3.datamodel;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.exception.NoMeasurementException;
@@ -52,6 +53,14 @@ public class Depository {
     this.owner = owner;
   }
 
+  /**
+   * @param meas
+   *          The measurement to delete.
+   */
+  public void deleteMeasurement(Measurement meas) {
+    throw new RuntimeException("Not implemented.");
+  }
+
   /*
    * (non-Javadoc)
    * 
@@ -90,6 +99,26 @@ public class Depository {
 
   /**
    * @param sensor
+   *          the Sensor.
+   * @return A list of all the measurements made by the Sensor.
+   */
+  public List<Measurement> getMeasurements(Sensor sensor) {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
+   * @param session
+   *          A Session with an open transaction.
+   * @param sensor
+   *          the Sensor.
+   * @return A list of all the measurements made by the Sensor.
+   */
+  public List<Measurement> getMeasurements(Session session, Sensor sensor) {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
+   * @param sensor
    *          The Sensor.
    * @param start
    *          The start of the interval.
@@ -98,15 +127,6 @@ public class Depository {
    * @return A list of the measurements in the interval.
    */
   public List<Measurement> getMeasurements(Sensor sensor, Date start, Date end) {
-    throw new RuntimeException("Not implemented.");
-  }
-
-  /**
-   * @param sensor
-   *          the Sensor.
-   * @return A list of all the measurements made by the Sensor.
-   */
-  public List<Measurement> getMeasurements(Sensor sensor) {
     throw new RuntimeException("Not implemented.");
   }
 
@@ -249,6 +269,15 @@ public class Depository {
   }
 
   /**
+   * @param session
+   *          A Session with an open transaction.
+   * @return A List of Sensors contributing measurements to this Depository.
+   */
+  public List<Sensor> listSensors(Session session) {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
    * @param meas
    *          The measurement to store.
    * @throws MeasurementTypeException
@@ -299,14 +328,6 @@ public class Depository {
   @Override
   public String toString() {
     return "Depository [name=" + name + ", measurementType=" + measurementType + "]";
-  }
-
-  /**
-   * @param meas
-   *          The measurement to delete.
-   */
-  public void deleteMeasurement(Measurement meas) {
-    throw new RuntimeException("Not implemented.");
   }
 
 }

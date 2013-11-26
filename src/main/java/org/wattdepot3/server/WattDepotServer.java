@@ -14,44 +14,53 @@ import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
  */
 public class WattDepotServer {
 
-	private WattDepotComponent restletServer;
-	private WattDepot depot;
+  private WattDepotComponent restletServer;
+  private WattDepot depot;
 
-	public WattDepotServer() {
-		this.restletServer = new WattDepotComponent();
-		// Use settings to instantiate the right WattDepot instance.
-		this.depot = new WattDepotImpl();
-		this.depot.initializeMeasurementTypes();
-		((WattDepotApplication) restletServer.getApplication()).setDepot(depot);
-	}
+  /**
+   * Default constructor.
+   */
+  public WattDepotServer() {
+    // Use settings to instantiate the right WattDepot instance.
+    this.depot = new WattDepotImpl();
+    if (depot.getSessionOpen() != depot.getSessionClose()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
+    this.depot.initializeMeasurementTypes();
+    if (depot.getSessionOpen() != depot.getSessionClose()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
+    this.restletServer = new WattDepotComponent(depot);
+  }
 
-	/**
-	 * Starts the WattDepotServer.
-	 * 
-	 * @throws Exception
-	 *             if there is a problem starting the different servers.
-	 */
-	public void start() throws Exception {
-		this.restletServer.start();
-	}
+  /**
+   * Starts the WattDepotServer.
+   * 
+   * @throws Exception
+   *           if there is a problem starting the different servers.
+   */
+  public void start() throws Exception {
+    this.restletServer.start();
+  }
 
-	/**
-	 * Stops the WattDepotServer.
-	 * 
-	 * @throws Exception
-	 *             if there is a problem stopping the different servers.
-	 */
-	public void stop() throws Exception {
-		this.restletServer.stop();
-	}
+  /**
+   * Stops the WattDepotServer.
+   * 
+   * @throws Exception
+   *           if there is a problem stopping the different servers.
+   */
+  public void stop() throws Exception {
+    this.restletServer.stop();
+  }
 
-	/**
-	 * @param args
-	 *            commandline arguments.
-	 * @throws Exception 
-	 */
-	public static void main(String[] args) throws Exception {
-		new WattDepotServer().start();
-	}
+  /**
+   * @param args
+   *          commandline arguments.
+   * @throws Exception
+   *           if there is a problem starting the components.
+   */
+  public static void main(String[] args) throws Exception {
+    new WattDepotServer().start();
+  }
 
 }

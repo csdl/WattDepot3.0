@@ -37,14 +37,23 @@ import org.wattdepot3.util.Slug;
  */
 public class WattDepotImpl extends WattDepot {
 
+  private int sessionOpen = 0;
+  private int sessionClose = 0;
+  
   /**
    * Default constructor.
    */
   public WattDepotImpl() {
     UserPassword adminPassword = getUserPassword(UserInfo.ADMIN.getId());
+    if (getSessionClose() != getSessionOpen()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
     if (adminPassword == null) {
       try {
         defineUserPassword(UserPassword.ADMIN.getId(), UserPassword.ADMIN.getPlainText());
+        if (getSessionClose() != getSessionOpen()) {
+          throw new RuntimeException("opens and closed mismatched.");
+        }
       }
       catch (UniqueIdException e1) {
         // what do we do here?
@@ -53,11 +62,20 @@ public class WattDepotImpl extends WattDepot {
     }
     else {
       updateUserPassword(adminPassword);
+      if (getSessionClose() != getSessionOpen()) {
+        throw new RuntimeException("opens and closed mismatched.");
+      }
     }
     UserGroup admin = getUserGroup(UserGroup.ADMIN_GROUP.getId());
+    if (getSessionClose() != getSessionOpen()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
     if (admin == null) {
       try {
         defineUserGroup(UserGroup.ADMIN_GROUP.getId(), UserGroup.ADMIN_GROUP.getUsers());
+        if (getSessionClose() != getSessionOpen()) {
+          throw new RuntimeException("opens and closed mismatched.");
+        }
       }
       catch (UniqueIdException e) {
         // what do we do here?
@@ -66,13 +84,22 @@ public class WattDepotImpl extends WattDepot {
     }
     else {
       updateUserGroup(admin);
+      if (getSessionClose() != getSessionOpen()) {
+        throw new RuntimeException("opens and closed mismatched.");
+      }
     }
     UserInfo adminUser = getUser(UserInfo.ADMIN.getId());
+    if (getSessionClose() != getSessionOpen()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
     if (adminUser == null) {
       try {
         defineUserInfo(UserInfo.ADMIN.getId(), UserInfo.ADMIN.getFirstName(),
             UserInfo.ADMIN.getLastName(), UserInfo.ADMIN.getEmail(), UserInfo.ADMIN.getAdmin(),
             UserInfo.ADMIN.getProperties());
+        if (getSessionClose() != getSessionOpen()) {
+          throw new RuntimeException("opens and closed mismatched.");
+        }
       }
       catch (UniqueIdException e) {
         // what do we do here?
@@ -81,6 +108,9 @@ public class WattDepotImpl extends WattDepot {
     }
     else {
       updateUserInfo(UserInfo.ADMIN);
+      if (getSessionClose() != getSessionOpen()) {
+        throw new RuntimeException("opens and closed mismatched.");
+      }
     }
   }
 
@@ -106,11 +136,13 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a Location id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     l = new Location(id, latitude, longitude, altitude, description, owner);
     session.save(l);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return l;
   }
 
@@ -130,12 +162,14 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(slug + " is already a MeasurementType id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     Unit<?> unit = Unit.valueOf(units);
     mt = new MeasurementType(name, unit);
     session.save(mt);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return mt;
   }
 
@@ -159,11 +193,13 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a Sensor id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     s = new Sensor(id, uri, l, sm, owner);
     saveSensor(session, s);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return s;
   }
 
@@ -187,6 +223,7 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a SensorGroup id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     sg = new SensorGroup(id, sensors, owner);
     for (Sensor s : sensors) {
@@ -195,6 +232,7 @@ public class WattDepotImpl extends WattDepot {
     session.save(sg);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return sg;
   }
 
@@ -220,11 +258,13 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a SensorModel id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     sm = new SensorModel(id, protocol, type, version, owner);
     session.save(sm);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return sm;
   }
 
@@ -248,12 +288,14 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a SensorModel id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     sp = new SensorProcess(id, sensor, pollingInterval, depositoryId, owner);
     saveSensor(session, sensor);
     session.save(sp);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return sp;
   }
 
@@ -270,6 +312,7 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a UserGroup id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     for (UserInfo u : users) {
       for (Property p : u.getProperties()) {
@@ -281,6 +324,7 @@ public class WattDepotImpl extends WattDepot {
     session.saveOrUpdate(g);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return g;
   }
 
@@ -299,6 +343,7 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(id + " is already a UserInfo id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     u = new UserInfo(id, firstName, lastName, email, admin, properties);
     session.saveOrUpdate(u);
@@ -307,6 +352,7 @@ public class WattDepotImpl extends WattDepot {
     }
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return u;
   }
 
@@ -319,11 +365,13 @@ public class WattDepotImpl extends WattDepot {
   @Override
   public UserPassword defineUserPassword(String id, String password) throws UniqueIdException {
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     UserPassword up = new UserPassword(id, password);
     session.saveOrUpdate(up);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return up;
   }
 
@@ -347,11 +395,13 @@ public class WattDepotImpl extends WattDepot {
       throw new UniqueIdException(name + " is already a Depository name.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     d = new DepositoryImpl(name, measurementType, owner);
-    session.save(d);
+    session.saveOrUpdate(d);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return d;
   }
 
@@ -367,10 +417,12 @@ public class WattDepotImpl extends WattDepot {
     Location l = getLocation(id, groupId);
     if (l != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(l);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(id + " was not found for owner " + groupId);
@@ -388,10 +440,12 @@ public class WattDepotImpl extends WattDepot {
     MeasurementType mt = getMeasurementType(slug);
     if (mt != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(mt);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(slug + " was not found.");
@@ -410,10 +464,12 @@ public class WattDepotImpl extends WattDepot {
     Sensor s = getSensor(id, groupId);
     if (s != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(s);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(id + " was not found for owner " + groupId);
@@ -432,10 +488,12 @@ public class WattDepotImpl extends WattDepot {
     SensorGroup s = getSensorGroup(id, groupId);
     if (s != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(s);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(id + " was not found for owner " + groupId);
@@ -454,10 +512,12 @@ public class WattDepotImpl extends WattDepot {
     SensorModel s = getSensorModel(id, groupId);
     if (s != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(s);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(id + " was not found for owner " + groupId);
@@ -476,10 +536,12 @@ public class WattDepotImpl extends WattDepot {
     SensorProcess s = getSensorProcess(id, groupId);
     if (s != null) {
       Session session = Manager.getFactory().openSession();
+      sessionOpen++;
       session.beginTransaction();
       session.delete(s);
       session.getTransaction().commit();
       session.close();
+      sessionClose++;
     }
     else {
       throw new IdNotFoundException(id + " was not found for owner " + groupId);
@@ -498,10 +560,47 @@ public class WattDepotImpl extends WattDepot {
       throw new IdNotFoundException(id + " is not a defined user id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     session.delete(u);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
+  }
+
+  /**
+   * Deletes all the objects that have group as their owner.
+   * 
+   * @param session
+   *          The Session, a transaction must be in progress.
+   * @param group
+   *          The UserGroup to delete.
+   */
+  private void deleteUserGroup(Session session, UserGroup group) {
+    for (SensorProcess sp : getSensorProcesses(session, group.getId())) {
+      session.delete(sp);
+    }
+    for (SensorGroup sg : getSensorGroups(session, group.getId())) {
+      session.delete(sg);
+    }
+    for (Depository d : getWattDepositories(session, group.getId())) {
+      for (Sensor s : d.listSensors(session)) {
+        for (Measurement m : d.getMeasurements(session, s)) {
+          session.delete(m);
+        }
+      }
+      session.delete(d);
+    }
+    for (Sensor s : getSensors(session, group.getId())) {
+      session.delete(s);
+    }
+    for (SensorModel sm : getSensorModels(session, group.getId())) {
+      session.delete(sm);
+    }
+    for (Location l : getLocations(session, group.getId())) {
+      session.delete(l);
+    }
+    session.delete(group);
   }
 
   /*
@@ -516,10 +615,80 @@ public class WattDepotImpl extends WattDepot {
       throw new IdNotFoundException(id + " is not a defined user group id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
-    deleteUserGroup(session, g);
+    for (SensorProcess sp : getSensorProcesses(session, id)) {
+      session.delete(sp);
+    }
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    for (SensorGroup sg : getSensorGroups(session, id)) {
+      session.delete(sg);
+    }
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    for (Depository d : getWattDepositories(session, id)) {
+      for (Sensor s : d.listSensors(session)) {
+        for (Measurement m : d.getMeasurements(session, s)) {
+          session.delete(m);
+        }
+      }
+    }
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<Depository> depositories = getWattDepositories(session, id);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    for (Depository d : depositories) {
+      session.delete(d);
+    }
+    for (Sensor s : getSensors(session, id)) {
+      session.delete(s);
+    }
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    for (SensorModel sm : getSensorModels(session, id)) {
+      session.delete(sm);
+    }
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    for (Location l : getLocations(session, id)) {
+      session.delete(l);
+    }
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.delete(g);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
   }
 
   /*
@@ -534,10 +703,12 @@ public class WattDepotImpl extends WattDepot {
       throw new IdNotFoundException(userId + " is not a defined user password id.");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     session.delete(up);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
   }
 
   /*
@@ -554,10 +725,12 @@ public class WattDepotImpl extends WattDepot {
       throw new IdNotFoundException(id + " is not a defined depository");
     }
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     session.delete(d);
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
   }
 
   /*
@@ -596,26 +769,40 @@ public class WattDepotImpl extends WattDepot {
     return ret;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.server.WattDepot#getLocations(java.lang.String)
+  /**
+   * @param session
+   *          The session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return A List of the Locations owned by the groupId.
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public List<Location> getLocations(String groupId) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
+  private List<Location> getLocations(Session session, String groupId) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from Location").list();
-    session.getTransaction().commit();
-    session.close();
     ArrayList<Location> ret = new ArrayList<Location>();
     for (Location d : (List<Location>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
         ret.add(d);
       }
     }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getLocations(java.lang.String)
+   */
+  @Override
+  public List<Location> getLocations(String groupId) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<Location> ret = getLocations(session, groupId);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
     return ret;
   }
 
@@ -643,11 +830,13 @@ public class WattDepotImpl extends WattDepot {
   @Override
   public List<MeasurementType> getMeasurementTypes() {
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from MeasurementType").list();
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     ArrayList<MeasurementType> ret = new ArrayList<MeasurementType>();
     for (MeasurementType mt : (List<MeasurementType>) result) {
       ret.add(mt);
@@ -718,31 +907,45 @@ public class WattDepotImpl extends WattDepot {
     return ret;
   }
 
+  /**
+   * @param session
+   *          The session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return a List of the SensorGroups owned by groupId.
+   */
+  @SuppressWarnings("unchecked")
+  private List<SensorGroup> getSensorGroups(Session session, String groupId) {
+    @SuppressWarnings("rawtypes")
+    List result = session.createQuery("from SensorGroup").list();
+    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
+    for (SensorGroup d : (List<SensorGroup>) result) {
+      if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
+        // for (Sensor sens : d.getSensors()) {
+        // Hibernate.initialize(sens);
+        // Hibernate.initialize(sens.getLocation());
+        // Hibernate.initialize(sens.getModel());
+        // }
+        ret.add(d);
+      }
+    }
+    return ret;
+  }
+
   /*
    * (non-Javadoc)
    * 
    * @see org.wattdepot3.server.WattDepot#getSensorGroups(java.lang.String)
    */
-  @SuppressWarnings("unchecked")
   @Override
   public List<SensorGroup> getSensorGroups(String groupId) {
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
-    @SuppressWarnings("rawtypes")
-    List result = session.createQuery("from SensorGroup").list();
+    List<SensorGroup> ret = getSensorGroups(session, groupId);
     session.getTransaction().commit();
     session.close();
-    ArrayList<SensorGroup> ret = new ArrayList<SensorGroup>();
-    for (SensorGroup d : (List<SensorGroup>) result) {
-      if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
-        for (Sensor sens : d.getSensors()) {
-          Hibernate.initialize(sens);
-          Hibernate.initialize(sens.getLocation());
-          Hibernate.initialize(sens.getModel());
-        }
-        ret.add(d);
-      }
-    }
+    sessionClose++;
     return ret;
   }
 
@@ -795,26 +998,40 @@ public class WattDepotImpl extends WattDepot {
     return ret;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.server.WattDepot#getSensorModels(java.lang.String)
+  /**
+   * @param session
+   *          The Session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return A List of the SensorModels owned by the groupId.
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public List<SensorModel> getSensorModels(String groupId) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
+  private List<SensorModel> getSensorModels(Session session, String groupId) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from SensorModel").list();
-    session.getTransaction().commit();
-    session.close();
     ArrayList<SensorModel> ret = new ArrayList<SensorModel>();
     for (SensorModel d : (List<SensorModel>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
         ret.add(d);
       }
     }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getSensorModels(java.lang.String)
+   */
+  @Override
+  public List<SensorModel> getSensorModels(String groupId) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<SensorModel> ret = getSensorModels(session, groupId);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
     return ret;
   }
 
@@ -839,26 +1056,40 @@ public class WattDepotImpl extends WattDepot {
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.server.WattDepot#getSensorProcesses(java.lang.String)
+  /**
+   * @param session
+   *          The session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return a List of SensorProcesses owned by groupId.
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public List<SensorProcess> getSensorProcesses(String groupId) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
+  private List<SensorProcess> getSensorProcesses(Session session, String groupId) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from SensorProcess").list();
-    session.getTransaction().commit();
-    session.close();
     ArrayList<SensorProcess> ret = new ArrayList<SensorProcess>();
     for (SensorProcess d : (List<SensorProcess>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
         ret.add(d);
       }
     }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getSensorProcesses(java.lang.String)
+   */
+  @Override
+  public List<SensorProcess> getSensorProcesses(String groupId) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<SensorProcess> ret = getSensorProcesses(session, groupId);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
     return ret;
   }
 
@@ -876,20 +1107,17 @@ public class WattDepotImpl extends WattDepot {
     return ret;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.server.WattDepot#getSensors(java.lang.String)
+  /**
+   * @param session
+   *          The session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return A List of the Sensors owned by groupId.
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public List<Sensor> getSensors(String groupId) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
+  private List<Sensor> getSensors(Session session, String groupId) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from Sensor").list();
-    session.getTransaction().commit();
-    session.close();
     ArrayList<Sensor> ret = new ArrayList<Sensor>();
     for (Sensor d : (List<Sensor>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
@@ -902,6 +1130,37 @@ public class WattDepotImpl extends WattDepot {
   /*
    * (non-Javadoc)
    * 
+   * @see org.wattdepot3.server.WattDepot#getSensors(java.lang.String)
+   */
+  @Override
+  public List<Sensor> getSensors(String groupId) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<Sensor> ret = getSensors(session, groupId);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    return ret;
+  }
+
+  /**
+   * @return the sessionClose
+   */
+  public int getSessionClose() {
+    return sessionClose;
+  }
+
+  /**
+   * @return the sessionOpen
+   */
+  public int getSessionOpen() {
+    return sessionOpen;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.server.WattDepot#getUser(java.lang.String)
    */
   @SuppressWarnings("unchecked")
@@ -909,11 +1168,13 @@ public class WattDepotImpl extends WattDepot {
   public UserInfo getUser(String id) {
     UserInfo ret = null;
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from UserInfo").list();
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     for (UserInfo u : (List<UserInfo>) result) {
       if (id.equals(u.getId())) {
         ret = u;
@@ -932,11 +1193,13 @@ public class WattDepotImpl extends WattDepot {
   public UserGroup getUserGroup(String id) {
     UserGroup ret = null;
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from UserGroup").list();
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     for (UserGroup g : (List<UserGroup>) result) {
       if (id.equals(g.getId())) {
         ret = g;
@@ -968,11 +1231,13 @@ public class WattDepotImpl extends WattDepot {
   @Override
   public List<UserGroup> getUserGroups() {
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from UserGroup").list();
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return (List<UserGroup>) result;
   }
 
@@ -999,6 +1264,7 @@ public class WattDepotImpl extends WattDepot {
   public UserPassword getUserPassword(String id) {
     UserPassword ret = null;
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("unchecked")
     List<UserPassword> result = (List<UserPassword>) session.createQuery("from UserPassword")
@@ -1008,6 +1274,9 @@ public class WattDepotImpl extends WattDepot {
         ret = up;
       }
     }
+    session.getTransaction().commit();
+    session.close();   
+    sessionClose++;
     return ret;
   }
 
@@ -1020,11 +1289,13 @@ public class WattDepotImpl extends WattDepot {
   @Override
   public List<UserInfo> getUsers() {
     Session session = Manager.getFactory().openSession();
+    sessionOpen++;
     session.beginTransaction();
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from UserInfo").list();
     session.getTransaction().commit();
     session.close();
+    sessionClose++;
     return (List<UserInfo>) result;
   }
 
@@ -1063,26 +1334,40 @@ public class WattDepotImpl extends WattDepot {
     return ret;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.server.WattDepot#getWattDepositories(java.lang.String)
+  /**
+   * @param session
+   *          The session with an open transaction.
+   * @param groupId
+   *          The group id.
+   * @return A List of the Depositories owned by groupId.
    */
   @SuppressWarnings("unchecked")
-  @Override
-  public List<Depository> getWattDepositories(String groupId) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
+  private List<Depository> getWattDepositories(Session session, String groupId) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from DepositoryImpl").list();
-    session.getTransaction().commit();
-    session.close();
     ArrayList<Depository> ret = new ArrayList<Depository>();
     for (Depository d : (List<Depository>) result) {
       if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
         ret.add(new DepositoryImpl(d));
       }
     }
+    return ret;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.server.WattDepot#getWattDepositories(java.lang.String)
+   */
+  @Override
+  public List<Depository> getWattDepositories(String groupId) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    List<Depository> ret = getWattDepositories(session, groupId);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
     return ret;
   }
 
@@ -1098,166 +1383,6 @@ public class WattDepotImpl extends WattDepot {
       ret.add(d.getName());
     }
     return ret;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateLocation(org.wattdepot3.datamodel
-   * .Location)
-   */
-  @Override
-  public Location updateLocation(Location loc) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(loc);
-    session.getTransaction().commit();
-    session.close();
-
-    return loc;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateMeasurementType(org.wattdepot3.datamodel
-   * .MeasurementType)
-   */
-  @Override
-  public MeasurementType updateMeasurementType(MeasurementType type) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(type);
-    session.getTransaction().commit();
-    session.close();
-
-    return type;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateSensor(org.wattdepot3.datamodel.Sensor
-   * )
-   */
-  @Override
-  public Sensor updateSensor(Sensor sensor) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(sensor);
-    session.getTransaction().commit();
-    session.close();
-
-    return sensor;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateSensorGroup(org.wattdepot3.datamodel
-   * .SensorGroup)
-   */
-  @Override
-  public SensorGroup updateSensorGroup(SensorGroup group) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(group);
-    session.getTransaction().commit();
-    session.close();
-
-    return group;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateSensorModel(org.wattdepot3.datamodel
-   * .SensorModel)
-   */
-  @Override
-  public SensorModel updateSensorModel(SensorModel model) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(model);
-    session.getTransaction().commit();
-    session.close();
-
-    return model;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateSensorProcess(org.wattdepot3.datamodel
-   * .SensorProcess)
-   */
-  @Override
-  public SensorProcess updateSensorProcess(SensorProcess process) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(process);
-    session.getTransaction().commit();
-    session.close();
-
-    return process;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateUserGroup(org.wattdepot3.datamodel
-   * .UserGroup)
-   */
-  @Override
-  public UserGroup updateUserGroup(UserGroup group) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(group);
-    session.getTransaction().commit();
-    session.close();
-
-    return group;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateUserInfo(org.wattdepot3.datamodel
-   * .UserInfo)
-   */
-  @Override
-  public UserInfo updateUserInfo(UserInfo user) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(user);
-    session.getTransaction().commit();
-    session.close();
-    return user;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.server.WattDepot#updateUserPassword(org.wattdepot3.datamodel
-   * .UserPassword)
-   */
-  @Override
-  public UserPassword updateUserPassword(UserPassword password) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    session.saveOrUpdate(password);
-    session.getTransaction().commit();
-    session.close();
-    return password;
   }
 
   /**
@@ -1277,38 +1402,181 @@ public class WattDepotImpl extends WattDepot {
     session.save(sensor);
   }
 
-  /**
-   * Deletes all the objects that have group as their owner.
+  /*
+   * (non-Javadoc)
    * 
-   * @param session
-   *          The Session, a transaction must be in progress.
-   * @param group
-   *          The UserGroup to delete.
+   * @see
+   * org.wattdepot3.server.WattDepot#updateLocation(org.wattdepot3.datamodel
+   * .Location)
    */
-  private void deleteUserGroup(Session session, UserGroup group) {
-    for (SensorProcess sp : getSensorProcesses(group.getId())) {
-      session.delete(sp);
-    }
-    for (SensorGroup sg : getSensorGroups(group.getId())) {
-      session.delete(sg);
-    }
-    for (Depository d : getWattDepositories(group.getId())) {
-      for (Sensor s : d.listSensors()) {
-        for (Measurement m : d.getMeasurements(s)) {
-          session.delete(m);
-        }
-      }
-      session.delete(d);
-    }
-    for (Sensor s : getSensors(group.getId())) {
-      session.delete(s);
-    }
-    for (SensorModel sm : getSensorModels(group.getId())) {
-      session.delete(sm);
-    }
-    for (Location l : getLocations(group.getId())) {
-      session.delete(l);
-    }
-    session.delete(group);
+  @Override
+  public Location updateLocation(Location loc) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(loc);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return loc;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateMeasurementType(org.wattdepot3.datamodel
+   * .MeasurementType)
+   */
+  @Override
+  public MeasurementType updateMeasurementType(MeasurementType type) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(type);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return type;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateSensor(org.wattdepot3.datamodel.Sensor
+   * )
+   */
+  @Override
+  public Sensor updateSensor(Sensor sensor) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(sensor);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return sensor;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateSensorGroup(org.wattdepot3.datamodel
+   * .SensorGroup)
+   */
+  @Override
+  public SensorGroup updateSensorGroup(SensorGroup group) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(group);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return group;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateSensorModel(org.wattdepot3.datamodel
+   * .SensorModel)
+   */
+  @Override
+  public SensorModel updateSensorModel(SensorModel model) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(model);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return model;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateSensorProcess(org.wattdepot3.datamodel
+   * .SensorProcess)
+   */
+  @Override
+  public SensorProcess updateSensorProcess(SensorProcess process) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(process);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return process;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateUserGroup(org.wattdepot3.datamodel
+   * .UserGroup)
+   */
+  @Override
+  public UserGroup updateUserGroup(UserGroup group) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(group);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+
+    return group;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateUserInfo(org.wattdepot3.datamodel
+   * .UserInfo)
+   */
+  @Override
+  public UserInfo updateUserInfo(UserInfo user) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(user);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    return user;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.server.WattDepot#updateUserPassword(org.wattdepot3.datamodel
+   * .UserPassword)
+   */
+  @Override
+  public UserPassword updateUserPassword(UserPassword password) {
+    Session session = Manager.getFactory().openSession();
+    sessionOpen++;
+    session.beginTransaction();
+    session.saveOrUpdate(password);
+    session.getTransaction().commit();
+    session.close();
+    sessionClose++;
+    return password;
   }
 }

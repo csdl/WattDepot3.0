@@ -6,6 +6,7 @@ package org.wattdepot3.server.restlet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.restlet.data.LocalReference;
 import org.restlet.data.MediaType;
@@ -24,6 +25,7 @@ import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.datamodel.SensorProcess;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
+import org.wattdepot3.server.depository.impl.hibernate.WattDepotImpl;
 
 /**
  * AdministratorServerResource - Administrative interface for WattDepot. It
@@ -39,7 +41,7 @@ public class AdminServerResource extends WattDepotServerResource {
    */
   @Get()
   public Representation toHtml() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/");
+    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/");
     if (!isInRole(groupId) && !isInRole("admin")) {
       User user = getClientInfo().getUser();
       UserInfo info = depot.getUser(user.getIdentifier());
@@ -72,6 +74,8 @@ public class AdminServerResource extends WattDepotServerResource {
     dataModel.put("sensormodels", sensorModels);
     dataModel.put("sensorprocesses", sensorProcesses);
     dataModel.put("measurementtypes", measurementTypes);
+    dataModel.put("opens", ((WattDepotImpl) depot).getSessionOpen());
+    dataModel.put("closes", ((WattDepotImpl) depot).getSessionClose());
     Representation rep = new ClientResource(LocalReference.createClapReference(getClass()
         .getPackage()) + "/Admin.ftl").get();
 
