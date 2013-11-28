@@ -170,11 +170,11 @@ public class TestWattDepotClient {
     MeasurementTypeList list = test.getMeasurementTypes();
     assertTrue(list.getMeasurementTypes().contains(type));
     try {
-      MeasurementType ret = test.getMeasurementType(type.getSlug());
+      MeasurementType ret = test.getMeasurementType(type.getId());
       assertEquals(type, ret);
       test.deleteMeasurementType(ret);
       try {
-        ret = test.getMeasurementType(type.getSlug());
+        ret = test.getMeasurementType(type.getId());
         assertNull(ret);
       }
       catch (IdNotFoundException e) {

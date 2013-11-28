@@ -14,8 +14,8 @@ import org.wattdepot3.util.Slug;
 public class SensorLocation {
   /** The name for the Location. */
   private String name;
-  /** The unique slug for the locations used in URIs. */
-  private String slug;
+  /** The unique id for the locations used in URIs. */
+  private String id;
   /** The Location's decimal Latitude. */
   private Double latitude;
   /** The Location's decimal Longitude. */
@@ -31,12 +31,12 @@ public class SensorLocation {
    * Default constructor.
    */
   public SensorLocation() {
-
+    System.out.println("SensorLocation()");
   }
 
   /**
-   * @param uniqueId
-   *          The unique id.
+   * @param name
+   *          The name.
    * @param latitude
    *          The decimal Latitude.
    * @param longitude
@@ -48,29 +48,16 @@ public class SensorLocation {
    * @param owner
    *          the owner of the location.
    */
-  public SensorLocation(String uniqueId, Double latitude, Double longitude, Double altitude,
+  public SensorLocation(String name, Double latitude, Double longitude, Double altitude,
       String description, UserGroup owner) {
-    this.name = uniqueId;
-    this.slug = Slug.slugify(this.name);
+    System.out.println("SensorLocation(" + name + ", " + latitude + ", ...)");
+    this.name = name;
+    this.id = Slug.slugify(this.name);
     this.latitude = latitude;
     this.longitude = longitude;
     this.altitude = altitude;
     this.description = description;
     this.owner = owner;
-  }
-
-  /**
-   * @return the slug
-   */
-  public String getSlug() {
-    return slug;
-  }
-
-  /**
-   * @param slug the slug to set
-   */
-  public void setSlug(String slug) {
-    this.slug = slug;
   }
 
   /*
@@ -151,7 +138,7 @@ public class SensorLocation {
    * @return the id
    */
   public String getId() {
-    return name;
+    return id;
   }
 
   /**
@@ -166,6 +153,13 @@ public class SensorLocation {
    */
   public Double getLongitude() {
     return longitude;
+  }
+
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -184,6 +178,7 @@ public class SensorLocation {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((altitude == null) ? 0 : altitude.hashCode());
     result = prime * result + ((description == null) ? 0 : description.hashCode());
     result = prime * result + ((latitude == null) ? 0 : latitude.hashCode());
@@ -229,7 +224,7 @@ public class SensorLocation {
    *          the id to set
    */
   public void setId(String id) {
-    this.name = id;
+    this.id = id;
   }
 
   /**
@@ -249,6 +244,18 @@ public class SensorLocation {
   }
 
   /**
+   * @param name
+   *          the name to set
+   */
+  public void setName(String name) {
+    System.out.println("SensorLocation.setName(" + name + ")");
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
+  }
+
+  /**
    * @param owner
    *          the owner to set
    */
@@ -263,7 +270,7 @@ public class SensorLocation {
    */
   @Override
   public String toString() {
-    return "Location [id=" + getId() + ", latitude=" + latitude + ", longitude=" + longitude
+    return "Location [id=" + getId() + ", name=" + name + ", latitude=" + latitude + ", longitude=" + longitude
         + ", altitude=" + altitude + ", description=" + description + "]";
   }
 

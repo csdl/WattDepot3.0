@@ -61,7 +61,7 @@ public class MeasurementTypeServerResource extends WattDepotServerResource imple
   @Override
   public void store(MeasurementType measurementType) {
     System.out.println("PUT /wattdepot/measurementtype/ with " + measurementType);
-    MeasurementType mt = depot.getMeasurementType(measurementType.getSlug());
+    MeasurementType mt = depot.getMeasurementType(measurementType.getId());
     if (mt == null) {
       try {
         depot.defineMeasurementType(measurementType.getName(), measurementType.getUnits());

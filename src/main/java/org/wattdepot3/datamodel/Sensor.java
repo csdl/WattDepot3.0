@@ -6,6 +6,8 @@ package org.wattdepot3.datamodel;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * Sensor - Represents the device making measurements.
  * 
@@ -13,8 +15,10 @@ import java.util.Set;
  * 
  */
 public class Sensor {
-  /** A unique id for the User. */
+  /** A unique id for the Sensor. */
   private String id;
+  /** The name of the Sensor. */
+  private String name;
   /** The URI to the sensor. */
   private String uri;
   /** The location of the sensor. */
@@ -34,8 +38,8 @@ public class Sensor {
   }
 
   /**
-   * @param uniqueId
-   *          The unique id.
+   * @param name
+   *          The name.
    * @param uri
    *          The URI to the meter.
    * @param sensorLocation
@@ -45,8 +49,9 @@ public class Sensor {
    * @param owner
    *          the owner of the sensor.
    */
-  public Sensor(String uniqueId, String uri, SensorLocation sensorLocation, SensorModel model, UserGroup owner) {
-    this.id = uniqueId;
+  public Sensor(String name, String uri, SensorLocation sensorLocation, SensorModel model, UserGroup owner) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.uri = uri;
     this.sensorLocation = sensorLocation;
     this.model = model;
@@ -154,6 +159,13 @@ public class Sensor {
   }
 
   /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * @return the owner
    */
   public UserGroup getOwner() {
@@ -179,6 +191,13 @@ public class Sensor {
       }
     }
     return null;
+  }
+
+  /**
+   * @return the sensorLocation
+   */
+  public SensorLocation getSensorLocation() {
+    return sensorLocation;
   }
 
   /**
@@ -258,6 +277,16 @@ public class Sensor {
   }
 
   /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
+  }
+
+  /**
    * @param owner
    *          the owner to set
    */
@@ -270,6 +299,13 @@ public class Sensor {
    */
   public void setProperties(Set<Property> properties) {
     this.properties = properties;
+  }
+
+  /**
+   * @param sensorLocation the sensorLocation to set
+   */
+  public void setSensorLocation(SensorLocation sensorLocation) {
+    this.sensorLocation = sensorLocation;
   }
 
   /**

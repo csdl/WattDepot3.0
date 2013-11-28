@@ -5,6 +5,8 @@ package org.wattdepot3.datamodel;
 
 import java.util.Set;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * SensorGroup represents a group of Sensors. Used for aggregating sensor
  * measurements.
@@ -15,6 +17,8 @@ import java.util.Set;
 public class SensorGroup {
   /** The unique id for this group. */
   private String id;
+  /** The name of the group. */
+  private String name;
   /** The List of sensors the compose this group. */
   protected Set<Sensor> sensors;
   /** The owner of this sensor model. */
@@ -30,15 +34,16 @@ public class SensorGroup {
   /**
    * Create a new SensorGroup with the given unique id.
    * 
-   * @param uniqueId
-   *          The unique id.
+   * @param name
+   *          The name.
    * @param sensors
    *          The set of sensors in the group.
    * @param owner
    *          the owner of the location.
    */
-  public SensorGroup(String uniqueId, Set<Sensor> sensors, UserGroup owner) {
-    this.id = uniqueId;
+  public SensorGroup(String name, Set<Sensor> sensors, UserGroup owner) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.sensors = sensors;
     this.owner = owner;
   }
@@ -115,6 +120,13 @@ public class SensorGroup {
   }
 
   /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * @return the owner
    */
   public UserGroup getOwner() {
@@ -176,6 +188,16 @@ public class SensorGroup {
    */
   public void setId(String id) {
     this.id = id;
+  }
+
+  /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
   }
 
   /**

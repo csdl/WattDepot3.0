@@ -76,7 +76,7 @@ public class CollectorMetaDataServerResource extends WattDepotServerResource imp
     if (owner != null) {
       if (!depot.getCollectorMetaDataIds(groupId).contains(sensorprocess.getId())) {
         try {
-          depot.defineCollectorMetaData(sensorprocess.getId(), sensorprocess.getSensor(),
+          depot.defineCollectorMetaData(sensorprocess.getName(), sensorprocess.getSensor(),
               sensorprocess.getPollingInterval(), sensorprocess.getDepositoryId(), owner);
         }
         catch (UniqueIdException e) {

@@ -8,6 +8,9 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
+        <property name="name" type = "java.lang.String">
+            <column name="NAME" />
+        </property>
         <property name="uri" type="java.lang.String">
             <column name="URI" />
         </property>

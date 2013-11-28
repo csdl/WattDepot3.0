@@ -334,21 +334,21 @@ function deleteDepository() {
 
 // ****************** Locations **************************
 function putNewLocation() {
-    var id = $("input[name='location_id']").val();
+    var name = $("input[name='location_id']").val();
     var latitude = $("input[name='location_latitude']").val();
     var longitude = $("input[name='location_longitude']").val();
     var altitude = $("input[name='location_altitude']").val();
     var description = $("input[name='location_description']").val();
     var owner = getKnownUserGroup(GROUPID);
     var loc = {
-        "id" : id,
+        "name" : name,
         "latitude" : latitude,
         "longitude" : longitude,
         "altitude" : altitude,
         "description" : description,
         "owner" : owner
     };
-    setSelectedTab('locations');
+    setSelectedTab('sensors');
     $.ajax({
         url : '/wattdepot/' + GROUPID + '/location/temp',
         type : 'PUT',
@@ -361,21 +361,21 @@ function putNewLocation() {
 };
 
 function putNewInlineLocation() {
-    var id = $("input[name='inline_location_id']").val();
+    var name = $("input[name='inline_location_id']").val();
     var latitude = $("input[name='inline_location_latitude']").val();
     var longitude = $("input[name='inline_location_longitude']").val();
     var altitude = $("input[name='inline_location_altitude']").val();
     var description = $("input[name='inline_location_description']").val();
     var owner = getKnownUserGroup(GROUPID);
     var loc = {
-        "id" : id,
+        "name" : name,
         "latitude" : latitude,
         "longitude" : longitude,
         "altitude" : altitude,
         "description" : description,
         "owner" : owner
     };
-    setSelectedTab('locations');
+    setSelectedTab('sensors');
     $.ajax({
         url : '/wattdepot/' + GROUPID + '/location/temp',
         type : 'PUT',
@@ -396,7 +396,7 @@ function edit_location_dialog(event, id) {
     });
 
     var loc = getKnownLocation(id);
-    $("input[name='location_id']").val(loc['id']);
+    $("input[name='location_id']").val(loc['name']);
     $("input[name='location_latitude']").val(loc['latitude']);
     $("input[name='location_longitude']").val(loc['longitude']);
     $("input[name='location_altitude']").val(loc['altitude']);
@@ -575,17 +575,17 @@ function deleteSensorGroup() {
 
 // ****************** Sensor Models **************************
 function putNewModel() {
-    var id = $("input[name='model_id']").val();
+    var name = $("input[name='model_id']").val();
     var protocol = $("input[name='model_protocol']").val();
     var type = $("input[name='model_type']").val();
     var version = $("input[name='model_version']").val();
     var model = {
-        "id" : id,
+        "name" : name,
         "protocol" : protocol,
         "type" : type,
         "version" : version
     };
-    setSelectedTab('sensormodels');
+    setSelectedTab('sensors');
     $.ajax({
         url : '/wattdepot/' + GROUPID + '/sensormodel/temp',
         type : 'PUT',
@@ -598,17 +598,17 @@ function putNewModel() {
 };
 
 function putNewInlineModel() {
-    var id = $("input[name='inline_model_id']").val();
+    var name = $("input[name='inline_model_id']").val();
     var protocol = $("input[name='inline_model_protocol']").val();
     var type = $("input[name='inline_model_type']").val();
     var version = $("input[name='inline_model_version']").val();
     var model = {
-        "id" : id,
+        "name" : id,
         "protocol" : protocol,
         "type" : type,
         "version" : version
     };
-    setSelectedTab('sensormodels');
+    setSelectedTab('sensors');
     $.ajax({
         url : '/wattdepot/' + GROUPID + '/sensormodel/temp',
         type : 'PUT',
@@ -629,7 +629,7 @@ function edit_model_dialog(event, id) {
     });
 
     var model = getKnownSensorModel(id);
-    $("input[name='model_id']").val(model['id']);
+    $("input[name='model_id']").val(model['name']);
     $("input[name='model_protocol']").val(model['protocol']);
     $("input[name='model_type']").val(model['type']);
     $("input[name='model_version']").val(model['version']);
@@ -679,7 +679,7 @@ function putNewProcess() {
     };
     setSelectedTab('sensorprocesses');
     $.ajax({
-        url : '/wattdepot/' + GROUPID + '/sensorprocess/temp',
+        url : '/wattdepot/' + GROUPID + '/collectormetadata/temp',
         type : 'PUT',
         contentType : 'application/json',
         data : JSON.stringify(process),
@@ -726,7 +726,7 @@ function deleteSensorProcess() {
     var id = $('#del_sensorprocess_id').html();
     setSelectedTab('sensorprocesses');
     $.ajax({
-        url : '/wattdepot/' + GROUPID + '/sensorprocess/' + id,
+        url : '/wattdepot/' + GROUPID + '/collectormetadata/' + id,
         type : 'DELETE',
         contentType : 'application/json',
         success : function() {

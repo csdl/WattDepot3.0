@@ -20,6 +20,8 @@ import org.wattdepot3.util.Slug;
  * 
  */
 public class Depository {
+  /** The unique id for the Depository. */
+  private String id;
   /** Name of the Depository. */
   protected String name;
   /** The slug used in URIs. */
@@ -47,6 +49,7 @@ public class Depository {
    *          the owner of the location.
    */
   public Depository(String name, MeasurementType measurementType, UserGroup owner) {
+    this.id = Slug.slugify(name);
     this.name = name;
     this.slug = Slug.slugify(name);
     this.measurementType = measurementType;
@@ -98,22 +101,18 @@ public class Depository {
   }
 
   /**
+   * @return the id
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
    * @param sensor
    *          the Sensor.
    * @return A list of all the measurements made by the Sensor.
    */
   public List<Measurement> getMeasurements(Sensor sensor) {
-    throw new RuntimeException("Not implemented.");
-  }
-
-  /**
-   * @param session
-   *          A Session with an open transaction.
-   * @param sensor
-   *          the Sensor.
-   * @return A list of all the measurements made by the Sensor.
-   */
-  public List<Measurement> getMeasurements(Session session, Sensor sensor) {
     throw new RuntimeException("Not implemented.");
   }
 
@@ -127,6 +126,17 @@ public class Depository {
    * @return A list of the measurements in the interval.
    */
   public List<Measurement> getMeasurements(Sensor sensor, Date start, Date end) {
+    throw new RuntimeException("Not implemented.");
+  }
+
+  /**
+   * @param session
+   *          A Session with an open transaction.
+   * @param sensor
+   *          the Sensor.
+   * @return A list of all the measurements made by the Sensor.
+   */
+  public List<Measurement> getMeasurements(Session session, Sensor sensor) {
     throw new RuntimeException("Not implemented.");
   }
 
@@ -289,6 +299,13 @@ public class Depository {
   }
 
   /**
+   * @param id the id to set
+   */
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  /**
    * @param measurementType
    *          the measurementType to set
    */
@@ -302,6 +319,9 @@ public class Depository {
    */
   public void setName(String name) {
     this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
   }
 
   /**

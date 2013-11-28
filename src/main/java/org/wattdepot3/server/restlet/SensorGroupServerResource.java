@@ -73,7 +73,7 @@ public class SensorGroupServerResource extends WattDepotServerResource implement
     if (owner != null) {
       if (!depot.getSensorGroupIds(groupId).contains(sensorgroup.getId())) {
         try {
-          depot.defineSensorGroup(sensorgroup.getId(), sensorgroup.getSensors(), owner);
+          depot.defineSensorGroup(sensorgroup.getName(), sensorgroup.getSensors(), owner);
         }
         catch (UniqueIdException e) {
           setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());

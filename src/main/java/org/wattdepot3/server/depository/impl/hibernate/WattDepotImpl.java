@@ -568,40 +568,40 @@ public class WattDepotImpl extends WattDepot {
     sessionClose++;
   }
 
-  /**
-   * Deletes all the objects that have group as their owner.
-   * 
-   * @param session
-   *          The Session, a transaction must be in progress.
-   * @param group
-   *          The UserGroup to delete.
-   */
-  private void deleteUserGroup(Session session, UserGroup group) {
-    for (CollectorMetaData sp : getCollectorMetaDatas(session, group.getId())) {
-      session.delete(sp);
-    }
-    for (SensorGroup sg : getSensorGroups(session, group.getId())) {
-      session.delete(sg);
-    }
-    for (Depository d : getWattDepositories(session, group.getId())) {
-      for (Sensor s : d.listSensors(session)) {
-        for (Measurement m : d.getMeasurements(session, s)) {
-          session.delete(m);
-        }
-      }
-      session.delete(d);
-    }
-    for (Sensor s : getSensors(session, group.getId())) {
-      session.delete(s);
-    }
-    for (SensorModel sm : getSensorModels(session, group.getId())) {
-      session.delete(sm);
-    }
-    for (SensorLocation l : getLocations(session, group.getId())) {
-      session.delete(l);
-    }
-    session.delete(group);
-  }
+//  /**
+//   * Deletes all the objects that have group as their owner.
+//   * 
+//   * @param session
+//   *          The Session, a transaction must be in progress.
+//   * @param group
+//   *          The UserGroup to delete.
+//   */
+//  private void deleteUserGroup(Session session, UserGroup group) {
+//    for (CollectorMetaData sp : getCollectorMetaDatas(session, group.getId())) {
+//      session.delete(sp);
+//    }
+//    for (SensorGroup sg : getSensorGroups(session, group.getId())) {
+//      session.delete(sg);
+//    }
+//    for (Depository d : getWattDepositories(session, group.getId())) {
+//      for (Sensor s : d.listSensors(session)) {
+//        for (Measurement m : d.getMeasurements(session, s)) {
+//          session.delete(m);
+//        }
+//      }
+//      session.delete(d);
+//    }
+//    for (Sensor s : getSensors(session, group.getId())) {
+//      session.delete(s);
+//    }
+//    for (SensorModel sm : getSensorModels(session, group.getId())) {
+//      session.delete(sm);
+//    }
+//    for (SensorLocation l : getLocations(session, group.getId())) {
+//      session.delete(l);
+//    }
+//    session.delete(group);
+//  }
 
   /*
    * (non-Javadoc)
@@ -814,7 +814,7 @@ public class WattDepotImpl extends WattDepot {
   @Override
   public MeasurementType getMeasurementType(String slug) {
     for (MeasurementType mt : getMeasurementTypes()) {
-      if (mt.getSlug().equals(slug)) {
+      if (mt.getId().equals(slug)) {
         return mt;
       }
     }
@@ -1395,11 +1395,11 @@ public class WattDepotImpl extends WattDepot {
    */
   private void saveSensor(Session session, Sensor sensor) {
     for (Property p : sensor.getProperties()) {
-      session.save(p);
+      session.saveOrUpdate(p);
     }
-    session.save(sensor.getLocation());
-    session.save(sensor.getModel());
-    session.save(sensor);
+    session.saveOrUpdate(sensor.getLocation());
+    session.saveOrUpdate(sensor.getModel());
+    session.saveOrUpdate(sensor);
   }
 
   /*

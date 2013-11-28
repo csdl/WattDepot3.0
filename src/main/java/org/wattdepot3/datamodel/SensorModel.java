@@ -3,6 +3,8 @@
  */
 package org.wattdepot3.datamodel;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * SensorModel - Information about a Sensor.
  * 
@@ -10,8 +12,10 @@ package org.wattdepot3.datamodel;
  * 
  */
 public class SensorModel {
-  /** A unique id for the User. */
+  /** A unique id for the SensorModel. */
   private String id;
+  /** The name for the SensorModel. */
+  private String name;
   /** The protocol this sensor uses. */
   protected String protocol;
   /** The type of the sensor. */
@@ -29,8 +33,8 @@ public class SensorModel {
   }
 
   /**
-   * @param uniqueId
-   *          The unique id.
+   * @param name
+   *          The name.
    * @param protocol
    *          The protocol used by a sensor.
    * @param type
@@ -40,8 +44,9 @@ public class SensorModel {
    * @param owner
    *          the owner of the location.
    */
-  public SensorModel(String uniqueId, String protocol, String type, String version, UserGroup owner) {
-    this.id = uniqueId;
+  public SensorModel(String name, String protocol, String type, String version, UserGroup owner) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.protocol = protocol;
     this.type = type;
     this.version = version;
@@ -105,6 +110,13 @@ public class SensorModel {
    */
   public String getId() {
     return id;
+  }
+
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -173,6 +185,16 @@ public class SensorModel {
    */
   public void setId(String id) {
     this.id = id;
+  }
+
+  /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
   }
 
   /**

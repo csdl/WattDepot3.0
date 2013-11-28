@@ -200,7 +200,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteMeasurementType(MeasurementType type) {
-    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getSlug());
+    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getId());
     MeasurementTypeResource resource = client.wrap(MeasurementTypeResource.class);
     try {
       resource.remove();
@@ -827,7 +827,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putMeasurementType(MeasurementType type) {
-    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getSlug());
+    ClientResource client = makeClient(API.MEASUREMENT_TYPE_URI + type.getId());
     MeasurementTypeResource resource = client.wrap(MeasurementTypeResource.class);
     resource.store(type);
     client.release();

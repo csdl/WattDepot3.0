@@ -6,6 +6,8 @@ package org.wattdepot3.datamodel;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * UserGroup - A group of users.
  * 
@@ -20,6 +22,8 @@ public class UserGroup {
 
   /** A unique id. */
   protected String id;
+  /** The name of the group. */
+  protected String name;
   /** The users in this group. */
   protected Set<UserInfo> users;
 
@@ -35,23 +39,24 @@ public class UserGroup {
   }
 
   /**
-   * @param id
-   *          The id of the UserGroup.
+   * @param name
+   *          The name of the UserGroup.
    */
-  public UserGroup(String id) {
-    this.id = id;
+  public UserGroup(String name) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.users = new HashSet<UserInfo>();
   }
 
   /**
-   * @param id
-   *          The unique id for this group. It must also be unique from any
-   *          User's id.
+   * @param name
+   *          The name of the group.
    * @param users
    *          The Users in the group.
    */
-  public UserGroup(String id, Set<UserInfo> users) {
-    this.id = id;
+  public UserGroup(String name, Set<UserInfo> users) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.users = users;
   }
 
@@ -119,6 +124,13 @@ public class UserGroup {
   }
 
   /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
    * @return the users.
    */
   public Set<UserInfo> getUsers() {
@@ -155,6 +167,16 @@ public class UserGroup {
    */
   public void setId(String id) {
     this.id = id;
+  }
+
+  /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
   }
 
   /**

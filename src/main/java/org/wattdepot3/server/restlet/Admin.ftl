@@ -79,7 +79,7 @@ Opens: ${opens} Closes: ${closes}
         <li><a id="depositories_tab_link" href="#depositories" data-toggle="tab">Depositories</a></li>
         <li><a id="sensors_tab_link" href="#sensors" data-toggle="tab">Sensors</a></li>
         <li><a id="sensorgroups_tab_link" href="#sensorgroups" data-toggle="tab">Sensor Groups</a></li>
-        <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Sensor Process Metadata</a></li>
+        <li><a id="sensorprocesses_tab_link" href="#sensorprocesses" data-toggle="tab">Collector Metadata</a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
@@ -116,14 +116,19 @@ Opens: ${opens} Closes: ${closes}
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2"><h3>Groups</h3></th>                            
+                            <th colspan="2"><h3>Groups</h3></th>      
+                        </tr>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Members</th>                      
                             <th style="width: 7px;"></th>
                             <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list groups as g>
-                        <tr><td>${g.id}</td><td><#list g.users as u>${u.id} </#list></td>
+                        <tr><td>${g.id}</td><td>${g.name}</td><td><#list g.users as u>${u.id} </#list></td>
                             <td>
                                 <#if g.id != "admin"><span class="glyphicon glyphicon-pencil" onclick="edit_usergroup_dialog(event, '${g.id}');"></span></#if>
                             </td>
@@ -143,6 +148,7 @@ Opens: ${opens} Closes: ${closes}
                     <thead>
                       <tr><th colspan="5"><h3>Depositories</h3></th></tr>
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Measurement Type</th>
                             <#if groupId == "admin">
@@ -154,7 +160,7 @@ Opens: ${opens} Closes: ${closes}
                     </thead>
                     <tbody>
                     <#list depositories as d>
-                        <tr><td>${d.name}</td><td><#if d.getMeasurementType()??>${d.measurementType.name} (${d.measurementType.units})</#if></td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
+                        <tr><td>${d.id}</td><td>${d.name}</td><td><#if d.getMeasurementType()??>${d.measurementType.name}</#if></td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_depository_dialog(event, '${d.name}');"></span>
                             </td>
@@ -212,8 +218,9 @@ Opens: ${opens} Closes: ${closes}
                             <div class="well">
                                 <table class="table">
                                     <thead>
-                                        <tr><th colspan="5"><h3>Locations</h3></th></tr>
+                                        <tr><th colspan="5"><h3>Sensor Locations</h3></th></tr>
                                         <tr>
+                                            <th>Id</th>
                                             <th>Name</th>
                                             <th>Latitude</th>
                                             <th>Longitude</th>
@@ -228,7 +235,7 @@ Opens: ${opens} Closes: ${closes}
                                     </thead>
                                     <tbody>
                                     <#list locations as l>
-                                        <tr><td>${l.id}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td><#if groupId == "admin"><td>${l.owner.id}</td></#if>
+                                        <tr><td>${l.id}</td><td>${l.name}</td><td>${l.latitude}</td><td>${l.longitude}</td><td>${l.altitude}</td><td>${l.description}</td><#if groupId == "admin"><td>${l.owner.id}</td></#if>
                                             <td>
                                                 <span class="glyphicon glyphicon-pencil" onclick="edit_location_dialog(event, '${l.id}');"></span>
                                             </td>
@@ -239,7 +246,7 @@ Opens: ${opens} Closes: ${closes}
                                     </#list>
                                     </tbody>
                                 </table>
-                                <button data-toggle="modal" data-target="#addLocationModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Location</button>
+                                <button data-toggle="modal" data-target="#addLocationModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add a Sensor Location</button>
                             </div>       
                         </div>
                     </div>
@@ -256,6 +263,7 @@ Opens: ${opens} Closes: ${closes}
                                 <thead>
                                     <tr><th colspan="5"><h3>Sensor Models</h3></th></tr>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Name</th>
                                         <th>Protocol</th>
                                         <th>Type</th>
@@ -269,7 +277,7 @@ Opens: ${opens} Closes: ${closes}
                                 </thead>
                                 <tbody>
                                 <#list sensormodels as m>
-                                    <tr><td>${m.id}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
+                                    <tr><td>${m.id}</td><td>${m.name}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
                                         <td>
                                             <span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span>
                                         </td>
@@ -321,7 +329,7 @@ Opens: ${opens} Closes: ${closes}
             <div class="well">
                 <table class="table">
                     <thead>
-                      <tr><th colspan="5"><h3>Sensor Process Metadata</h3></th></tr>
+                      <tr><th colspan="5"><h3>Collector Metadata</h3></th></tr>
                         <tr>
                             <th>Name</th>
                             <th>Sensor</th>
@@ -347,7 +355,7 @@ Opens: ${opens} Closes: ${closes}
                     </#list>
                     </tbody>
                 </table>
-                <button data-toggle="modal" data-target="#addProcessModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Sensor Process Metadata</button>
+                <button data-toggle="modal" data-target="#addProcessModal" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Add Collector Metadata</button>
             </div>       
         </div>
     </div>  
@@ -676,7 +684,7 @@ Opens: ${opens} Closes: ${closes}
                             <div class="col-md-9">
                                 <select class="form-control" name="depository_type">
                                 <#list measurementtypes as mt>
-                                    <option value="${mt.slug}">${mt.name}</option>
+                                    <option value="${mt.id}">${mt.name}</option>
                                 </#list>
                                 </select>
                                 <p class="help-block">The type of measurement the depository stores.</p>
@@ -717,7 +725,7 @@ USERS["${u.id}"] = {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "las
 </#list>
 var USERGROUPS = {};
 <#list groups as g>
-USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
+USERGROUPS["${g.id}"] = {"id": "${g.id}", "name": "${g.name}", "users": [
 <#assign j = g.users?size>
 <#list g.users as u>
 {"id": "${u.id}", "firstName" : "${u.firstName!"none"}", "lastName" : "${u.lastName!"none"}", "email" : "${u.email!"none"}", "admin" : <#if u.admin>true<#else>false</#if>, "properties" : [<#assign k = u.properties?size><#list u.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]}<#if j != 1>,</#if><#assign j = j - 1>
@@ -726,23 +734,23 @@ USERGROUPS["${g.id}"] = {"id": "${g.id}", "users": [
 </#list>
 var DEPOSITORIES = {};
 <#list depositories as d>
-DEPOSITORIES["${d.name}"] = {"name": "${d.name}", "measurementType": "${d.measurementType}", "ownerId": "${d.owner.id}"};
+DEPOSITORIES["${d.id}"] = {"id": "${d.id}", "name": "${d.name}", "measurementType": "${d.measurementType}", "ownerId": "${d.owner.id}"};
 </#list>
 var LOCATIONS = {};
 <#list locations as l>
-LOCATIONS["${l.id}"] = {"id": "${l.id}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "ownerId": "${l.owner.id}"};
+LOCATIONS["${l.id}"] = {"id": "${l.id}", "name": "${l.name}", "latitude": ${l.latitude}, "longitude": ${l.longitude}, "altitude": ${l.altitude}, "description": "${l.description}", "ownerId": "${l.owner.id}"};
 </#list>
 var MODELS = {};
 <#list sensormodels as m>
-MODELS["${m.id}"] = {"id": "${m.id}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "ownerId": "${m.owner.id}"};
+MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "ownerId": "${m.owner.id}"};
 </#list>
 var SENSORS = {};
 <#list sensors as s>
-SENSORS["${s.id}"] = {"id": "${s.id}", "uri": "${s.uri}", "locationId": "<#if s.getLocation()??>${s.location.id}</#if>", "modelId": "<#if s.getModel()??>${s.model.id}</#if>", "ownerId": "${s.owner.id}"};
+SENSORS["${s.id}"] = {"id": "${s.id}", "name": "${s.name}", "uri": "${s.uri}", "locationId": "<#if s.getLocation()??>${s.location.id}</#if>", "modelId": "<#if s.getModel()??>${s.model.id}</#if>", "ownerId": "${s.owner.id}"};
 </#list>
 var SENSORGROUPS = {};
 <#list sensorgroups as sg>
-SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "sensors": [
+SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "name": "${sg.name}", "sensors": [
 <#assign sgLen = sg.sensors?size>
 <#list sg.sensors as s>
 {"id": "${s.id}"}<#if sgLen != 1>,</#if><#assign sgLen = sgLen - 1>
@@ -751,11 +759,11 @@ SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "sensors": [
 </#list>
 var SENSORPROCESSES = {};
 <#list sensorprocesses as sp>
-SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}"};
+SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "name": "${sp.name}",  "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}"};
 </#list>
 var MEASUREMENTTYPES = {};
 <#list measurementtypes as mt>
-MEASUREMENTTYPES["${mt.slug}"] = {"slug": "${mt.slug}", "name": "${mt.name}", "units": "${mt.units}"};
+MEASUREMENTTYPES["${mt.id}"] = {"id": "${mt.id}", "name": "${mt.name}", "units": "${mt.units}"};
 </#list>
 </script>
 </body>

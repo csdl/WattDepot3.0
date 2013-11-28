@@ -15,9 +15,13 @@ import org.wattdepot3.util.Slug;
  * 
  */
 public class MeasurementType {
+  /** The name of the MeasurementType. */
   private String name;
-  private String slug;
+  /** The unique id for the MeasurementType. */
+  private String id;
+  /** The Units for the measurement type. */
   private Unit<?> unit;
+  /** String property stored in persistence. */
   private String units;
 
   /**
@@ -37,7 +41,7 @@ public class MeasurementType {
    */
   public MeasurementType(String name, Unit<?> unit) {
     this.name = name;
-    this.slug = Slug.slugify(name);
+    this.id = Slug.slugify(name);
     this.unit = unit;
     this.units = this.unit.toString();
   }
@@ -67,12 +71,12 @@ public class MeasurementType {
     else if (!name.equals(other.name)) {
       return false;
     }
-    if (slug == null) {
-      if (other.slug != null) {
+    if (id == null) {
+      if (other.id != null) {
         return false;
       }
     }
-    else if (!slug.equals(other.slug)) {
+    else if (!id.equals(other.id)) {
       return false;
     }
     if (units == null) {
@@ -87,17 +91,17 @@ public class MeasurementType {
   }
 
   /**
+   * @return the id
+   */
+  public String getId() {
+    return id;
+  }
+
+  /**
    * @return the name
    */
   public String getName() {
     return name;
-  }
-
-  /**
-   * @return the slug
-   */
-  public String getSlug() {
-    return slug;
   }
 
   /**
@@ -117,9 +121,16 @@ public class MeasurementType {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + ((slug == null) ? 0 : slug.hashCode());
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
     result = prime * result + ((units == null) ? 0 : units.hashCode());
     return result;
+  }
+
+  /**
+   * @param id the id to set
+   */
+  public void setId(String id) {
+    this.id = id;
   }
 
   /**
@@ -128,14 +139,9 @@ public class MeasurementType {
    */
   public void setName(String name) {
     this.name = name;
-  }
-
-  /**
-   * @param slug
-   *          the slug to set
-   */
-  public void setSlug(String slug) {
-    this.slug = slug;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
   }
 
   /**
@@ -152,7 +158,7 @@ public class MeasurementType {
    */
   @Override
   public String toString() {
-    return "MeasurementType [name=" + name + ", slug=" + slug + ", units=" + units + "]";
+    return "MeasurementType [name=" + name + ", units=" + units + "]";
   }
 
   /**

@@ -8,6 +8,9 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
+        <property name="name" type = "java.lang.String">
+            <column name="NAME" />
+        </property>
         <set name="sensors" inverse="false" table="SENSOR" lazy="false">
             <key>
                 <column name="SENSORGROUP_ID" />

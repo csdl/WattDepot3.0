@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.measure.unit.Unit;
 
 import org.jscience.physics.amount.Amount;
+import org.wattdepot3.util.Slug;
 
 //import javax.measure.unit.Unit;
 
@@ -19,7 +20,7 @@ import org.jscience.physics.amount.Amount;
  */
 public class Measurement {
   /** Unique database id. If necessary. */
-  private Long id;
+  private String id;
   private Sensor sensor;
   private Date timestamp;
   private Double value;
@@ -44,6 +45,8 @@ public class Measurement {
    *          The type of the measurement.
    */
   public Measurement(Sensor sensor, Date timestamp, Double value, Unit<?> units) {
+    // Can a sensor create two measurements at the same time with the same type?
+    this.id = Slug.slugify(sensor.getId() + timestamp.getTime() + units);
     this.sensor = sensor;
     this.timestamp = new Date(timestamp.getTime());
     this.amount = Amount.valueOf(value, units);
@@ -54,7 +57,7 @@ public class Measurement {
   /**
    * @return the id
    */
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
@@ -62,7 +65,7 @@ public class Measurement {
    * @param id
    *          the id to set
    */
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 

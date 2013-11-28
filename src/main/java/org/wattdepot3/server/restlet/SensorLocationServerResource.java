@@ -70,7 +70,7 @@ public class SensorLocationServerResource extends WattDepotServerResource implem
     if (owner != null) {
       if (!depot.getLocationIds(groupId).contains(sensorLocation.getId())) {
         try {
-          depot.defineLocation(sensorLocation.getId(), sensorLocation.getLatitude(), sensorLocation.getLongitude(),
+          depot.defineLocation(sensorLocation.getName(), sensorLocation.getLatitude(), sensorLocation.getLongitude(),
               sensorLocation.getAltitude(), sensorLocation.getDescription(), owner);
         }
         catch (UniqueIdException e) {

@@ -8,6 +8,9 @@
             <column name="ID" />
             <generator class="assigned" />
         </id>
+        <property name="name" type = "java.lang.String">
+            <column name="NAME" />
+        </property>
         <many-to-one name="sensor" class="org.wattdepot3.datamodel.Sensor" fetch="join">
             <column name="SENSOR" />
         </many-to-one>

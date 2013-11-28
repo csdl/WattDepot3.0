@@ -6,6 +6,8 @@ package org.wattdepot3.datamodel;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.wattdepot3.util.Slug;
+
 /**
  * SensorProcess - Represents a process that queries a Sensor and produces
  * measurements.
@@ -14,8 +16,10 @@ import java.util.Set;
  * 
  */
 public class CollectorMetaData {
-  /** A unique id for the SensorProcess. */
+  /** A unique id for the CollectorMetaData. */
   private String id;
+  /** The human readable name. */
+  private String name;
   /** The sensor making the measurements. */
   protected Sensor sensor;
   /** The number of seconds between polls. */
@@ -35,8 +39,8 @@ public class CollectorMetaData {
   }
 
   /**
-   * @param id
-   *          The unique id.
+   * @param name
+   *          The name of the CollectorMetaData.
    * @param sensor
    *          The sensor that measures the environment.
    * @param poll
@@ -46,8 +50,9 @@ public class CollectorMetaData {
    * @param owner
    *          the owner of the sensor process.
    */
-  public CollectorMetaData(String id, Sensor sensor, Long poll, String depositoryId, UserGroup owner) {
-    this.id = id;
+  public CollectorMetaData(String name, Sensor sensor, Long poll, String depositoryId, UserGroup owner) {
+    this.id = Slug.slugify(name);
+    this.name = name;
     this.sensor = sensor;
     this.pollingInterval = poll;
     this.depositoryId = depositoryId;
@@ -145,6 +150,13 @@ public class CollectorMetaData {
    */
   public String getId() {
     return id;
+  }
+
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -251,6 +263,16 @@ public class CollectorMetaData {
   }
 
   /**
+   * @param name the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+    if (this.id == null) {
+      this.id = Slug.slugify(name);
+    }
+  }
+
+  /**
    * @param owner
    *          the owner to set
    */
@@ -287,7 +309,7 @@ public class CollectorMetaData {
    */
   @Override
   public String toString() {
-    return "CollectorMetaData [id=" + id + ", sensor=" + sensor + ", pollingInterval="
+    return "CollectorMetaData [name=" + name + ", sensor=" + sensor + ", pollingInterval="
         + pollingInterval + ", depositoryId=" + depositoryId + ", properties=" + properties
         + ", owner=" + owner + "]";
   }

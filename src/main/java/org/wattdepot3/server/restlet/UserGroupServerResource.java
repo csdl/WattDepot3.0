@@ -63,7 +63,7 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
     System.out.println("PUT /wattdepot/{" + groupId + "}/usergroup/ with " + usergroup);
     if (!depot.getUserGroupIds().contains(usergroup.getId())) {
       try {
-        UserGroup defined = depot.defineUserGroup(usergroup.getId(), usergroup.getUsers());
+        UserGroup defined = depot.defineUserGroup(usergroup.getName(), usergroup.getUsers());
         WattDepotApplication app = (WattDepotApplication) getApplication();
         // create the new Role for the group
         String roleName = defined.getId();
