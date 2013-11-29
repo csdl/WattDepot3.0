@@ -54,7 +54,7 @@ public class WattDepotImpl extends WattDepot {
 
   private int sessionOpen = 0;
   private int sessionClose = 0;
-  
+
   /**
    * Default constructor.
    */
@@ -137,8 +137,8 @@ public class WattDepotImpl extends WattDepot {
    * org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public SensorLocation defineLocation(String id, Double latitude, Double longitude, Double altitude,
-      String description, UserGroup owner) throws UniqueIdException {
+  public SensorLocation defineLocation(String id, Double latitude, Double longitude,
+      Double altitude, String description, UserGroup owner) throws UniqueIdException {
     SensorLocation l = null;
     try {
       l = getLocation(id, UserGroup.ADMIN_GROUP_NAME);
@@ -196,11 +196,10 @@ public class WattDepotImpl extends WattDepot {
    * org.wattdepot3.datamodel.SensorModel, org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public Sensor defineSensor(String id, String uri, SensorLocation l, SensorModel sm, UserGroup owner)
-      throws UniqueIdException, MissMatchedOwnerException {
-    if (!owner.equals(l.getOwner()) || !owner.equals(sm.getOwner())) {
-      throw new MissMatchedOwnerException(owner.getId()
-          + " does not match location's or model's owner.");
+  public Sensor defineSensor(String id, String uri, SensorLocation l, SensorModel sm,
+      UserGroup owner) throws UniqueIdException, MissMatchedOwnerException {
+    if (!owner.equals(l.getOwner())) {
+      throw new MissMatchedOwnerException(owner.getId() + " does not match location's.");
     }
     Sensor s = null;
     s = getSensor(id, UserGroup.ADMIN_GROUP_NAME);
@@ -259,23 +258,17 @@ public class WattDepotImpl extends WattDepot {
    * org.wattdepot3.datamodel.UserGroup)
    */
   @Override
-  public SensorModel defineSensorModel(String id, String protocol, String type, String version,
-      UserGroup owner) throws UniqueIdException {
+  public SensorModel defineSensorModel(String id, String protocol, String type, String version)
+      throws UniqueIdException {
     SensorModel sm = null;
-    try {
-      sm = getSensorModel(id, UserGroup.ADMIN_GROUP_NAME);
-    }
-    catch (MissMatchedOwnerException e) {
-      // can't happen
-      e.printStackTrace();
-    }
+    sm = getSensorModel(id);
     if (sm != null) {
       throw new UniqueIdException(id + " is already a SensorModel id.");
     }
     Session session = Manager.getFactory().openSession();
     sessionOpen++;
     session.beginTransaction();
-    sm = new SensorModel(id, protocol, type, version, owner);
+    sm = new SensorModel(id, protocol, type, version);
     session.save(sm);
     session.getTransaction().commit();
     session.close();
@@ -286,7 +279,8 @@ public class WattDepotImpl extends WattDepot {
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.server.WattDepot#defineCollectorMetaData(java.lang.String,
+   * @see
+   * org.wattdepot3.server.WattDepot#defineCollectorMetaData(java.lang.String,
    * org.wattdepot3.datamodel.Sensor, java.lang.Long, java.lang.String,
    * org.wattdepot3.datamodel.UserGroup)
    */
@@ -522,9 +516,8 @@ public class WattDepotImpl extends WattDepot {
    * java.lang.String)
    */
   @Override
-  public void deleteSensorModel(String id, String groupId) throws IdNotFoundException,
-      MissMatchedOwnerException {
-    SensorModel s = getSensorModel(id, groupId);
+  public void deleteSensorModel(String id) throws IdNotFoundException {
+    SensorModel s = getSensorModel(id);
     if (s != null) {
       Session session = Manager.getFactory().openSession();
       sessionOpen++;
@@ -535,14 +528,15 @@ public class WattDepotImpl extends WattDepot {
       sessionClose++;
     }
     else {
-      throw new IdNotFoundException(id + " was not found for owner " + groupId);
+      throw new IdNotFoundException(id + " was not found.");
     }
   }
 
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.server.WattDepot#deleteCollectorMetaData(java.lang.String,
+   * @see
+   * org.wattdepot3.server.WattDepot#deleteCollectorMetaData(java.lang.String,
    * java.lang.String)
    */
   @Override
@@ -583,40 +577,41 @@ public class WattDepotImpl extends WattDepot {
     sessionClose++;
   }
 
-//  /**
-//   * Deletes all the objects that have group as their owner.
-//   * 
-//   * @param session
-//   *          The Session, a transaction must be in progress.
-//   * @param group
-//   *          The UserGroup to delete.
-//   */
-//  private void deleteUserGroup(Session session, UserGroup group) {
-//    for (CollectorMetaData sp : getCollectorMetaDatas(session, group.getId())) {
-//      session.delete(sp);
-//    }
-//    for (SensorGroup sg : getSensorGroups(session, group.getId())) {
-//      session.delete(sg);
-//    }
-//    for (Depository d : getWattDepositories(session, group.getId())) {
-//      for (Sensor s : d.listSensors(session)) {
-//        for (Measurement m : d.getMeasurements(session, s)) {
-//          session.delete(m);
-//        }
-//      }
-//      session.delete(d);
-//    }
-//    for (Sensor s : getSensors(session, group.getId())) {
-//      session.delete(s);
-//    }
-//    for (SensorModel sm : getSensorModels(session, group.getId())) {
-//      session.delete(sm);
-//    }
-//    for (SensorLocation l : getLocations(session, group.getId())) {
-//      session.delete(l);
-//    }
-//    session.delete(group);
-//  }
+  // /**
+  // * Deletes all the objects that have group as their owner.
+  // *
+  // * @param session
+  // * The Session, a transaction must be in progress.
+  // * @param group
+  // * The UserGroup to delete.
+  // */
+  // private void deleteUserGroup(Session session, UserGroup group) {
+  // for (CollectorMetaData sp : getCollectorMetaDatas(session, group.getId()))
+  // {
+  // session.delete(sp);
+  // }
+  // for (SensorGroup sg : getSensorGroups(session, group.getId())) {
+  // session.delete(sg);
+  // }
+  // for (Depository d : getWattDepositories(session, group.getId())) {
+  // for (Sensor s : d.listSensors(session)) {
+  // for (Measurement m : d.getMeasurements(session, s)) {
+  // session.delete(m);
+  // }
+  // }
+  // session.delete(d);
+  // }
+  // for (Sensor s : getSensors(session, group.getId())) {
+  // session.delete(s);
+  // }
+  // for (SensorModel sm : getSensorModels(session, group.getId())) {
+  // session.delete(sm);
+  // }
+  // for (SensorLocation l : getLocations(session, group.getId())) {
+  // session.delete(l);
+  // }
+  // session.delete(group);
+  // }
 
   /*
    * (non-Javadoc)
@@ -682,7 +677,7 @@ public class WattDepotImpl extends WattDepot {
     session = Manager.getFactory().openSession();
     sessionOpen++;
     session.beginTransaction();
-    for (SensorModel sm : getSensorModels(session, id)) {
+    for (SensorModel sm : getSensorModels(session)) {
       session.delete(sm);
     }
     session.getTransaction().commit();
@@ -985,15 +980,10 @@ public class WattDepotImpl extends WattDepot {
    * java.lang.String)
    */
   @Override
-  public SensorModel getSensorModel(String id, String groupId) throws MissMatchedOwnerException {
-    for (SensorModel s : getSensorModels(UserGroup.ADMIN_GROUP_NAME)) {
+  public SensorModel getSensorModel(String id) {
+    for (SensorModel s : getSensorModels()) {
       if (s.getId().equals(id)) {
-        if (s.getOwner().getId().equals(groupId) || groupId.contains(UserGroup.ADMIN_GROUP_NAME)) {
-          return s;
-        }
-        else {
-          throw new MissMatchedOwnerException(id + " is not owned by " + groupId);
-        }
+        return s;
       }
     }
     return null;
@@ -1005,9 +995,9 @@ public class WattDepotImpl extends WattDepot {
    * @see org.wattdepot3.server.WattDepot#getSensorModelIds()
    */
   @Override
-  public List<String> getSensorModelIds(String groupId) {
+  public List<String> getSensorModelIds() {
     ArrayList<String> ret = new ArrayList<String>();
-    for (SensorModel s : getSensorModels(groupId)) {
+    for (SensorModel s : getSensorModels()) {
       ret.add(s.getId());
     }
     return ret;
@@ -1016,19 +1006,15 @@ public class WattDepotImpl extends WattDepot {
   /**
    * @param session
    *          The Session with an open transaction.
-   * @param groupId
-   *          The group id.
    * @return A List of the SensorModels owned by the groupId.
    */
   @SuppressWarnings("unchecked")
-  private List<SensorModel> getSensorModels(Session session, String groupId) {
+  private List<SensorModel> getSensorModels(Session session) {
     @SuppressWarnings("rawtypes")
     List result = session.createQuery("from SensorModel").list();
     ArrayList<SensorModel> ret = new ArrayList<SensorModel>();
     for (SensorModel d : (List<SensorModel>) result) {
-      if (groupId.equals(UserGroup.ADMIN_GROUP_NAME) || groupId.equals(d.getOwner().getId())) {
-        ret.add(d);
-      }
+      ret.add(d);
     }
     return ret;
   }
@@ -1039,11 +1025,11 @@ public class WattDepotImpl extends WattDepot {
    * @see org.wattdepot3.server.WattDepot#getSensorModels(java.lang.String)
    */
   @Override
-  public List<SensorModel> getSensorModels(String groupId) {
+  public List<SensorModel> getSensorModels() {
     Session session = Manager.getFactory().openSession();
     sessionOpen++;
     session.beginTransaction();
-    List<SensorModel> ret = getSensorModels(session, groupId);
+    List<SensorModel> ret = getSensorModels(session);
     session.getTransaction().commit();
     session.close();
     sessionClose++;
@@ -1057,7 +1043,8 @@ public class WattDepotImpl extends WattDepot {
    * java.lang.String)
    */
   @Override
-  public CollectorMetaData getCollectorMetaData(String id, String groupId) throws MissMatchedOwnerException {
+  public CollectorMetaData getCollectorMetaData(String id, String groupId)
+      throws MissMatchedOwnerException {
     for (CollectorMetaData s : getCollectorMetaDatas(UserGroup.ADMIN_GROUP_NAME)) {
       if (s.getId().equals(id)) {
         if (s.getOwner().getId().equals(groupId) || groupId.contains(UserGroup.ADMIN_GROUP_NAME)) {
@@ -1094,7 +1081,8 @@ public class WattDepotImpl extends WattDepot {
   /*
    * (non-Javadoc)
    * 
-   * @see org.wattdepot3.server.WattDepot#getCollectorMetaDatas(java.lang.String)
+   * @see
+   * org.wattdepot3.server.WattDepot#getCollectorMetaDatas(java.lang.String)
    */
   @Override
   public List<CollectorMetaData> getCollectorMetaDatas(String groupId) {
@@ -1290,7 +1278,7 @@ public class WattDepotImpl extends WattDepot {
       }
     }
     session.getTransaction().commit();
-    session.close();   
+    session.close();
     sessionClose++;
     return ret;
   }
@@ -1521,8 +1509,8 @@ public class WattDepotImpl extends WattDepot {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.server.WattDepot#updateCollectorMetaData(org.wattdepot3.datamodel
-   * .CollectorMetaData)
+   * org.wattdepot3.server.WattDepot#updateCollectorMetaData(org.wattdepot3.
+   * datamodel .CollectorMetaData)
    */
   @Override
   public CollectorMetaData updateCollectorMetaData(CollectorMetaData process) {

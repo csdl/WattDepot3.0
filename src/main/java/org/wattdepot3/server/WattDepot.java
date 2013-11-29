@@ -21,20 +21,21 @@ package org.wattdepot3.server;
 import java.util.List;
 import java.util.Set;
 
+import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.Depository;
-import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.SensorModel;
-import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
 import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
+import org.wattdepot3.util.SensorModelHelper;
 import org.wattdepot3.util.Slug;
 import org.wattdepot3.util.UnitsHelper;
 
@@ -71,8 +72,9 @@ public abstract class WattDepot {
    *           if the given owner doesn't match the owners of the Sensor or
    *           Depository.
    */
-  public abstract CollectorMetaData defineCollectorMetaData(String id, Sensor sensor, Long pollingInterval,
-      String depositoryId, UserGroup owner) throws UniqueIdException, MissMatchedOwnerException;
+  public abstract CollectorMetaData defineCollectorMetaData(String id, Sensor sensor,
+      Long pollingInterval, String depositoryId, UserGroup owner) throws UniqueIdException,
+      MissMatchedOwnerException;
 
   /**
    * Defines a new Location in WattDepot.
@@ -111,7 +113,6 @@ public abstract class WattDepot {
   public abstract MeasurementType defineMeasurementType(String name, String units)
       throws UniqueIdException;
 
-  
   /**
    * @param id
    *          The unique id.
@@ -160,14 +161,12 @@ public abstract class WattDepot {
    *          The type of the meter.
    * @param version
    *          The version the meter is using.
-   * @param owner
-   *          the owner of the SensorModel.
    * @return the defined SensorModel.
    * @throws UniqueIdException
    *           if the id is already used for another SensorModel.
    */
   public abstract SensorModel defineSensorModel(String id, String protocol, String type,
-      String version, UserGroup owner) throws UniqueIdException;
+      String version) throws UniqueIdException;
 
   /**
    * @param id
@@ -243,8 +242,8 @@ public abstract class WattDepot {
    * @throws MissMatchedOwnerException
    *           if the groupId doesn't match the owner of the sensor process.
    */
-  public abstract void deleteCollectorMetaData(String id, String groupId) throws IdNotFoundException,
-      MissMatchedOwnerException;
+  public abstract void deleteCollectorMetaData(String id, String groupId)
+      throws IdNotFoundException, MissMatchedOwnerException;
 
   /**
    * Deletes the given location.
@@ -306,15 +305,10 @@ public abstract class WattDepot {
    * 
    * @param id
    *          The unique id of the SensorModel.
-   * @param groupId
-   *          the group id of the user making the request.
    * @throws IdNotFoundException
    *           If the id is not known or defined.
-   * @throws MissMatchedOwnerException
-   *           if the groupId doesn't match the owner of the sensor model.
    */
-  public abstract void deleteSensorModel(String id, String groupId) throws IdNotFoundException,
-      MissMatchedOwnerException;
+  public abstract void deleteSensorModel(String id) throws IdNotFoundException;
 
   /**
    * @param id
@@ -390,7 +384,8 @@ public abstract class WattDepot {
    * @throws MissMatchedOwnerException
    *           if the groupId doesn't match the owner of the location.
    */
-  public abstract SensorLocation getLocation(String id, String groupId) throws MissMatchedOwnerException;
+  public abstract SensorLocation getLocation(String id, String groupId)
+      throws MissMatchedOwnerException;
 
   /**
    * @param groupId
@@ -465,28 +460,19 @@ public abstract class WattDepot {
   /**
    * @param id
    *          The unique id for the SensorModel.
-   * @param groupId
-   *          the group id of the user making the request.
    * @return The SensorModel with the given id.
-   * @throws MissMatchedOwnerException
-   *           if the groupId doesn't match the owner of the sensor model.
    */
-  public abstract SensorModel getSensorModel(String id, String groupId)
-      throws MissMatchedOwnerException;
+  public abstract SensorModel getSensorModel(String id);
 
   /**
-   * @param groupId
-   *          the id of the owner UserGroup.
    * @return A list of the defined SensorModel Ids.
    */
-  public abstract List<String> getSensorModelIds(String groupId);
+  public abstract List<String> getSensorModelIds();
 
   /**
-   * @param groupId
-   *          the group id of the user making the request.
    * @return The known/defined SensorModels owned by the given group id.
    */
-  public abstract List<SensorModel> getSensorModels(String groupId);
+  public abstract List<SensorModel> getSensorModels();
 
   /**
    * @param groupId
@@ -598,6 +584,26 @@ public abstract class WattDepot {
         }
       }
     }
+  }
+
+  /**
+   * Ensures the base set of SensorModels are defined in WattDepot.
+   */
+  public void initializeSensorModels() {
+    for (String key : SensorModelHelper.models.keySet()) {
+      SensorModel sm = getSensorModel(Slug.slugify(key));
+      if (sm == null) {
+        SensorModel model = SensorModelHelper.models.get(key);
+        try {
+          defineSensorModel(model.getName(), model.getProtocol(), model.getType(),
+              model.getVersion());
+        }
+        catch (UniqueIdException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
   }
 
   /**

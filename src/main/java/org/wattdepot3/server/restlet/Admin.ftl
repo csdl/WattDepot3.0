@@ -268,21 +268,18 @@ Opens: ${opens} Closes: ${closes}
                                         <th>Protocol</th>
                                         <th>Type</th>
                                         <th>Version</th>
-                                        <#if groupId == "admin">
-                                        <th>Owner</th>
-                                        </#if>
                                         <th style="width: 7px;"></th>
                                         <th style="width: 7px;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <#list sensormodels as m>
-                                    <tr><td>${m.id}</td><td>${m.name}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td><#if groupId == "admin"><td>${m.owner.id}</td></#if>
+                                    <tr><td>${m.id}</td><td>${m.name}</td><td>${m.protocol}</td><td>${m.type}</td><td>${m.version}</td>
                                         <td>
-                                            <span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span>
+                                            <#if groupId == "admin"><span class="glyphicon glyphicon-pencil" onclick="edit_model_dialog(event, '${m.id}');"></span></#if>
                                         </td>
                                         <td>
-                                            <span class="glyphicon glyphicon-remove" onclick="delete_model_dialog(event, '${m.id}');"></span>
+                                            <#if groupId == "admin"><span class="glyphicon glyphicon-remove" onclick="delete_model_dialog(event, '${m.id}');"></span></#if>
                                         </td>
                                     </tr>
                                 </#list>
@@ -742,7 +739,7 @@ LOCATIONS["${l.id}"] = {"id": "${l.id}", "name": "${l.name}", "latitude": ${l.la
 </#list>
 var MODELS = {};
 <#list sensormodels as m>
-MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "ownerId": "${m.owner.id}"};
+MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}"};
 </#list>
 var SENSORS = {};
 <#list sensors as s>
