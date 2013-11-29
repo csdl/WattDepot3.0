@@ -27,14 +27,14 @@ public class InstanceFactory {
    * @return A Depository instance for testing.
    */
   public static Depository getDepository() {
-    return new Depository("test_depository_id", getMeasurementType(), getUserGroup());
+    return new Depository("Test Depository", getMeasurementType(), getUserGroup());
   }
 
   /**
    * @return A Location instance for testing.
    */
   public static SensorLocation getLocation() {
-    return new SensorLocation("test_location_id", new Double(21.294642), new Double(-157.812727),
+    return new SensorLocation("Test Location Ilima 6th", new Double(21.294642), new Double(-157.812727),
         new Double(30), "Hale Aloha Ilima residence hall 6th floor", getUserGroup());
   }
 
@@ -116,7 +116,7 @@ public class InstanceFactory {
    * @return A Sensor instance for testing.
    */
   public static Sensor getSensor() {
-    return new Sensor("test_sensor_id", "test_sensor_uri", getLocation(), getSensorModel(),
+    return new Sensor("Test Sensor", "test_sensor_uri", getLocation(), getSensorModel(),
         getUserGroup());
   }
 
@@ -126,14 +126,14 @@ public class InstanceFactory {
   public static SensorGroup getSensorGroup() {
     Set<Sensor> sensors = new HashSet<Sensor>();
     sensors.add(getSensor());
-    return new SensorGroup("test_sensor_group_id", sensors, getUserGroup());
+    return new SensorGroup("Test Sensor Group", sensors, getUserGroup());
   }
 
   /**
    * @return A SensorModel instance for testing.
    */
   public static SensorModel getSensorModel() {
-    return new SensorModel("test_sensor_model_id", "test_model_protocol", "test_model_type",
+    return new SensorModel("Test Sensor Model", "test_model_protocol", "test_model_type",
         "test_model_version", getUserGroup());
   }
 
@@ -141,7 +141,7 @@ public class InstanceFactory {
    * @return A CollectorMetaData instance for testing.
    */
   public static CollectorMetaData getCollectorMetaData() {
-    return new CollectorMetaData("collector_data_id", getSensor(), 10L, "test_depository_id",
+    return new CollectorMetaData("Test Collector Metadata", getSensor(), 10L, "test_depository",
         getUserGroup());
   }
 
@@ -151,7 +151,7 @@ public class InstanceFactory {
   public static UserGroup getUserGroup() {
     Set<UserInfo> users = new HashSet<UserInfo>();
     users.add(getUserInfo());
-    return new UserGroup("test_user_group_id", users);
+    return new UserGroup("Test User Group", users);
   }
 
   /**

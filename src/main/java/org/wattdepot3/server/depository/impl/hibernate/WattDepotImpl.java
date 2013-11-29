@@ -1327,7 +1327,7 @@ public class WattDepotImpl extends WattDepot {
     List<Depository> all = getWattDepositories(groupId);
     Depository ret = null;
     for (Depository d : all) {
-      if (d.getName().equals(id)) {
+      if (d.getId().equals(id)) {
         ret = new DepositoryImpl(d);
       }
     }

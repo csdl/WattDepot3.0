@@ -31,7 +31,7 @@ public class SensorLocation {
    * Default constructor.
    */
   public SensorLocation() {
-    System.out.println("SensorLocation()");
+
   }
 
   /**
@@ -50,7 +50,6 @@ public class SensorLocation {
    */
   public SensorLocation(String name, Double latitude, Double longitude, Double altitude,
       String description, UserGroup owner) {
-    System.out.println("SensorLocation(" + name + ", " + latitude + ", ...)");
     this.name = name;
     this.id = Slug.slugify(this.name);
     this.latitude = latitude;
@@ -248,7 +247,6 @@ public class SensorLocation {
    *          the name to set
    */
   public void setName(String name) {
-    System.out.println("SensorLocation.setName(" + name + ")");
     this.name = name;
     if (this.id == null) {
       this.id = Slug.slugify(name);

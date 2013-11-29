@@ -119,7 +119,7 @@ public class TestWattDepotClient {
     Depository depo = InstanceFactory.getDepository();
     test.putDepository(depo);
     try {
-      Depository ret = test.getDepository(depo.getName());
+      Depository ret = test.getDepository(depo.getId());
       assertEquals(depo, ret);
       test.deleteDepository(ret);
       try {
