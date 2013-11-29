@@ -149,7 +149,7 @@ public class InstanceFactory {
    */
   public static SensorModel getSensorModel() {
     return new SensorModel("Test Sensor Model", "test_model_protocol", "test_model_type",
-        "test_model_version", getUserGroup());
+        "test_model_version");
   }
 
   /**

@@ -23,16 +23,13 @@ import java.util.logging.Level;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.wattdepot3.datamodel.SensorModel;
-import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.IdNotFoundException;
-import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.restlet.SensorModelResource;
 
 /**
  * SensorModelServerResource - Handles the SensorModel HTTP API
- * ("/wattdepot/{group_id}/sensormodel/",
- * "/wattdepot/{group_id}/sensormodel/{sensormodel_id}").
+ * ("/wattdepot/sensormodel/", "/wattdepot/sensormodel/{sensormodel_id}").
  * 
  * @author Cam Moore
  * 
@@ -61,14 +58,9 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public SensorModel retrieve() {
-    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
+    getLogger().log(Level.INFO, "GET /wattdepot/sensormodel/{" + sensorModelId + "}");
     SensorModel model = null;
-    try {
-      model = depot.getSensorModel(sensorModelId, groupId);
-    }
-    catch (MissMatchedOwnerException e) {
-      setStatus(Status.CLIENT_ERROR_FORBIDDEN, e.getMessage());
-    }
+    model = depot.getSensorModel(sensorModelId);
     if (model == null) {
       setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "SensorModel " + sensorModelId
           + " is not defined.");
@@ -84,27 +76,18 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public void store(SensorModel sensormodel) {
-    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/sensormodel/ with " + sensormodel);
-    UserGroup owner = depot.getUserGroup(groupId);
-    if (owner != null) {
-      if (!depot.getSensorModelIds(groupId).contains(sensormodel.getId())) {
-        try {
-          depot.defineSensorModel(sensormodel.getName(), sensormodel.getProtocol(),
-              sensormodel.getType(), sensormodel.getVersion(), owner);
-        }
-        catch (UniqueIdException e) {
-          setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
-        }
+    getLogger().log(Level.INFO, "PUT /wattdepot/sensormodel/ with " + sensormodel);
+    if (!depot.getSensorModelIds().contains(sensormodel.getId())) {
+      try {
+        depot.defineSensorModel(sensormodel.getName(), sensormodel.getProtocol(),
+            sensormodel.getType(), sensormodel.getVersion());
       }
-      else {
-        if (sensormodel.getOwner() == null) {
-          sensormodel.setOwner(owner);
-        }
-        depot.updateSensorModel(sensormodel);
+      catch (UniqueIdException e) {
+        setStatus(Status.CLIENT_ERROR_CONFLICT, e.getMessage());
       }
     }
     else {
-      setStatus(Status.CLIENT_ERROR_BAD_REQUEST, groupId + " does not exist.");
+      depot.updateSensorModel(sensormodel);
     }
   }
 
@@ -115,14 +98,11 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public void remove() {
-    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
+    getLogger().log(Level.INFO, "DEL /wattdepot/sensormodel/{" + sensorModelId + "}");
     try {
-      depot.deleteSensorModel(sensorModelId, groupId);
+      depot.deleteSensorModel(sensorModelId);
     }
     catch (IdNotFoundException e) {
-      setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
-    }
-    catch (MissMatchedOwnerException e) {
       setStatus(Status.CLIENT_ERROR_FAILED_DEPENDENCY, e.getMessage());
     }
   }

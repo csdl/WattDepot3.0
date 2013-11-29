@@ -75,7 +75,7 @@ public class AdminServerResource extends WattDepotServerResource {
     List<Depository> depos = depot.getWattDepositories(groupId);
     List<SensorLocation> locs = depot.getLocations(groupId);
     List<Sensor> sensors = depot.getSensors(groupId);
-    List<SensorModel> sensorModels = depot.getSensorModels(groupId);
+    List<SensorModel> sensorModels = depot.getSensorModels();
     List<SensorGroup> sensorGroups = depot.getSensorGroups(groupId);
     List<CollectorMetaData> sensorProcesses = depot.getCollectorMetaDatas(groupId);
     List<MeasurementType> measurementTypes = depot.getMeasurementTypes();

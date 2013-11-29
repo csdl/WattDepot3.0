@@ -168,6 +168,10 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/measurementtype/{measurementtype_id}",
         MeasurementTypeServerResource.class);
     router.attach("/wattdepot/measurementtypes/", MeasurementTypesServerResource.class);
+    router.attach("/wattdepot/sensormodel/", SensorModelServerResource.class);
+    router.attach("/wattdepot/sensormodel/{sensormodel_id}",
+        SensorModelServerResource.class);
+    router.attach("/wattdepot/sensormodels/", SensorModelsServerResource.class);
     router.attach("/wattdepot/{group_id}/", AdminServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/", DepositoryServerResource.class);
     router.attach("/wattdepot/{group_id}/depository/{depository_id}",
@@ -190,10 +194,6 @@ public class WattDepotApplication extends Application {
     router.attach("/wattdepot/{group_id}/sensorgroup/{sensorgroup_id}",
         SensorGroupServerResource.class);
     router.attach("/wattdepot/{group_id}/sensorgroups/", SensorGroupsServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensormodel/", SensorModelServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensormodel/{sensormodel_id}",
-        SensorModelServerResource.class);
-    router.attach("/wattdepot/{group_id}/sensormodels/", SensorModelsServerResource.class);
     router.attach("/wattdepot/{group_id}/collectormetadata/", CollectorMetaDataServerResource.class);
     router.attach("/wattdepot/{group_id}/collectormetadata/{collectormetadata_id}",
         CollectorMetaDataServerResource.class);

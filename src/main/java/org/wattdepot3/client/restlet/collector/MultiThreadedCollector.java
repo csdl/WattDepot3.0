@@ -56,7 +56,7 @@ public abstract class MultiThreadedCollector extends TimerTask {
    *          The name of a user defined in the WattDepot server.
    * @param password
    *          The password for the user.
-   * @param processId
+   * @param collectorId
    *          The CollectorMetaDataId used to initialize this collector.
    * @param debug
    *          flag for debugging messages.
@@ -68,11 +68,11 @@ public abstract class MultiThreadedCollector extends TimerTask {
    *           if the Sensor's URI isn't valid.
    */
   public MultiThreadedCollector(String serverUri, String username, String password,
-      String processId, boolean debug) throws BadCredentialException, IdNotFoundException,
+      String collectorId, boolean debug) throws BadCredentialException, IdNotFoundException,
       BadSensorUriException {
     this.client = new WattDepotClient(serverUri, username, password);
     this.debug = debug;
-    this.metaData = client.getCollectorMetaData(processId);
+    this.metaData = client.getCollectorMetaData(collectorId);
     validate();
   }
 

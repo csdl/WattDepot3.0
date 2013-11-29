@@ -37,8 +37,6 @@ public class SensorModel {
   protected String type;
   /** The version of the sensor model. */
   protected String version;
-  /** The owner of this sensor model. */
-  private UserGroup owner;
 
   /**
    * The default constructor.
@@ -56,16 +54,13 @@ public class SensorModel {
    *          The type of the sensor.
    * @param version
    *          The version the sensor is using.
-   * @param owner
-   *          the owner of the location.
    */
-  public SensorModel(String name, String protocol, String type, String version, UserGroup owner) {
+  public SensorModel(String name, String protocol, String type, String version) {
     this.id = Slug.slugify(name);
     this.name = name;
     this.protocol = protocol;
     this.type = type;
     this.version = version;
-    this.owner = owner;
   }
 
   /*
@@ -135,13 +130,6 @@ public class SensorModel {
   }
 
   /**
-   * @return the owner
-   */
-  public UserGroup getOwner() {
-    return owner;
-  }
-
-  /**
    * @return the protocol
    */
   public String getProtocol() {
@@ -178,23 +166,6 @@ public class SensorModel {
   }
 
   /**
-   * Determines if the given group is the owner of this location.
-   * 
-   * @param group
-   *          the UserGroup to check.
-   * @return True if the group owns the Location or the group is the
-   *         ADMIN_GROUP.
-   */
-  public boolean isOwner(UserGroup group) {
-    if (owner != null) {
-      if (owner.equals(group) || group.equals(UserGroup.ADMIN_GROUP)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  /**
    * @param id
    *          the id to set
    */
@@ -210,14 +181,6 @@ public class SensorModel {
     if (this.id == null) {
       this.id = Slug.slugify(name);
     }
-  }
-
-  /**
-   * @param owner
-   *          the owner to set
-   */
-  public void setOwner(UserGroup owner) {
-    this.owner = owner;
   }
 
   /**

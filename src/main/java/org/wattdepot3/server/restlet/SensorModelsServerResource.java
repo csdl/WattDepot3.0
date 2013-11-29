@@ -41,9 +41,9 @@ public class SensorModelsServerResource extends WattDepotServerResource implemen
    */
   @Override
   public SensorModelList retrieve() {
-    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/sensormodels/");
+    getLogger().log(Level.INFO, "GET /wattdepot/sensormodels/");
     SensorModelList ret = new SensorModelList();
-    for (SensorModel sm : depot.getSensorModels(groupId)) {
+    for (SensorModel sm : depot.getSensorModels()) {
       ret.getModels().add(sm);
     }
     return ret;

@@ -279,7 +279,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteSensorModel(SensorModel model) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + model.getId());
+    ClientResource client = makeClient(API.SENSOR_MODEL_URI + model.getId());
     SensorModelResource resource = client.wrap(SensorModelResource.class);
     try {
       resource.remove();
@@ -552,7 +552,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorModel getSensorModel(String id) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + id);
+    ClientResource client = makeClient(API.SENSOR_MODEL_URI + id);
     SensorModelResource resource = client.wrap(SensorModelResource.class);
     try {
       SensorModel ret = resource.retrieve();
@@ -580,7 +580,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public SensorModelList getSensorModels() {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODELS_URI);
+    ClientResource client = makeClient(API.SENSOR_MODELS_URI);
     SensorModelsResource resource = client.wrap(SensorModelsResource.class);
     SensorModelList ret = resource.retrieve();
     client.release();
@@ -888,7 +888,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putSensorModel(SensorModel model) {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_MODEL_URI + model.getId());
+    ClientResource client = makeClient(API.SENSOR_MODEL_URI + model.getId());
     SensorModelResource resource = client.wrap(SensorModelResource.class);
     resource.store(model);
     client.release();

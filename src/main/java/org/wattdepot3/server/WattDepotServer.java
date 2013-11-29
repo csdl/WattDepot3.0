@@ -45,6 +45,10 @@ public class WattDepotServer {
     if (depot.getSessionOpen() != depot.getSessionClose()) {
       throw new RuntimeException("opens and closed mismatched.");
     }
+    this.depot.initializeSensorModels();
+    if (depot.getSessionOpen() != depot.getSessionClose()) {
+      throw new RuntimeException("opens and closed mismatched.");
+    }
     this.restletServer = new WattDepotComponent(depot);
   }
 
