@@ -1,7 +1,24 @@
 /**
- * SensorModelServerResource.java created on Oct 18, 2013 by Cam Moore.
+ * SensorModelServerResource.java This file is part of WattDepot 3.
+ *
+ * Copyright (C) 2013  Cam Moore
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.wattdepot3.server.restlet;
+
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -44,7 +61,7 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public SensorModel retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
+    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
     SensorModel model = null;
     try {
       model = depot.getSensorModel(sensorModelId, groupId);
@@ -67,7 +84,7 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public void store(SensorModel sensormodel) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/sensormodel/ with " + sensormodel);
+    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/sensormodel/ with " + sensormodel);
     UserGroup owner = depot.getUserGroup(groupId);
     if (owner != null) {
       if (!depot.getSensorModelIds(groupId).contains(sensormodel.getId())) {
@@ -98,7 +115,7 @@ public class SensorModelServerResource extends WattDepotServerResource implement
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
+    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/sensormodel/{" + sensorModelId + "}");
     try {
       depot.deleteSensorModel(sensorModelId, groupId);
     }

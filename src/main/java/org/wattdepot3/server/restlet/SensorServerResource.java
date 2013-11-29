@@ -1,7 +1,24 @@
 /**
- * SensorServerResource.java created on Oct 17, 2013 by Cam Moore.
+ * SensorServerResource.java This file is part of WattDepot 3.
+ *
+ * Copyright (C) 2013  Cam Moore
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.wattdepot3.server.restlet;
+
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -41,7 +58,7 @@ public class SensorServerResource extends WattDepotServerResource implements Sen
    */
   @Override
   public Sensor retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
+    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
     Sensor sensor = null;
     try {
       sensor = depot.getSensor(sensorId, groupId);
@@ -64,7 +81,7 @@ public class SensorServerResource extends WattDepotServerResource implements Sen
    */
   @Override
   public void store(Sensor sensor) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/sensor/ with " + sensor);
+    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/sensor/ with " + sensor);
     UserGroup owner = depot.getUserGroup(groupId);
     if (owner != null) {
       if (!depot.getSensorIds(groupId).contains(sensor.getId())) {
@@ -95,7 +112,7 @@ public class SensorServerResource extends WattDepotServerResource implements Sen
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
+    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/sensor/{" + sensorId + "}");
     try {
       depot.deleteSensor(sensorId, groupId);
     }

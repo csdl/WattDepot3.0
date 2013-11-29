@@ -1,7 +1,24 @@
 /**
- * UserPasswordServerResource.java created on Oct 24, 2013 by Cam Moore.
+ * UserPasswordServerResource.java This file is part of WattDepot 3.
+ *
+ * Copyright (C) 2013  Cam Moore
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.wattdepot3.server.restlet;
+
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -39,7 +56,7 @@ public class UserPasswordServerResource extends WattDepotServerResource implemen
    */
   @Override
   public UserPassword retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/userpassword/{" + userId + "}");
+    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/userpassword/{" + userId + "}");
     UserPassword user = depot.getUserPassword(userId);
     if (user == null) {
       setStatus(Status.CLIENT_ERROR_EXPECTATION_FAILED, "User " + userId + " is not defined.");
@@ -60,7 +77,7 @@ public class UserPasswordServerResource extends WattDepotServerResource implemen
    */
   @Override
   public void store(UserPassword user) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/userpassword/ with " + user);
+    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/userpassword/ with " + user);
     if (!depot.getUserIds().contains(user.getId())) {
       try {
         depot.defineUserPassword(user.getId(), user.getPlainText());
@@ -81,7 +98,7 @@ public class UserPasswordServerResource extends WattDepotServerResource implemen
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/userpassword/{" + userId + "}");
+    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/userpassword/{" + userId + "}");
     try {
       depot.deleteUserPassword(userId);
     }

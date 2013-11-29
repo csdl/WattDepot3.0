@@ -1,7 +1,24 @@
 /**
- * DepositoryMeasurementServerResource.java created on Nov 7, 2013 by Cam Moore.
+ * DepositoryMeasurementServerResource.java This file is part of WattDepot 3.
+ *
+ * Copyright (C) 2013  Cam Moore
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.wattdepot3.server.restlet;
+
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -44,7 +61,7 @@ public class DepositoryMeasurementServerResource extends WattDepotServerResource
    */
   @Override
   public void store(Measurement meas) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/depository/{" + depositoryId
+    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/depository/{" + depositoryId
         + "}/measurement/ with " + meas);
     try {
       Depository depository = depot.getWattDeposiory(depositoryId, groupId);
@@ -68,7 +85,7 @@ public class DepositoryMeasurementServerResource extends WattDepotServerResource
    */
   @Override
   public void remove(Measurement meas) {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/depository/{" + depositoryId
+    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/depository/{" + depositoryId
         + "}/measurement/{" + measId + "} with " + meas);
     try {
       Depository depository = depot.getWattDeposiory(depositoryId, groupId);

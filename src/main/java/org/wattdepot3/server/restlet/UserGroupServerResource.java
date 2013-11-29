@@ -1,7 +1,24 @@
 /**
- * UserGroupServerResource.java created on Oct 31, 2013 by Cam Moore.
+ * UserGroupServerResource.java This file is part of WattDepot 3.
+ *
+ * Copyright (C) 2013  Cam Moore
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.wattdepot3.server.restlet;
+
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -45,7 +62,7 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
    */
   @Override
   public UserGroup retrieve() {
-    System.out.println("GET /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
+    getLogger().log(Level.INFO, "GET /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
     UserGroup group = null;
     group = depot.getUserGroup(userGroupId);
     return group;
@@ -60,7 +77,7 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
    */
   @Override
   public void store(UserGroup usergroup) {
-    System.out.println("PUT /wattdepot/{" + groupId + "}/usergroup/ with " + usergroup);
+    getLogger().log(Level.INFO, "PUT /wattdepot/{" + groupId + "}/usergroup/ with " + usergroup);
     if (!depot.getUserGroupIds().contains(usergroup.getId())) {
       try {
         UserGroup defined = depot.defineUserGroup(usergroup.getName(), usergroup.getUsers());
@@ -105,7 +122,7 @@ public class UserGroupServerResource extends WattDepotServerResource implements 
    */
   @Override
   public void remove() {
-    System.out.println("DEL /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
+    getLogger().log(Level.INFO, "DEL /wattdepot/{" + groupId + "}/usergroup/{" + userGroupId + "}");
     try {
       depot.deleteUserGroup(userGroupId);
       WattDepotApplication app = (WattDepotApplication) getApplication();
