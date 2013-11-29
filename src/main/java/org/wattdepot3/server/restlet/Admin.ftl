@@ -739,7 +739,7 @@ LOCATIONS["${l.id}"] = {"id": "${l.id}", "name": "${l.name}", "latitude": ${l.la
 </#list>
 var MODELS = {};
 <#list sensormodels as m>
-MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}", "ownerId": "${m.owner.id}"};
+MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.protocol}", "type": "${m.type}", "version": "${m.version}"};
 </#list>
 var SENSORS = {};
 <#list sensors as s>
