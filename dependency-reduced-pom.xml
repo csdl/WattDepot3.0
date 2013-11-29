@@ -25,117 +25,16 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>Memory-Storage-Implementation tests</id>
-            <phase>test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <wattdepot-server.db.impl>org.wattdepot.server.db.memory.MemoryStorageImplementation</wattdepot-server.db.impl>
-              </systemPropertyVariables>
-              <includes>
-                <include>**/TestDb*.java</include>
-                <include>**/TestDatabaseResource.java</include>
-              </includes>
-              <excludes>
-                <exclude>**/tinker/**</exclude>
-                <exclude>**/TestDerbyStorageImplementation.java</exclude>
-                <exclude>**/TestBerkeleyDbImplementation.java</exclude>
-                <exclude>**/TestPostgresStorageImplementation.java</exclude>
-                <exclude>**/StressTest.java</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Derby-Storage-Implementation tests</id>
-            <phase>test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <wattdepot-server.db.impl>org.wattdepot.server.db.derby.DerbyStorageImplementation</wattdepot-server.db.impl>
-              </systemPropertyVariables>
-              <includes>
-                <include>**/TestDb*.java</include>
-                <include>**/TestDerbyStorageImplementation.java</include>
-                <include>**/TestDatabaseResource.java</include>
-              </includes>
-              <excludes>
-                <exclude>**/tinker/**</exclude>
-                <exclude>**/TestBerkeleyDbImplementation.java</exclude>
-                <exclude>**/TestPostgresStorageImplementation.java</exclude>
-                <exclude>**/StressTest.java</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Berkeley-DB-Implementation tests</id>
-            <phase>test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <wattdepot-server.db.impl>org.wattdepot.server.db.berkeleydb.BerkeleyDbImplementation</wattdepot-server.db.impl>
-              </systemPropertyVariables>
-              <includes>
-                <include>**/TestDb*.java</include>
-                <include>**/TestBerkeleyDbImplementation.java</include>
-                <include>**/TestDatabaseResource.java</include>
-              </includes>
-              <excludes>
-                <exclude>**/tinker/**</exclude>
-                <exclude>**/TestDerbyStorageImplementation.java</exclude>
-                <exclude>**/TestPostgresStorageImplementation.java</exclude>
-                <exclude>**/StressTest.java</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Postgres-Implementation tests</id>
-            <phase>test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <wattdepot-server.db.impl>org.wattdepot.server.db.postgres.PostgresStorageImplementation</wattdepot-server.db.impl>
-              </systemPropertyVariables>
-              <includes>
-                <include>**/TestDb*.java</include>
-                <include>**/TestPostgresStorageImplementation.java</include>
-              </includes>
-              <excludes>
-                <exclude>**/tinker/**</exclude>
-                <exclude>**/TestDerbyStorageImplementation.java</exclude>
-                <exclude>**/TestBerkeleyDbImplementation.java</exclude>
-                <exclude>**/StressTest.java</exclude>
-                <exclude>**/TestDbManagerSnapshot.java</exclude>
-                <exclude>**/TestDatabaseResource.java</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
         <configuration>
           <excludes>
-            <exclude>**/tinker/**</exclude>
             <exclude>**/TestDb*.java</exclude>
-            <exclude>**/TestDerbyStorageImplementation.java</exclude>
-            <exclude>**/TestBerkeleyDbImplementation.java</exclude>
-            <exclude>**/TestPostgresStorageImplementation.java</exclude>
-            <exclude>**/StressTest.java</exclude>
-            <exclude>**/TestDatabaseResource.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -407,24 +306,27 @@
     <javadoc.plugin.version>2.9.1</javadoc.plugin.version>
     <checkstyle.filter.file>${config.dir}/checkstyle.xml</checkstyle.filter.file>
     <commons-cli.version>1.2</commons-cli.version>
+    <jasypt.version>1.9.1</jasypt.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jcs.version>1.3</jcs.version>
-    <h2.version>1.2.145</h2.version>
+    <h2.version>1.3.174</h2.version>
     <pool.version>1.6</pool.version>
+    <postgres.version>9.1-901-1.jdbc4</postgres.version>
     <surefire.plugin.version>2.15</surefire.plugin.version>
     <dbcp.version>1.4</dbcp.version>
-    <icu4j.version>51.2</icu4j.version>
+    <icu4j.version>52.1</icu4j.version>
     <hibernate-annotations.version>3.3.1.GA</hibernate-annotations.version>
     <opencsv.version>2.3</opencsv.version>
+    <jscience.version>4.3.1</jscience.version>
     <restlet.version>2.1.2</restlet.version>
-    <site.plugin.version>3.3</site.plugin.version>
     <config.dir>${basedir}</config.dir>
+    <site.plugin.version>3.3</site.plugin.version>
     <tomcat.jdbc.version>7.0.42</tomcat.jdbc.version>
     <google-visualization-java.version>1.0.2</google-visualization-java.version>
     <hibernate.version>3.2.6.ga</hibernate.version>
     <antrun.plugin.version>1.7</antrun.plugin.version>
     <concurrent.version>1.0</concurrent.version>
-    <json.version>20090211</json.version>
+    <json.version>20131018</json.version>
     <commons-logging.version>1.1.3</commons-logging.version>
     <pmd.plugin.version>2.6</pmd.plugin.version>
     <httpunit.version>1.7</httpunit.version>
