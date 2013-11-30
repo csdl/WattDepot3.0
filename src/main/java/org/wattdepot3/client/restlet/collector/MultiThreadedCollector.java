@@ -18,16 +18,21 @@
  */
 package org.wattdepot3.client.restlet.collector;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.commons.validator.UrlValidator;
+import org.wattdepot.util.tstamp.Tstamp;
 import org.wattdepot3.client.restlet.WattDepotClient;
 import org.wattdepot3.datamodel.Depository;
+import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.CollectorMetaData;
+import org.wattdepot3.datamodel.SensorModel;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.BadSensorUriException;
 import org.wattdepot3.exception.IdNotFoundException;
+import org.wattdepot3.util.SensorModelHelper;
 import org.wattdepot3.util.Slug;
 
 /**
@@ -46,6 +51,8 @@ public abstract class MultiThreadedCollector extends TimerTask {
 
   /** The client used to communicate with the WattDepot server. */
   protected WattDepotClient client;
+  /** The Depository for storing measurements. */
+  protected Depository depository;
 
   /**
    * Initializes the MultiThreadedCollector.
@@ -73,6 +80,7 @@ public abstract class MultiThreadedCollector extends TimerTask {
     this.client = new WattDepotClient(serverUri, username, password);
     this.debug = debug;
     this.metaData = client.getCollectorMetaData(collectorId);
+    this.depository = client.getDepository(metaData.getDepositoryId());
     validate();
   }
 
@@ -104,7 +112,99 @@ public abstract class MultiThreadedCollector extends TimerTask {
     this.metaData = new CollectorMetaData(Slug.slugify(sensor.getId() + " " + pollingInterval + " "
         + depository.getName()), sensor, pollingInterval, depository.getName(), null);
     client.putCollectorMetaData(metaData);
+    this.depository = depository;
+    client.putDepository(depository);
     validate();
+  }
+
+  /**
+   * @return true if everything is good to go.
+   */
+  public boolean isValid() {
+    if (this.client != null && this.metaData != null) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * @param serverUri
+   *          The URI for the WattDepot server.
+   * @param username
+   *          The name of a user defined in the WattDepot server.
+   * @param password
+   *          The password for the user.
+   * @param collectorId
+   *          The CollectorMetaDataId used to initialize this collector.
+   * @param debug
+   *          flag for debugging messages.
+   * @param debug
+   * @return true if sensor starts successfully.
+   * @throws InterruptedException
+   *           If sleep is interrupted for some reason.
+   * @throws BadCredentialException
+   *           if the username and password are invalid.
+   */
+  public static boolean start(String serverUri, String username, String password,
+      String collectorId, boolean debug) throws InterruptedException, BadCredentialException {
+
+    // Before starting any sensors, confirm that we can connect to the WattDepot
+    // server. We do
+    // this here because if the server and sensors are running on the same
+    // system, at boot time the
+    // sensor might start before the server, causing client calls to fail. If
+    // this happens, we
+    // want to catch it at the top level, where it will result in the sensor
+    // process terminating.
+    // If we wait to catch it at the per-sensor level, it might cause a sensor
+    // to abort for what
+    // might be a short-lived problem. The sensor process should be managed by
+    // some other process
+    // (such as launchd), so it is OK to terminate because it should get
+    // restarted if the server
+    // isn't up quite yet.
+    WattDepotClient staticClient = new WattDepotClient(serverUri, username, password);
+    if (!staticClient.isHealthy()) {
+      System.err.format("Could not connect to server %s. Aborting.%n", serverUri);
+      // Pause briefly to rate limit restarts if server doesn't come up for a
+      // long time
+      Thread.sleep(2000);
+      return false;
+    }
+    // Get the collector metadata
+    CollectorMetaData metaData = null;
+    Depository depository = null;
+    try {
+      metaData = staticClient.getCollectorMetaData(collectorId);
+      depository = staticClient.getDepository(metaData.getDepositoryId());
+    }
+    catch (IdNotFoundException e) {
+      System.err.println(e.getMessage());
+      return false;
+    }
+    // Get SensorModel to determine what type of collector to start.
+    SensorModel model = metaData.getSensor().getModel();
+    if (model.getName().equals(SensorModelHelper.EGAUGE) && model.getVersion().equals("1.0")) {
+      Timer t = new Timer();
+      try {
+        EGaugeCollector collector = new EGaugeCollector(serverUri, username, password,
+            metaData.getSensor(), metaData.getPollingInterval(), depository, debug);
+        if (collector.isValid()) {
+          System.out.format("Started polling %s sensor at %s%n", metaData.getSensor().getName(),
+              Tstamp.makeTimestamp());
+          t.schedule(collector, 0, metaData.getPollingInterval() * 1000);
+        }
+        else {
+          System.err.format("Cannot poll %s sensor%n", metaData.getSensor().getName());
+          return false;
+        }
+      }
+      catch (BadSensorUriException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    return true;
   }
 
   /**

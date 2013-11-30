@@ -49,7 +49,7 @@ public class Sensor {
    * Default constructor.
    */
   public Sensor() {
-
+    this.properties = new HashSet<Property>();
   }
 
   /**
@@ -338,7 +338,7 @@ public class Sensor {
    */
   @Override
   public String toString() {
-    return "Sensor [id=" + getId() + ", uri=" + uri + ", location=" + sensorLocation + ", model=" + model
+    return "Sensor [id=" + getId() + ", name=" + name + ", uri=" + uri + ", location=" + sensorLocation + ", model=" + model
         + ", properties=" + properties + "]";
   }
 

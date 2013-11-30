@@ -235,7 +235,8 @@ public interface WattDepotInterface {
   public SensorModelList getSensorModels();
 
   /**
-   * Retrieves the CollectorMetaData with the given id from the WattDepot Server.
+   * Retrieves the CollectorMetaData with the given id from the WattDepot
+   * Server.
    * 
    * @param id
    *          The CollectorMetaData's id.
@@ -328,6 +329,14 @@ public interface WattDepotInterface {
    */
   public Double getValue(Depository depository, Sensor sensor, Date timestamp, Long gapSeconds)
       throws NoMeasurementException, MeasurementGapException;
+
+  /**
+   * Determines the health of the WattDepot server the client is communicating
+   * with.
+   * 
+   * @return true if the server is healthy, false if cannot connect.
+   */
+  public boolean isHealthy();
 
   /**
    * Stores the given Depository in the WattDepot Server.

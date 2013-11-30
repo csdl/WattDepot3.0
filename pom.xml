@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- pom.xml This file is part of WattDepot 3.
- *
- * Copyright (C) 2013  Cam Moore
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * -->
+<!-- pom.xml This file is part of WattDepot 3. * * Copyright (C) 2013 Cam 
+    Moore * * This program is free software: you can redistribute it and/or modify 
+    * it under the terms of the GNU General Public License as published by * 
+    the Free Software Foundation, either version 3 of the License, or * (at your 
+    option) any later version. * * This program is distributed in the hope that 
+    it will be useful, * but WITHOUT ANY WARRANTY; without even the implied warranty 
+    of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the * GNU General 
+    Public License for more details. * * You should have received a copy of the 
+    GNU General Public License * along with this program. If not, see <http://www.gnu.org/licenses/>. 
+    * -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -48,7 +41,7 @@
         <hibernate-core.version>4.2.4.Final</hibernate-core.version>
         <httpunit.version>1.7</httpunit.version>
         <icu4j.version>52.1</icu4j.version>
-		<jackson.version>1.8.5</jackson.version>
+        <jackson.version>1.8.5</jackson.version>
         <jasypt.version>1.9.1</jasypt.version>
         <jcs.version>1.3</jcs.version>
         <jscience.version>4.3.1</jscience.version>
@@ -58,7 +51,7 @@
         <opencsv.version>2.3</opencsv.version>
         <pool.version>1.6</pool.version>
         <postgres.version>9.1-901-1.jdbc4</postgres.version>
-		<rabbitmq.version>3.2.1</rabbitmq.version>
+        <rabbitmq.version>3.2.1</rabbitmq.version>
         <restlet.version>2.1.2</restlet.version>
 
         <!-- Maven Plugin Versions -->
@@ -128,16 +121,21 @@
             <artifactId>icu4j</artifactId>
             <version>${icu4j.version}</version>
         </dependency>
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-			<version>${rabbitmq.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>${rabbitmq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+        </dependency>
         <dependency>
             <groupId>httpunit</groupId>
             <artifactId>httpunit</artifactId>
@@ -263,10 +261,10 @@
             <name>Local repository that contains modbus</name>
             <url>file://${project.basedir}/repository</url>
         </repository>
-		<repository>
-			<id>codehaus</id>
-			<url>http://repository.codehaus.org/org/codehaus</url>
-		</repository>
+        <repository>
+            <id>codehaus</id>
+            <url>http://repository.codehaus.org/org/codehaus</url>
+        </repository>
     </repositories>
     <reporting>
         <plugins>

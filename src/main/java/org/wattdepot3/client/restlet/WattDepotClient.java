@@ -139,6 +139,32 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
+   * org.wattdepot3.client.WattDepotInterface#deleteCollectorMetaData(org.wattdepot3
+   * .datamodel.CollectorMetaData)
+   */
+  @Override
+  public void deleteCollectorMetaData(CollectorMetaData process) throws IdNotFoundException {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
+        + process.getId());
+    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
+    try {
+      resource.remove();
+    }
+    catch (ResourceException e) {
+      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
+        throw new IdNotFoundException(process + " is not stored in WattDepot.");
+      }
+    }
+    finally {
+      client.release();
+    }
+  }
+
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
    * org.wattdepot3.client.WattDepotInterface#deleteDepository(org.wattdepot3
    * .datamodel.Depository)
    */
@@ -298,25 +324,43 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#deleteCollectorMetaData(org.wattdepot3
-   * .datamodel.CollectorMetaData)
+   * org.wattdepot3.client.WattDepotInterface#getCollectorMetaData(java.lang.String)
    */
   @Override
-  public void deleteCollectorMetaData(CollectorMetaData process) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
-        + process.getId());
+  public CollectorMetaData getCollectorMetaData(String id) throws IdNotFoundException {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI + id);
     CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
     try {
-      resource.remove();
+      CollectorMetaData ret = resource.retrieve();
+      client.release();
+      return ret;
     }
     catch (ResourceException e) {
       if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
-        throw new IdNotFoundException(process + " is not stored in WattDepot.");
+        throw new IdNotFoundException(id + " is not a known CollectorMetaData. ");
       }
+      e.printStackTrace();
     }
     finally {
-      client.release();
+      if (client != null) {
+        client.release();
+      }
     }
+    return null;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.client.WattDepotInterface#getCollectorMetaDatas()
+   */
+  @Override
+  public CollectorMetaDataList getCollectorMetaDatas() {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESSES_URI);
+    CollectorMetaDatasResource resource = client.wrap(CollectorMetaDatasResource.class);
+    CollectorMetaDataList ret = resource.retrieve();
+    client.release();
+    return ret;
   }
 
   /*
@@ -590,49 +634,6 @@ public class WattDepotClient implements WattDepotInterface {
   /*
    * (non-Javadoc)
    * 
-   * @see
-   * org.wattdepot3.client.WattDepotInterface#getCollectorMetaData(java.lang.String)
-   */
-  @Override
-  public CollectorMetaData getCollectorMetaData(String id) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI + id);
-    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
-    try {
-      CollectorMetaData ret = resource.retrieve();
-      client.release();
-      return ret;
-    }
-    catch (ResourceException e) {
-      if (e.getStatus().equals(Status.CLIENT_ERROR_EXPECTATION_FAILED)) {
-        throw new IdNotFoundException(id + " is not a known CollectorMetaData. ");
-      }
-      e.printStackTrace();
-    }
-    finally {
-      if (client != null) {
-        client.release();
-      }
-    }
-    return null;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.client.WattDepotInterface#getCollectorMetaDatas()
-   */
-  @Override
-  public CollectorMetaDataList getCollectorMetaDatas() {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESSES_URI);
-    CollectorMetaDatasResource resource = client.wrap(CollectorMetaDatasResource.class);
-    CollectorMetaDataList ret = resource.retrieve();
-    client.release();
-    return ret;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
    * @see org.wattdepot3.client.WattDepotInterface#getSensors()
    */
   @Override
@@ -761,6 +762,18 @@ public class WattDepotClient implements WattDepotInterface {
     return wattDepotUri;
   }
 
+  /* (non-Javadoc)
+   * @see org.wattdepot3.client.WattDepotInterface#isHealthy()
+   */
+  @Override
+  public boolean isHealthy() {
+    ClientResource client = makeClient(this.groupId + "/");
+    client.head();
+    boolean healthy = client.getStatus().isSuccess();
+    client.release();
+    return healthy;
+  }
+
   /**
    * Creates a ClientResource for the given request. Calling code MUST release
    * the ClientResource when finished.
@@ -775,6 +788,22 @@ public class WattDepotClient implements WattDepotInterface {
     ClientResource client = new ClientResource(reference);
     client.setChallengeResponse(authentication);
     return client;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.client.WattDepotInterface#putCollectorMetaData(org.wattdepot3
+   * .datamodel.CollectorMetaData)
+   */
+  @Override
+  public void putCollectorMetaData(CollectorMetaData process) {
+    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
+        + process.getId());
+    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
+    resource.store(process);
+    client.release();
   }
 
   /*
@@ -898,16 +927,12 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#putCollectorMetaData(org.wattdepot3
+   * org.wattdepot3.client.WattDepotInterface#updateCollectorMetaData(org.wattdepot3
    * .datamodel.CollectorMetaData)
    */
   @Override
-  public void putCollectorMetaData(CollectorMetaData process) {
-    ClientResource client = makeClient(this.groupId + "/" + API.SENSOR_PROCESS_URI
-        + process.getId());
-    CollectorMetaDataResource resource = client.wrap(CollectorMetaDataResource.class);
-    resource.store(process);
-    client.release();
+  public void updateCollectorMetaData(CollectorMetaData process) {
+    putCollectorMetaData(process);
   }
 
   /*
@@ -980,18 +1005,6 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void updateSensorModel(SensorModel model) {
     putSensorModel(model);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.client.WattDepotInterface#updateCollectorMetaData(org.wattdepot3
-   * .datamodel.CollectorMetaData)
-   */
-  @Override
-  public void updateCollectorMetaData(CollectorMetaData process) {
-    putCollectorMetaData(process);
   }
 
 }

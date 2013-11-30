@@ -31,7 +31,7 @@ import org.wattdepot3.datamodel.SensorModel;
  */
 public class SensorModelHelper {
   /** The eGauge Sensor Model name. */
-  public static final String EGAUGE = "eGuage";
+  public static final String EGAUGE = "eGauge";
   /** Holds the default SensorModels. */
   public static final Map<String, SensorModel> models = new HashMap<String, SensorModel>();
   

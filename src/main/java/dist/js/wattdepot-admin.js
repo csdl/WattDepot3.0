@@ -47,6 +47,7 @@ function buildDepository(id) {
     var depInfo = getKnownDepository(id);
     var owner = getKnownUserGroup(depInfo['ownerId']);
     var depository = {
+        "id" : depInfo['id'],
         "name" : depInfo['name'],
         "measurementType" : depInfo['measurementType'],
         "owner" : owner
@@ -63,6 +64,7 @@ function buildLocation(id) {
     var owner = getKnownUserGroup(locInfo['ownerId']);
     var loc = {
         "id" : locInfo['id'],
+        "name" : locInfo['name'],
         "latitude" : locInfo['latitude'],
         "longitude" : locInfo['longitude'],
         "altitude" : locInfo['altitude'],
@@ -81,6 +83,7 @@ function buildSensorModel(id) {
     var owner = getKnownUserGroup(modelInfo['ownerId']);
     var model = {
         "id" : modelInfo['id'],
+        "name" : modelInfo['name'],
         "protocol" : modelInfo['protocol'],
         "type" : modelInfo['type'],
         "version" : modelInfo['version'],
@@ -100,6 +103,7 @@ function buildSensor(id) {
     var owner = getKnownUserGroup(sensorInfo['ownerId']);
     var sensor = {
         "id" : sensorInfo['id'],
+        "name" : sensorInfo['name'],
         "uri" : sensorInfo['uri'],
         "location" : loc,
         "model" : model,
@@ -204,7 +208,7 @@ function deleteUser() {
 
 // ****************** User Groups **************************
 function putNewUserGroup() {
-    var id = $("input[name='usergroup_name']").val();
+    var name = $("input[name='usergroup_name']").val();
     var selected_ids = $("select[name='groupusers']").val() || [];
     console.log(selected_ids);
     var selected_users = new Array();
@@ -213,7 +217,7 @@ function putNewUserGroup() {
     }
     setSelectedTab('users');
     var grp = {
-        "id" : id,
+        "name" : name,
         "users" : selected_users
     };
     $.ajax({
@@ -272,12 +276,12 @@ function deleteUserGroup() {
 
 // ****************** Depositories **************************
 function putNewDepository() {
-    var id = $("input[name='depository_name']").val();
+    var name = $("input[name='depository_name']").val();
     var selected_type = $("select[name='depository_type']").val();
     var measType = getKnownMeasurementType(selected_type);
     var owner = getKnownUserGroup(GROUPID);
     var depo = {
-        "name" : id,
+        "name" : name,
         "measurementType" : measType,
         "owner" : owner
     };
@@ -431,7 +435,7 @@ function deleteLocation() {
 
 // ****************** Sensors **************************
 function putNewSensor() {
-    var id = $("input[name='sensor_id']").val();
+    var name = $("input[name='sensor_id']").val();
     var uri = $("input[name='sensor_uri']").val();
     var selected_loc = $("select[name='sensor_location']").val();
     var loc = buildLocation(selected_loc);
@@ -439,7 +443,7 @@ function putNewSensor() {
     var model = buildSensorModel(selected_model);
     var owner = getKnownUserGroup(GROUPID);    
     var sensor = {
-        "id" : id,
+        "name" : name,
         "uri" : uri,
         "location" : loc,
         "model" : model,
@@ -505,7 +509,7 @@ function deleteSensor() {
 
 // ****************** Sensor Groups **************************
 function putNewSensorGroup() {
-    var id = $("input[name='sensorgroup_name']").val();
+    var name = $("input[name='sensorgroup_name']").val();
     var selected_ids = $("select[name='groupsensors']").val() || [];
     var selected_sensors = new Array();
     for (var i = 0; i < selected_ids.length; i++) {
@@ -515,7 +519,7 @@ function putNewSensorGroup() {
     
     setSelectedTab('sensorgroups');
     var grp = {
-        "id" : id,
+        "name" : name,
         "sensors" : selected_sensors,
         "owner" : owner
     };
@@ -663,7 +667,7 @@ function deleteModel() {
 
 //****************** Sensor Processes **************************
 function putNewProcess() {
-    var id = $("input[name='sensorprocess_name']").val();
+    var name = $("input[name='sensorprocess_name']").val();
     var selected_sensor = $("select[name='process_sensor']").val();
     var sensor = buildSensor(selected_sensor);
     var interval = $("input[name='sensorprocess_polling']").val();
@@ -671,7 +675,7 @@ function putNewProcess() {
     var depo = buildDepository(selected_depository);
     var owner = getKnownUserGroup(GROUPID);    
     var process = {
-        "id" : id,
+        "name" : name,
         "sensor" : sensor,
         "pollingInterval" : interval,
         "depositoryId" : selected_depository,

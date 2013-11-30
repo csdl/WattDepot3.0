@@ -174,7 +174,8 @@ public class SensorModel {
   }
 
   /**
-   * @param name the name to set
+   * @param name
+   *          the name to set
    */
   public void setName(String name) {
     this.name = name;
@@ -214,8 +215,8 @@ public class SensorModel {
    */
   @Override
   public String toString() {
-    return "SensorModel [id=" + id + ", protocol=" + protocol + ", type=" + type + ", version="
-        + version + "]";
+    return "SensorModel [id=" + id + ", name=" + name + ", protocol=" + protocol + ", type=" + type
+        + ", version=" + version + "]";
   }
 
 }

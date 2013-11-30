@@ -592,19 +592,19 @@ Opens: ${opens} Closes: ${closes}
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->    
 
-  <!-- Add Sensor Process -->
+  <!-- Add Collector Metadata -->
   <div class="modal fade" id="addProcessModal" tabindex="-1" role="dialog" aria-labelledby="addProcessModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Add/Edit Sensor Process</h4>
+          <h4 class="modal-title">Add/Edit Collector Metadata</h4>
         </div>
         <div class="modal-body">
             <div class="container">
                 <form>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Process Name</label>
+                        <label class="col-sm-3 control-label">Collector Name</label>
                         <div class="col-sm-9">
                             <input class="form-control" type="text" name="sensorprocess_name" class="form-control">
                             <p class="help-block">Unique name for the metadata.</p>
@@ -615,7 +615,7 @@ Opens: ${opens} Closes: ${closes}
                         <div class="col-sm-9">
                             <select class="form-control" name="process_sensor">
                             <#list sensors as s>
-                                <option value="${s.id}">${s.id}</option>
+                                <option value="${s.id}">${s.name}</option>
                             </#list>
                             </select>
                             <p class="help-block">Select the sensor making measurements.</p>
@@ -633,7 +633,7 @@ Opens: ${opens} Closes: ${closes}
                         <div class="col-sm-9">
                             <select class="form-control" name="process_depository">
                             <#list depositories as d>
-                                <option value="${d.name}">${d.name}</option>
+                                <option value="${d.id}">${d.name}</option>
                             </#list>
                             </select>
                             <p class="help-block">Select the depository to store the measurements.</p>
