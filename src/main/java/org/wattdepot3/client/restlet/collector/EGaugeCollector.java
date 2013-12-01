@@ -99,9 +99,6 @@ public class EGaugeCollector extends MultiThreadedCollector {
     this.measType = depository.getMeasurementType();
     this.measUnit = Unit.valueOf(measType.getUnits());
 
-    // Complete hack to get eGaugeCollector to run
-    metaData.addProperty(new Property("registerName", "Student Usage V"));
-
     Property prop = this.metaData.getProperty("registerName");
     if (prop != null) {
       this.registerName = prop.getValue();

@@ -23,7 +23,6 @@ function getCookie(name) {
 }
 
 function setSelectedTab(tabName) {
-    console.log("Setting tab to " + tabName);
     setCookie("selected-tab", tabName);
 }
 
@@ -210,7 +209,6 @@ function deleteUser() {
 function putNewUserGroup() {
     var name = $("input[name='usergroup_name']").val();
     var selected_ids = $("select[name='groupusers']").val() || [];
-    console.log(selected_ids);
     var selected_users = new Array();
     for (var i = 0; i < selected_ids.length; i++) {
         selected_users.push(getKnownUser(selected_ids[i]));
@@ -693,7 +691,43 @@ function putNewProcess() {
     });
 };
 
+function putNewInlineMetaProperty() {
+    var id = $("input[name='meta_id']").val();
+    var metadata = getKnownSensorProcess(id);
+    var key = $("input[name='inline_meta_key']").val();
+    var value = $("input[name='inline_meta_value']").val();
+    var property = new Object();
+    var sensor = buildSensor(metadata.sensorId);
+    var owner = getKnownUserGroup(GROUPID);    
+
+    property.key = key;
+    property.value = value;
+    metadata.properties.push(property);
+    var collector = {
+        "id" : id,
+        "name" : metadata.name,
+        "sensor" : sensor,
+        "pollingInterval" : metadata.pollingInterval,
+        "depositoryId" : metadata.depositoryId,
+        "owner" : owner,
+        "properties" : metadata.properties
+        
+    };
+    setSelectedTab('sensorprocesses');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/collectormetadata/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(collector),
+        success : function() {
+            location.reload();
+        },
+    });
+    
+}
+
 function edit_process_dialog(event, id) {
+    setSelectedTab('sensorprocesses');
     var modalElement = $('#addProcessModal');
     modalElement.modal({
         backdrop : true,
@@ -702,6 +736,7 @@ function edit_process_dialog(event, id) {
     });
 
     var process = getKnownSensorProcess(id);
+    $("input[name='meta_id']").val(id);
     $("input[name='sensorprocess_name']").val(process['id']);
     var lid = process.sensorId;
     $('select[name="process_sensor"] option[value="' + lid + '"]').prop(
@@ -710,7 +745,12 @@ function edit_process_dialog(event, id) {
     var mid = process.depositoryId;
     $('select[name="process_depository"] option[value="' + mid + '"]').prop(
             "selected", "selected");
-    
+    var properties = process.properties;
+    var prop_str = "";
+    for (var i = 0; i < properties.length; i++) {
+        prop_str +=  properties[i].key + " : " + properties[i].value;
+    }
+    $('#metadata_properties').text(prop_str);
     modalElement.modal('show');
 };
 

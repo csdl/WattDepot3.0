@@ -335,13 +335,19 @@ Opens: ${opens} Closes: ${closes}
                             <#if groupId == "admin">
                             <th>Owner</th>
                             </#if>
+                            <th>Properties</th>
                             <th style="width: 7px;"></th>
                             <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensorprocesses as p>
-                        <tr><td>${p.id}</td><td>${p.sensor.id}</td><td>${p.pollingInterval}</td><td>${p.depositoryId}</td><#if groupId == "admin"><td>${p.owner.id}</td></#if>
+                        <tr><td>${p.id}</td>
+                            <td>${p.sensor.id}</td>
+                            <td>${p.pollingInterval}</td>
+                            <td>${p.depositoryId}</td>
+                            <#if groupId == "admin"><td>${p.owner.id}</td></#if>
+                            <td>[<#assign k = p.properties?size><#list p.properties as prop>{"${prop.key}":"${prop.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]</td>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_process_dialog(event, '${p.id}');"></span>
                             </td>
@@ -601,48 +607,79 @@ Opens: ${opens} Closes: ${closes}
           <h4 class="modal-title">Add/Edit Collector Metadata</h4>
         </div>
         <div class="modal-body">
-            <div class="container">
-                <form>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Collector Name</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="sensorprocess_name" class="form-control">
-                            <p class="help-block">Unique name for the metadata.</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Sensor</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" name="process_sensor">
-                            <#list sensors as s>
-                                <option value="${s.id}">${s.name}</option>
-                            </#list>
-                            </select>
-                            <p class="help-block">Select the sensor making measurements.</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Polling Interval</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="number" name="sensorprocess_polling" class="form-control">
-                            <p class="help-block">Number of seconds between measurements.</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Depository</label>
-                        <div class="col-sm-9">
-                            <select class="form-control" name="process_depository">
-                            <#list depositories as d>
-                                <option value="${d.id}">${d.name}</option>
-                            </#list>
-                            </select>
-                            <p class="help-block">Select the depository to store the measurements.</p>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </form>
+          <div class="container">
+            <form>
+              <input type="hidden" name="meta_id" value="">
+              <div class="form-group">
+                 <label class="col-sm-3 control-label">Collector Name</label>
+                 <div class="col-sm-9">
+                   <input class="form-control" type="text" name="sensorprocess_name" class="form-control">
+                   <p class="help-block">Unique name for the metadata.</p>
+                 </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Sensor</label>
+                <div class="col-sm-9">
+                  <select class="form-control" name="process_sensor">
+                  <#list sensors as s>
+                    <option value="${s.id}">${s.name}</option>
+                  </#list>
+                  </select>
+                  <p class="help-block">Select the sensor making measurements.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Polling Interval</label>
+                <div class="col-sm-9">
+                  <input class="form-control" type="number" name="sensorprocess_polling" class="form-control">
+                  <p class="help-block">Number of seconds between measurements.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Depository</label>
+                <div class="col-sm-9">
+                  <select class="form-control" name="process_depository">
+                  <#list depositories as d>
+                    <option value="${d.id}">${d.name}</option>
+                  </#list>
+                  </select>
+                  <p class="help-block">Select the depository to store the measurements.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Properties</label>
+                <div class="col-sm-9">
+                  <div id="metadata_properties">
+                  </div>
+                  <p class="help-block">List of the Collector's Properties.</p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+            <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newMetaPropertyForm"><span class="glyphicon glyphicon-plus"></span> Property</button>                
+            <div id="newMetaPropertyForm" class="collapse">
+              <form>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Key</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_meta_key" class="form-control">
+                    <p class="help-block">The property key.</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Value</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_meta_value" class="form-control">
+                    <p class="help-block">The property value.</p>
+                  </div>
+                </div>
+              </form>
+              <button type="button" class="btn-sm btn-primary"
+                      onclick="putNewInlineMetaProperty();">Add Property</button>
+              <p></p>
             </div>
-        </div>                
+          </div>
+        </div> <!-- /.modal-body -->                
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" onclick="putNewProcess();">Save changes</button>
@@ -756,7 +793,7 @@ SENSORGROUPS["${sg.id}"] = {"id": "${sg.id}", "name": "${sg.name}", "sensors": [
 </#list>
 var SENSORPROCESSES = {};
 <#list sensorprocesses as sp>
-SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "name": "${sp.name}",  "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}"};
+SENSORPROCESSES["${sp.id}"] = {"id": "${sp.id}", "name": "${sp.name}",  "sensorId": "${sp.sensor.id}", "pollingInterval": ${sp.pollingInterval}, "depositoryId": "${sp.depositoryId}", "ownerId": "${sp.owner.id}", "properties" : [<#assign k = sp.properties?size><#list sp.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]};
 </#list>
 var MEASUREMENTTYPES = {};
 <#list measurementtypes as mt>

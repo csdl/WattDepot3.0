@@ -1518,6 +1518,9 @@ public class WattDepotImpl extends WattDepot {
     sessionOpen++;
     session.beginTransaction();
     session.saveOrUpdate(process);
+    for (Property p : process.getProperties()) {
+      session.saveOrUpdate(p);
+    }
     session.getTransaction().commit();
     session.close();
     sessionClose++;
