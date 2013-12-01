@@ -162,10 +162,10 @@ Opens: ${opens} Closes: ${closes}
                     <#list depositories as d>
                         <tr><td>${d.id}</td><td>${d.name}</td><td><#if d.getMeasurementType()??>${d.measurementType.name}</#if></td><#if groupId == "admin"><td>${d.owner.id}</td></#if>
                             <td>
-                                <span class="glyphicon glyphicon-pencil" onclick="edit_depository_dialog(event, '${d.name}');"></span>
+                                <span class="glyphicon glyphicon-pencil" onclick="edit_depository_dialog(event, '${d.id}');"></span>
                             </td>
                             <td>
-                                <span class="glyphicon glyphicon-remove" onclick="delete_depository_dialog(event, '${d.name}');"></span>
+                                <span class="glyphicon glyphicon-remove" onclick="delete_depository_dialog(event, '${d.id}');"></span>
                             </td>
                         </tr>
                     </#list>

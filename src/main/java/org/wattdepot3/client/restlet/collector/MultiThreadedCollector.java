@@ -186,8 +186,8 @@ public abstract class MultiThreadedCollector extends TimerTask {
     if (model.getName().equals(SensorModelHelper.EGAUGE) && model.getVersion().equals("1.0")) {
       Timer t = new Timer();
       try {
-        EGaugeCollector collector = new EGaugeCollector(serverUri, username, password,
-            metaData.getSensor(), metaData.getPollingInterval(), depository, debug);
+        EGaugeCollector collector = new EGaugeCollector(serverUri, username, password, collectorId,
+            debug);
         if (collector.isValid()) {
           System.out.format("Started polling %s sensor at %s%n", metaData.getSensor().getName(),
               Tstamp.makeTimestamp());
@@ -199,6 +199,10 @@ public abstract class MultiThreadedCollector extends TimerTask {
         }
       }
       catch (BadSensorUriException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (IdNotFoundException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }

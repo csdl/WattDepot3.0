@@ -51,6 +51,7 @@ import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.exception.BadCredentialException;
 import org.wattdepot3.exception.BadSensorUriException;
+import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.util.SensorModelHelper;
 import org.xml.sax.SAXException;
@@ -71,6 +72,48 @@ public class EGaugeCollector extends MultiThreadedCollector {
   private MeasurementType measType;
   /** The Unit of the depository. */
   private Unit<?> measUnit;
+
+  /**
+   * Initializes the EGaugeCollector.
+   * 
+   * @param serverUri
+   *          The URI for the WattDepot server.
+   * @param username
+   *          The name of a user defined in the WattDepot server.
+   * @param password
+   *          The password for the user.
+   * @param collectorId
+   *          The CollectorMetaDataId used to initialize this collector.
+   * @param debug
+   *          flag for debugging messages.
+   * @throws BadCredentialException
+   *           if the user or password don't match the credentials in WattDepot.
+   * @throws IdNotFoundException
+   *           if the processId is not defined.
+   * @throws BadSensorUriException
+   *           if the Sensor's URI isn't valid.
+   */
+  public EGaugeCollector(String serverUri, String username, String password, String collectorId,
+      boolean debug) throws BadCredentialException, IdNotFoundException, BadSensorUriException {
+    super(serverUri, username, password, collectorId, debug);
+    this.measType = depository.getMeasurementType();
+    this.measUnit = Unit.valueOf(measType.getUnits());
+
+    Property prop = this.metaData.getProperty("registerName");
+    if (prop != null) {
+      this.registerName = prop.getValue();
+    }
+    URL sensorURL;
+    try {
+      sensorURL = new URL(metaData.getSensor().getUri());
+      String sensorHostName = sensorURL.getHost();
+      // CAM using v1&tot&inst returns v1.0 xml data.
+      this.eGaugeUri = "http://" + sensorHostName + "/cgi-bin/egauge?v1&tot&inst";
+    }
+    catch (MalformedURLException e) {
+      throw new BadSensorUriException(metaData.getSensor().getUri() + " is not a valid URI.");
+    }
+  }
 
   /**
    * @param serverUri
@@ -127,7 +170,7 @@ public class EGaugeCollector extends MultiThreadedCollector {
     boolean ret = super.isValid();
     if (ret) {
       // check the type of the Sensor
-      String type = this.metaData.getSensor().getModel().getType(); 
+      String type = this.metaData.getSensor().getModel().getType();
       ret &= type.equals(SensorModelHelper.EGAUGE);
     }
     if ((this.registerName == null) || (this.registerName.length() == 0)) {
@@ -297,11 +340,10 @@ public class EGaugeCollector extends MultiThreadedCollector {
       collectorId = cmd.getOptionValue("c");
     }
     else {
-      collectorId = "collect_power";
+      collectorId = "ilima_6th_power";
     }
-    
-//    debug = cmd.hasOption("d");
-    debug = true;
+
+    debug = cmd.hasOption("d");
 
     if (debug) {
       System.out.println("WattDepot Server: " + serverUri);
