@@ -46,8 +46,10 @@ public class WattDepotComponent extends Component {
    * 
    * @param depot
    *          The persitent store.
+   * @param port
+   *          the port number on which the restlet server listens.
    */
-  public WattDepotComponent(WattDepot depot) {
+  public WattDepotComponent(WattDepot depot, int port) {
     setName("WattDepot HTTP API Server");
     setDescription("WattDepot3 RESTful server.");
     setAuthor("Cam Moore");
@@ -56,7 +58,7 @@ public class WattDepotComponent extends Component {
     getClients().add(Protocol.FILE);
 
     // Adds a HTTP server connector
-    Server server = getServers().add(Protocol.HTTP, 8119);
+    Server server = getServers().add(Protocol.HTTP, port);
     server.getContext().getParameters().set("tracing", "true");
 
     WattDepotApplication app = new WattDepotApplication();

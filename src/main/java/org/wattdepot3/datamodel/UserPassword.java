@@ -27,6 +27,9 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
  * 
  */
 public class UserPassword {
+  /** Name of property used to store the admin password. */
+  public static final String ADMIN_USER_PASSWORD = "wattdepot3-server.admin.password";
+  
   /** The password for the admin user. */
   public static final UserPassword ADMIN = new UserPassword(UserInfo.ADMIN.getId(), "admin");
   private String id;
@@ -35,7 +38,7 @@ public class UserPassword {
   private StrongPasswordEncryptor passwordEncryptor;
 
   static {
-    String password = System.getenv("wattdepot-server.admin.password");
+    String password = System.getenv(ADMIN_USER_PASSWORD);
     if (password != null) {
       ADMIN.setPassword(password);
     }

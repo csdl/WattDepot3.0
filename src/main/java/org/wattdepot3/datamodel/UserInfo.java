@@ -28,6 +28,9 @@ import java.util.Set;
  * 
  */
 public class UserInfo {
+  /** Name of property used to store the admin username. */
+  public static final String ADMIN_USER_NAME = "wattdepot3-server.admin.name";
+  
   /** The admin user. */
   public static final UserInfo ADMIN = new UserInfo("admin", "admin", null, null, true,
       new HashSet<Property>());
@@ -46,7 +49,7 @@ public class UserInfo {
   private Set<Property> properties;
 
   static {
-    String adminName = System.getenv("wattdepot-server.admin.name");
+    String adminName = System.getenv(ADMIN_USER_NAME);
     if (adminName != null) {
       ADMIN.setId(adminName);
     }
