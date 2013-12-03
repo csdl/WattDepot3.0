@@ -26,15 +26,15 @@ import javax.measure.unit.Unit;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.Depository;
-import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.Measurement;
 import org.wattdepot3.datamodel.MeasurementType;
 import org.wattdepot3.datamodel.Property;
 import org.wattdepot3.datamodel.Sensor;
 import org.wattdepot3.datamodel.SensorGroup;
+import org.wattdepot3.datamodel.SensorLocation;
 import org.wattdepot3.datamodel.SensorModel;
-import org.wattdepot3.datamodel.CollectorMetaData;
 import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.datamodel.UserInfo;
 import org.wattdepot3.datamodel.UserPassword;
@@ -42,6 +42,7 @@ import org.wattdepot3.exception.IdNotFoundException;
 import org.wattdepot3.exception.MissMatchedOwnerException;
 import org.wattdepot3.exception.UniqueIdException;
 import org.wattdepot3.server.WattDepot;
+import org.wattdepot3.util.SensorModelHelper;
 import org.wattdepot3.util.Slug;
 
 /**
@@ -678,7 +679,9 @@ public class WattDepotImpl extends WattDepot {
     sessionOpen++;
     session.beginTransaction();
     for (SensorModel sm : getSensorModels(session)) {
-      session.delete(sm);
+      if (!SensorModelHelper.models.containsKey(sm.getName())) {
+        session.delete(sm);
+      }
     }
     session.getTransaction().commit();
     session.close();
@@ -1458,6 +1461,9 @@ public class WattDepotImpl extends WattDepot {
     sessionOpen++;
     session.beginTransaction();
     session.saveOrUpdate(sensor);
+    for (Property p : sensor.getProperties()) {
+      session.saveOrUpdate(p);
+    }
     session.getTransaction().commit();
     session.close();
     sessionClose++;

@@ -21,7 +21,7 @@ package org.wattdepot3.client.restlet.collector;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.commons.validator.UrlValidator;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.wattdepot.util.tstamp.Tstamp;
 import org.wattdepot3.client.restlet.WattDepotClient;
 import org.wattdepot3.datamodel.CollectorMetaData;
@@ -172,10 +172,9 @@ public abstract class MultiThreadedCollector extends TimerTask {
     }
     // Get the collector metadata
     CollectorMetaData metaData = null;
-    Depository depository = null;
     try {
       metaData = staticClient.getCollectorMetaData(collectorId);
-      depository = staticClient.getDepository(metaData.getDepositoryId());
+      staticClient.getDepository(metaData.getDepositoryId());
     }
     catch (IdNotFoundException e) {
       System.err.println(e.getMessage());
@@ -203,6 +202,30 @@ public abstract class MultiThreadedCollector extends TimerTask {
         e.printStackTrace();
       }
       catch (IdNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
+    else if (model.getName().equals(SensorModelHelper.SHARK) && model.getVersion().equals("1.03")) {
+      Timer t = new Timer();
+      try {
+        SharkCollector collector = new SharkCollector(serverUri, username, password, collectorId,
+            debug);
+        if (collector.isValid()) {
+          System.out.format("Started polling %s sensor at %s%n", metaData.getSensor().getName(),
+              Tstamp.makeTimestamp());
+          t.schedule(collector, 0, metaData.getPollingInterval() * 1000);
+        }
+        else {
+          System.err.format("Cannot poll %s sensor%n", metaData.getSensor().getName());
+          return false;
+        }
+      }
+      catch (IdNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (BadSensorUriException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }

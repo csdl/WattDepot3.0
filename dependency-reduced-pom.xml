@@ -260,6 +260,10 @@
       <name>Local repository that contains modbus</name>
       <url>file://${project.basedir}/repository</url>
     </repository>
+    <repository>
+      <id>codehaus</id>
+      <url>http://repository.codehaus.org/org/codehaus</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -305,6 +309,7 @@
     <findbugs.plugin.version>2.5.2</findbugs.plugin.version>
     <javadoc.plugin.version>2.9.1</javadoc.plugin.version>
     <checkstyle.filter.file>${config.dir}/checkstyle.xml</checkstyle.filter.file>
+    <jackson.version>1.9.11</jackson.version>
     <commons-cli.version>1.2</commons-cli.version>
     <jasypt.version>1.9.1</jasypt.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -321,8 +326,10 @@
     <restlet.version>2.1.2</restlet.version>
     <config.dir>${basedir}</config.dir>
     <site.plugin.version>3.3</site.plugin.version>
+    <rabbitmq.version>3.2.1</rabbitmq.version>
     <tomcat.jdbc.version>7.0.42</tomcat.jdbc.version>
     <google-visualization-java.version>1.0.2</google-visualization-java.version>
+    <commons-validator.version>1.4.0</commons-validator.version>
     <hibernate.version>3.2.6.ga</hibernate.version>
     <antrun.plugin.version>1.7</antrun.plugin.version>
     <concurrent.version>1.0</concurrent.version>
@@ -333,6 +340,7 @@
     <commons-lang.version>2.6</commons-lang.version>
     <findbugs.filter.file>${config.dir}/findbugs.exclude.xml</findbugs.filter.file>
     <modbus-jamod.version>1.2</modbus-jamod.version>
+    <oro.version>2.0.8</oro.version>
     <google-collections.version>1.0-rc2</google-collections.version>
     <hibernate-core.version>4.2.4.Final</hibernate-core.version>
   </properties>

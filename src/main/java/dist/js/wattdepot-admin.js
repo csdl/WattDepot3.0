@@ -106,7 +106,8 @@ function buildSensor(id) {
         "uri" : sensorInfo['uri'],
         "location" : loc,
         "model" : model,
-        "owner" : owner
+        "owner" : owner,
+        "properties" : sensorInfo['properties']
     };
     return sensor;
 }
@@ -459,6 +460,40 @@ function putNewSensor() {
     });
 };
 
+function putNewInlineSensorProperty() {
+    var id = $("input[name='sensor_id']").val();
+    var old_sensor = getKnownSensor(id);
+    var key = $("input[name='inline_sensor_key']").val();
+    var value = $("input[name='inline_sensor_value']").val();
+    var property = new Object();
+    property.key = key;
+    property.value = value;
+    old_sensor.properties.push(property);
+    var loc = buildLocation(old_sensor.locationId);
+    var model = buildSensorModel(old_sensor.modelId);
+    var owner = getKnownUserGroup(GROUPID);    
+    var sensor = {
+        "id" : old_sensor.id,
+        "name" : old_sensor.name,
+        "uri" : old_sensor.uri,
+        "location" : loc,
+        "model" : model,
+        "owner" : owner,
+        "properties" : old_sensor.properties
+    };
+    setSelectedTab('sensors');
+    $.ajax({
+        url : '/wattdepot/' + GROUPID + '/sensor/temp',
+        type : 'PUT',
+        contentType : 'application/json',
+        data : JSON.stringify(sensor),
+        success : function() {
+            location.reload();
+        },
+    });
+    
+};
+
 function edit_sensor_dialog(event, id) {
     var modalElement = $('#addSensorModal');
     modalElement.modal({
@@ -468,14 +503,21 @@ function edit_sensor_dialog(event, id) {
     });
 
     var sensor = getKnownSensor(id);
-    $("input[name='sensor_id']").val(sensor['id']);
+    $("input[name='sensor_id']").val(id);    
+    $("input[name='sensor_name']").val(sensor['name']);
     $("input[name='sensor_uri']").val(sensor['uri']);
-    var lid = sensor.location;
+    var lid = sensor.locationId;
     $('select[name="sensor_location"] option[value="' + lid + '"]').prop(
             "selected", "selected");
-    var mid = sensor.model;
+    var mid = sensor.modelId;
     $('select[name="sensor_model"] option[value="' + mid + '"]').prop(
             "selected", "selected");
+    var properties = sensor.properties;
+    var prop_str = "";
+    for (var i = 0; i < properties.length; i++) {
+        prop_str +=  properties[i].key + " : " + properties[i].value;
+    }
+    $('#sensor_properties').text(prop_str);
 
     modalElement.modal('show');
 };

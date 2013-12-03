@@ -269,9 +269,9 @@ public class EGaugeCollector extends MultiThreadedCollector {
         System.err.format("%s does not store %s measurements%n", depository.getName(),
             meas.getMeasurementType());
       }
-    }
-    if (debug) {
-      System.out.println(meas);
+      if (debug) {
+        System.out.println(meas);
+      }
     }
   }
 

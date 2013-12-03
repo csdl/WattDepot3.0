@@ -180,20 +180,26 @@ Opens: ${opens} Closes: ${closes}
                     <thead>
                       <tr><th colspan="5"><h3>Sensors</h3></th></tr>
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>URI</th>
                             <th>Location</th>
                             <th>Model</th>
-                            <#if groupId == "admin">
-                            <th>Owner</th>
-                            </#if>
+                            <#if groupId == "admin"><th>Owner</th></#if>
+                            <th>Properties</th>
                             <th style="width: 7px;"></th>
                             <th style="width: 7px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                     <#list sensors as s>
-                        <tr><td>${s.id}</td><td>${s.uri}</td><td><#if s.getSensorLocation()??>${s.sensorLocation.id}</#if></td><td><#if s.getModel()??>${s.model.id}</#if></td><#if groupId == "admin"><td>${s.owner.id}</td></#if>
+                        <tr><td>${s.id}</td>
+                            <td>${s.name}</td>
+                            <td>${s.uri}</td>
+                            <td><#if s.getSensorLocation()??>${s.sensorLocation.id}</#if></td>
+                            <td><#if s.getModel()??>${s.model.id}</#if></td>
+                            <#if groupId == "admin"><td>${s.owner.id}</td></#if>
+                            <td>[<#assign k = s.properties?size><#list s.properties as prop>{"${prop.key}":"${prop.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]</td>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_sensor_dialog(event, '${s.id}');"></span>
                             </td>
@@ -297,6 +303,7 @@ Opens: ${opens} Closes: ${closes}
                     <thead>
                       <tr><th colspan="5"><h3>Sensor Groups</h3></th></tr>
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Sensors</th>
                             <#if groupId == "admin">
@@ -308,7 +315,10 @@ Opens: ${opens} Closes: ${closes}
                     </thead>
                     <tbody>
                     <#list sensorgroups as g>
-                        <tr><td>${g.id}</td><td><#list g.sensors as u>${u.id} </#list></td><#if groupId == "admin"><td>${g.owner.id}</td></#if>
+                        <tr><td>${g.id}</td>
+                            <td>${g.name}</td>
+                            <td><#list g.sensors as u>${u.id} </#list></td>
+                            <#if groupId == "admin"><td>${g.owner.id}</td></#if>
                             <td>
                                 <span class="glyphicon glyphicon-pencil" onclick="edit_sensorgroup_dialog(event, '${g.id}');"></span>
                             </td>
@@ -328,6 +338,7 @@ Opens: ${opens} Closes: ${closes}
                     <thead>
                       <tr><th colspan="5"><h3>Collector Metadata</h3></th></tr>
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Sensor</th>
                             <th>Polling Interval</th>
@@ -343,6 +354,7 @@ Opens: ${opens} Closes: ${closes}
                     <tbody>
                     <#list sensorprocesses as p>
                         <tr><td>${p.id}</td>
+                            <td>${p.name}</td>
                             <td>${p.sensor.id}</td>
                             <td>${p.pollingInterval}</td>
                             <td>${p.depositoryId}</td>
@@ -414,139 +426,158 @@ Opens: ${opens} Closes: ${closes}
           <h4 class="modal-title">Add/Edit Sensor</h4>
         </div>
         <div class="modal-body">
-            <div class="container">
-                <form>
+          <div class="container">
+            <form>
+              <input type="hidden" name="sensor_id" value="">            
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="sensor_id">Sensor Name</label>
+                <div class="col-md-9">
+                  <input type="text" name="sensor_name" class="form-control">
+                  <p class="help-block">Sensor names must be unique.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="sensor_uri">Sensor URI</label>
+                <div class="col-md-9">
+                  <input type="text" name="sensor_uri" class="form-control">
+                  <p class="help-block">The URI to contact the sensor.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="sensor_location">Location</label>
+                <div class="col-md-9">
+                  <select class="form-control" name="sensor_location">
+                  <#list locations as l>
+                    <option value="${l.id}">${l.id}</option>
+                  </#list>
+                  </select>
+                  <p class="help-block">Select the optional location for the sensor.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-md-3 control-label" for="sensor_model">Model</label>
+                <div class="col-md-9">
+                  <select class="form-control" name="sensor_model">
+                  <#list sensormodels as sm>
+                    <option value="${sm.id}">${sm.id}</option>
+                  </#list>
+                  </select>
+                  <p class="help-block">Select the model for the sensor.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Properties</label>
+                <div class="col-sm-9">
+                  <div id="sensor_properties">
+                  </div>
+                  <p class="help-block">List of the Sensor's Properties.</p>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </form>
+            <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newLocationForm"><span class="glyphicon glyphicon-plus"></span> Location</button>                
+            <div id="newLocationForm" class="collapse"> 
+              <form>
                 <div class="form-group">
-                        <label class="col-md-3 control-label" for="sensor_id">Sensor Name</label>
-                        <div class="col-md-9">
-                            <input type="text" name="sensor_id" class="form-control">
-                            <p class="help-block">Sensor names must be unique.</p>
-                        </div>
+                  <label class="col-md-3 control-label">Location Name</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_location_id" class="form-control">
+                    <p class="help-block">The unique name of the location.</p>
+                  </div>
                 </div>
                 <div class="form-group">
-                        <label class="col-md-3 control-label" for="sensor_uri">Sensor URI</label>
-                        <div class="col-md-9">
-                            <input type="text" name="sensor_uri" class="form-control">
-                            <p class="help-block">The URI to contact the sensor.</p>
-                        </div>
+                  <label class="col-md-3 control-label">Latitude</label>
+                  <div class="col-md-9">
+                    <input type="number" name="inline_location_latitude" class="form-control">
+                    <p class="help-block">Enter the latitude.</p>
+                  </div>
                 </div>
                 <div class="form-group">
-                            <label class="col-md-3 control-label" for="sensor_location">Location</label>
-                            <div class="col-md-9">
-                                <select class="form-control" name="sensor_location">
-                                <#list locations as l>
-                                    <option value="${l.id}">${l.id}</option>
-                                </#list>
-                                </select>
-                                <p class="help-block">Select the optional location for the sensor.</p>
-                            </div>
+                  <label class="col-md-3 control-label">Longitude</label>
+                  <div class="col-md-9">
+                    <input type="number" name="inline_location_longitude" class="form-control">
+                    <p class="help-block"></p>
+                  </div>
                 </div>
                 <div class="form-group">
-                            <label class="col-md-3 control-label" for="sensor_model">Model</label>
-                            <div class="col-md-9">
-                                <select class="form-control" name="sensor_model">
-                                <#list sensormodels as sm>
-                                    <option value="${sm.id}">${sm.id}</option>
-                                </#list>
-                                </select>
-                                <p class="help-block">Select the model for the sensor.</p>
-                            </div>
+                  <label class="col-md-3 control-label">Altitude</label>
+                  <div class="col-md-9">
+                    <input type="number" name="inline_location_altitude" class="form-control">
+                    <p class="help-block"></p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Description</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_location_description" class="form-control">
+                    <p class="help-block"></p>
+                  </div>
                 </div>
                 <div class="clearfix"></div>
-                </form>
-                <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newLocationForm"><span class="glyphicon glyphicon-plus"></span> Location</button>                
-                <div id="newLocationForm" class="collapse"> 
-                    <form>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Location Name</label>
-                            <div class="col-md-9">
-                                <input type="text" name="inline_location_id" class="form-control">
-                                <p class="help-block">The unique name of the location.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Latitude</label>
-                            <div class="col-md-9">
-                            <input type="number"
-                                name="inline_location_latitude"
-                                class="form-control">
-                            <p class="help-block">Enter the latitude.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Longitude</label>
-                            <div class="col-md-9">
-                            <input type="number"
-                                name="inline_location_longitude"
-                                class="form-control">
-                            <p class="help-block"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Altitude</label>
-                            <div class="col-md-9">
-                            <input type="number"
-                                name="inline_location_altitude"
-                                class="form-control">
-                            <p class="help-block"></p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Description</label>
-                            <div class="col-md-9">
-                            <input type="text"
-                                name="inline_location_description"
-                                class="form-control">
-                            <p class="help-block"></p>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </form>
-                    <button type="button" class="btn-sm btn-primary"
+              </form>
+              <button type="button" class="btn-sm btn-primary"
                         onclick="putNewInlineLocation();">Save Location</button>
-                    <p></p>
+              <p></p>
+            </div>
+            <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newModelForm"><span class="glyphicon glyphicon-plus"></span> Model</button>
+            <div id="newModelForm" class="collapse"> 
+              <form>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Sensor Model Name</label> 
+                  <div class="col-md-9">
+                    <input type="text" name="inline_model_id" class="form-control">
+                    <p class="help-block">Unique model name.</p>
+                  </div>
                 </div>
-                <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newModelForm"><span class="glyphicon glyphicon-plus"></span> Model</button>
-                <div id="newModelForm" class="collapse"> 
-                    <form>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Sensor Model Name</label> 
-                            <div class="col-md-9">
-                                <input type="text"
-                                name="inline_model_id" class="form-control">
-                                <p class="help-block">Unique model name.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Protocol</label>
-                            <div class="col-md-9">
-                            <input type="text" name="inline_model_protocol"
-                                class="form-control">
-                            <p class="help-block">The protocol used by the sensor.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Type</label>
-                            <div class="col-md-9">
-                            <input type="text" name="inline_model_type"
-                                class="form-control">
-                            <p class="help-block">The type of the sensor.</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Version</label>
-                            <div class="col-md-9">
-                            <input type="text" name="inline_model_version"
-                                class="form-control">
-                            <p class="help-block">The version.</p>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </form>
-                    <button type="button" class="btn-sm btn-primary"
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Protocol</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_model_protocol" class="form-control">
+                    <p class="help-block">The protocol used by the sensor.</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Type</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_model_type" class="form-control">
+                    <p class="help-block">The type of the sensor.</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Version</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_model_version" class="form-control">
+                    <p class="help-block">The version.</p>
+                  </div>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+              <button type="button" class="btn-sm btn-primary"
                         onclick="putNewInlineModel();">Save Model</button>
-                    <p></p>
-                </div>                
+              <p></p>
+            </div>                
+            <button class="btn-xs btn-success" data-toggle="collapse" data-target="#newSensorPropertyForm"><span class="glyphicon glyphicon-plus"></span> Property</button>                
+            <div id="newSensorPropertyForm" class="collapse">
+              <form>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Key</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_sensor_key" class="form-control">
+                    <p class="help-block">The property key.</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Value</label>
+                  <div class="col-md-9">
+                    <input type="text" name="inline_sensor_value" class="form-control">
+                    <p class="help-block">The property value.</p>
+                  </div>
+                </div>
+              </form>
+              <button type="button" class="btn-sm btn-primary"
+                      onclick="putNewInlineSensorProperty();">Add Property</button>
+              <p></p>
+            </div>
                 
             </div>
         </div>
@@ -780,7 +811,7 @@ MODELS["${m.id}"] = {"id": "${m.id}", "name": "${m.name}", "protocol": "${m.prot
 </#list>
 var SENSORS = {};
 <#list sensors as s>
-SENSORS["${s.id}"] = {"id": "${s.id}", "name": "${s.name}", "uri": "${s.uri}", "locationId": "<#if s.getLocation()??>${s.location.id}</#if>", "modelId": "<#if s.getModel()??>${s.model.id}</#if>", "ownerId": "${s.owner.id}"};
+SENSORS["${s.id}"] = {"id": "${s.id}", "name": "${s.name}", "uri": "${s.uri}", "locationId": "<#if s.getLocation()??>${s.location.id}</#if>", "modelId": "<#if s.getModel()??>${s.model.id}</#if>", "ownerId": "${s.owner.id}", "properties" : [<#assign k = s.properties?size><#list s.properties as p>{"key":"${p.key}", "value":"${p.value}"}<#if k != 1>,</#if><#assign k = k -1></#list>]};
 </#list>
 var SENSORGROUPS = {};
 <#list sensorgroups as sg>

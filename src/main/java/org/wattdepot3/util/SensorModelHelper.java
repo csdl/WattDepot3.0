@@ -32,10 +32,15 @@ import org.wattdepot3.datamodel.SensorModel;
 public class SensorModelHelper {
   /** The eGauge Sensor Model name. */
   public static final String EGAUGE = "eGauge";
+  /** The Shark Sensor Model name. */
+  public static final String SHARK = "Shark";
+  /** The Modbus protocol name. */
+  public static final String MODBUS = "Modbus";
   /** Holds the default SensorModels. */
   public static final Map<String, SensorModel> models = new HashMap<String, SensorModel>();
   
   static {
     models.put(EGAUGE, new SensorModel(EGAUGE, "xml", EGAUGE, "1.0"));
+    models.put(SHARK, new SensorModel(SHARK, MODBUS, SHARK, "1.03"));
   }
 }
