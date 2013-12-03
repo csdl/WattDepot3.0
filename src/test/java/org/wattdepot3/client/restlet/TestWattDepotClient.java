@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wattdepot3.client.ClientProperties;
 import org.wattdepot3.datamodel.Depository;
 import org.wattdepot3.datamodel.InstanceFactory;
 import org.wattdepot3.datamodel.SensorLocation;
@@ -67,28 +68,29 @@ public class TestWattDepotClient {
    * @throws java.lang.Exception
    *           if there is a problem.
    */
-//  @BeforeClass
-//  public static void setUpClass() throws Exception {
-//    System.out.println("setUp()");
-//    admin = new WattDepotAdminClient("http://localhost:8119/", "admin", "admin");
-//    admin.putUserPassword(testPassword);
-//    admin.putUser(testUser);
-//    admin.putUserGroup(testGroup);
-//    admin.putMeasurementType(InstanceFactory.getMeasurementType());
-//    test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
-//        testPassword.getPlainText());
-//  }
+  // @BeforeClass
+  // public static void setUpClass() throws Exception {
+  // System.out.println("setUp()");
+  // admin = new WattDepotAdminClient("http://localhost:8119/", "admin",
+  // "admin");
+  // admin.putUserPassword(testPassword);
+  // admin.putUser(testUser);
+  // admin.putUserGroup(testGroup);
+  // admin.putMeasurementType(InstanceFactory.getMeasurementType());
+  // test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
+  // testPassword.getPlainText());
+  // }
 
   /**
    * @throws java.lang.Exception
    *           if there is a problem.
    */
-//  @AfterClass
-//  public static void tearDownClass() throws Exception {
-//    System.out.println("tearDown()");
-//    admin.deleteUser(testPassword.getId());
-//    admin.deleteUserGroup(testGroup.getId());
-//  }
+  // @AfterClass
+  // public static void tearDownClass() throws Exception {
+  // System.out.println("tearDown()");
+  // admin.deleteUser(testPassword.getId());
+  // admin.deleteUserGroup(testGroup.getId());
+  // }
 
   /**
    * @throws java.lang.Exception
@@ -97,12 +99,16 @@ public class TestWattDepotClient {
   @Before
   public void setUp() throws Exception {
     System.out.println("setUp()");
-    admin = new WattDepotAdminClient("http://localhost:8119/", "admin", "admin");
+    ClientProperties props = new ClientProperties();
+    String serverURL = "http://" + props.get(ClientProperties.WATTDEPOT_SERVER_HOST) + ":"
+        + props.get(ClientProperties.PORT_KEY) + "/";
+    admin = new WattDepotAdminClient(serverURL, props.get(ClientProperties.USER_NAME),
+        props.get(ClientProperties.USER_PASSWORD));
     admin.putUserPassword(testPassword);
     admin.putUser(testUser);
     admin.putUserGroup(testGroup);
     admin.putMeasurementType(InstanceFactory.getMeasurementType());
-    test = new WattDepotClient("http://localhost:8119/", testPassword.getId(),
+    test = new WattDepotClient(serverURL, testPassword.getId(),
         testPassword.getPlainText());
   }
 
@@ -116,6 +122,7 @@ public class TestWattDepotClient {
     admin.deleteUser(testPassword.getId());
     admin.deleteUserGroup(testGroup.getId());
   }
+
   /**
    * Test method for
    * {@link org.wattdepot3.client.restlet.WattDepotClient#WattDepotClient(java.lang.String, java.lang.String, java.lang.String)}
