@@ -52,6 +52,9 @@ public abstract class WattDepot {
   /** The name of the Energy MeasurementType. */
   public static final String ENERGY_TYPE_NAME = "Energy";
 
+  private ServerProperties properties;
+  
+  
   /**
    * Defines a new CollectorMetaData. This does not start any processes.
    * 
@@ -363,17 +366,17 @@ public abstract class WattDepot {
 
   /**
    * @param groupId
-   *          the group id of the user making the request.
-   * @return The known/defined CollectorMetaDataes owned by the given group id.
-   */
-  public abstract List<CollectorMetaData> getCollectorMetaDatas(String groupId);
-
-  /**
-   * @param groupId
    *          the id of the owner UserGroup.
    * @return A list of the defined CollectorMetaData Ids.
    */
   public abstract List<String> getCollectorMetaDataIds(String groupId);
+
+  /**
+   * @param groupId
+   *          the group id of the user making the request.
+   * @return The known/defined CollectorMetaDataes owned by the given group id.
+   */
+  public abstract List<CollectorMetaData> getCollectorMetaDatas(String groupId);
 
   /**
    * @param id
@@ -412,6 +415,13 @@ public abstract class WattDepot {
    * @return A List of the defined MeasurementTypes.
    */
   public abstract List<MeasurementType> getMeasurementTypes();
+
+  /**
+   * @return the properties
+   */
+  public ServerProperties getServerProperties() {
+    return properties;
+  }
 
   /**
    * @param id
@@ -604,6 +614,13 @@ public abstract class WattDepot {
       }
     }
 
+  }
+
+  /**
+   * @param properties the properties to set
+   */
+  public void setServerProperties(ServerProperties properties) {
+    this.properties = properties;
   }
 
   /**

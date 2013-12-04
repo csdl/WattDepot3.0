@@ -83,7 +83,8 @@ public class WattDepotServer {
     int port = Integer.parseInt(properties.get(ServerProperties.PORT_KEY));
     WattDepotServer server = new WattDepotServer();
     server.depot = (WattDepot) Class.forName(properties.get(ServerProperties.WATT_DEPOT_IMPL_KEY))
-        .newInstance();
+        .getConstructor(ServerProperties.class)
+        .newInstance(properties);
     if (server.depot.getSessionOpen() != server.depot.getSessionClose()) {
       throw new RuntimeException("opens and closed mismatched.");
     }
@@ -95,6 +96,7 @@ public class WattDepotServer {
     if (server.depot.getSessionOpen() != server.depot.getSessionClose()) {
       throw new RuntimeException("opens and closed mismatched.");
     }
+    server.depot.setServerProperties(properties);
     server.restletServer = new WattDepotComponent(server.depot, port);
     server.serverProperties = properties;
     server.restletServer.start();

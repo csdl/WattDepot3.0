@@ -32,6 +32,7 @@ import org.wattdepot3.datamodel.UserGroup;
 import org.wattdepot3.exception.MeasurementGapException;
 import org.wattdepot3.exception.MeasurementTypeException;
 import org.wattdepot3.exception.NoMeasurementException;
+import org.wattdepot3.server.ServerProperties;
 
 /**
  * DepositoryImpl - Implementation of Depository that stores the Measurements in
@@ -41,6 +42,8 @@ import org.wattdepot3.exception.NoMeasurementException;
  * 
  */
 public class DepositoryImpl extends Depository {
+
+  private ServerProperties serverProperties;
 
   /**
    * Default constructor.
@@ -80,11 +83,29 @@ public class DepositoryImpl extends Depository {
    */
   @Override
   public void deleteMeasurement(Measurement meas) {
-    Session session = Manager.getFactory().openSession();
+    Session session = Manager.getFactory(serverProperties).openSession();
     session.beginTransaction();
     session.delete(meas);
     session.getTransaction().commit();
     session.close();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.wattdepot3.datamodel.Depository#getMeasurements(org.wattdepot3.datamodel
+   * .Sensor)
+   */
+  @Override
+  public List<Measurement> getMeasurements(Sensor sensor) {
+    Session session = Manager.getFactory(serverProperties).openSession();
+    session.beginTransaction();
+    List<Measurement> ret = getMeasurements(session, sensor);
+    session.getTransaction().commit();
+    session.close();
+    return ret;
+
   }
 
   /**
@@ -99,7 +120,7 @@ public class DepositoryImpl extends Depository {
   @Override
   public List<Measurement> getMeasurements(Sensor sensor, Date start, Date end) {
     List<Measurement> ret = new ArrayList<Measurement>();
-    Session session = Manager.getFactory().openSession();
+    Session session = Manager.getFactory(serverProperties).openSession();
     session.beginTransaction();
     @SuppressWarnings("unchecked")
     List<MeasurementImpl> measurements = (List<MeasurementImpl>) session
@@ -115,24 +136,6 @@ public class DepositoryImpl extends Depository {
     session.getTransaction().commit();
     session.close();
     return ret;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.wattdepot3.datamodel.Depository#getMeasurements(org.wattdepot3.datamodel
-   * .Sensor)
-   */
-  @Override
-  public List<Measurement> getMeasurements(Sensor sensor) {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    List<Measurement> ret = getMeasurements(session, sensor);
-    session.getTransaction().commit();
-    session.close();
-    return ret;
-
   }
 
   /*
@@ -158,47 +161,11 @@ public class DepositoryImpl extends Depository {
 
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.wattdepot3.datamodel.Depository#getSensors()
-   */
-  @Override
-  public List<Sensor> listSensors() {
-    Session session = Manager.getFactory().openSession();
-    session.beginTransaction();
-    @SuppressWarnings("unchecked")
-    List<MeasurementImpl> result = (List<MeasurementImpl>) session
-        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
-        .list();
-    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
-    for (Measurement meas : result) {
-      if (!sensors.contains(meas.getSensor())) {
-        sensors.add(meas.getSensor());
-      }
-    }
-    session.getTransaction().commit();
-    session.close();
-    return sensors;
-  }
-
   /**
-   * @param session
-   *          The Session with an open transaction.
-   * @return A List of Sensors contributing measurements to this depository.
+   * @return the serverProperties
    */
-  public List<Sensor> listSensors(Session session) {
-    @SuppressWarnings("unchecked")
-    List<MeasurementImpl> result = (List<MeasurementImpl>) session
-        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
-        .list();
-    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
-    for (Measurement meas : result) {
-      if (!sensors.contains(meas.getSensor())) {
-        sensors.add(meas.getSensor());
-      }
-    }
-    return sensors;
+  public ServerProperties getServerProperties() {
+    return serverProperties;
   }
 
   /**
@@ -213,7 +180,7 @@ public class DepositoryImpl extends Depository {
    */
   public Double getValue(Sensor sensor, Date timestamp) throws NoMeasurementException {
     Double ret = null;
-    Session session = Manager.getFactory().openSession();
+    Session session = Manager.getFactory(serverProperties).openSession();
     session.beginTransaction();
 
     @SuppressWarnings("unchecked")
@@ -280,7 +247,7 @@ public class DepositoryImpl extends Depository {
           }
           else if (justBefore == null && justAfter == null) {
             session.getTransaction().commit();
-            session.close();            
+            session.close();
             throw new NoMeasurementException("Cannot find measurements before or after "
                 + timestamp);
           }
@@ -368,7 +335,7 @@ public class DepositoryImpl extends Depository {
   public Double getValue(Sensor sensor, Date timestamp, Long gapSeconds)
       throws NoMeasurementException, MeasurementGapException {
     Double ret = null;
-    Session session = Manager.getFactory().openSession();
+    Session session = Manager.getFactory(serverProperties).openSession();
     session.beginTransaction();
 
     @SuppressWarnings("unchecked")
@@ -463,6 +430,49 @@ public class DepositoryImpl extends Depository {
     return ret;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.wattdepot3.datamodel.Depository#getSensors()
+   */
+  @Override
+  public List<Sensor> listSensors() {
+    Session session = Manager.getFactory(serverProperties).openSession();
+    session.beginTransaction();
+    @SuppressWarnings("unchecked")
+    List<MeasurementImpl> result = (List<MeasurementImpl>) session
+        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
+        .list();
+    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    for (Measurement meas : result) {
+      if (!sensors.contains(meas.getSensor())) {
+        sensors.add(meas.getSensor());
+      }
+    }
+    session.getTransaction().commit();
+    session.close();
+    return sensors;
+  }
+
+  /**
+   * @param session
+   *          The Session with an open transaction.
+   * @return A List of Sensors contributing measurements to this depository.
+   */
+  public List<Sensor> listSensors(Session session) {
+    @SuppressWarnings("unchecked")
+    List<MeasurementImpl> result = (List<MeasurementImpl>) session
+        .createQuery("FROM MeasurementImpl WHERE depository = :name").setParameter("name", this)
+        .list();
+    ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+    for (Measurement meas : result) {
+      if (!sensors.contains(meas.getSensor())) {
+        sensors.add(meas.getSensor());
+      }
+    }
+    return sensors;
+  }
+
   /**
    * @param meas
    *          The measurement to store.
@@ -478,7 +488,7 @@ public class DepositoryImpl extends Depository {
           + " does not match " + getMeasurementType());
     }
 
-    Session session = Manager.getFactory().openSession();
+    Session session = Manager.getFactory(serverProperties).openSession();
     session.beginTransaction();
     // check the sensor
     boolean haveSensor = false;
@@ -517,6 +527,14 @@ public class DepositoryImpl extends Depository {
     session.saveOrUpdate(sensor.getLocation());
     session.saveOrUpdate(sensor.getModel());
     session.saveOrUpdate(sensor);
+  }
+
+  /**
+   * @param serverProperties
+   *          the serverProperties to set
+   */
+  public void setServerProperties(ServerProperties serverProperties) {
+    this.serverProperties = serverProperties;
   }
 
 }

@@ -21,6 +21,7 @@ package org.wattdepot3.server.depository.impl.hibernate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.wattdepot3.server.ServerProperties;
 
 /**
  * TestWattDepotImpl - Test cases for the WattDepotImpl.
@@ -38,7 +39,7 @@ public class TestWattDepotImpl {
    */
   @Before
   public void setUp() throws Exception {
-    impl = new WattDepotImpl();
+    impl = new WattDepotImpl(new ServerProperties());
   }
 
   /**

@@ -44,6 +44,21 @@ public class ServerProperties {
   public static final String WATT_DEPOT_IMPL_KEY = "wattdepot3-server.wattdepot.impl";
   /** The wattdepot3 server port key. */
   public static final String PORT_KEY = "wattdepot3-server.port";
+  /** The database connection driver class. */
+  public static final String DB_CONNECTION_DRIVER = "wattdepot3-server.db.connection.driver";
+  /** The database connection driver url. */
+  public static final String DB_CONNECTION_URL = "wattdepot3-server.db.connection.url";
+  /** The database username. */
+  public static final String DB_USER_NAME = "wattdepot3-server.db.username";
+  /** The database password. */
+  public static final String DB_PASSWORD = "wattdepot3-server.db.password";
+  /** The database show sql. */
+  public static final String DB_SHOW_SQL = "wattdepot3-server.db.show.sql";
+  /**
+   * The database drop&create tables. valid values are 'validate' | 'update' |
+   * 'create' | 'create-drop'.
+   */
+  public static final String DB_TABLE_UPDATE = "wattdepot3-server.db.update";
   /** The WattDepot implementation class during testing. */
   public static final String TEST_WATT_DEPOT_IMPL_KEY = "wattdepot3-server.test.wattdepot.impl";
   /** The wattdepot3 server port key during testing. */
@@ -188,6 +203,12 @@ public class ServerProperties {
     properties.setProperty(ADMIN_USER_PASSWORD, defaultAdminPassword);
     properties.setProperty(WATT_DEPOT_IMPL_KEY, defaultWattDepotImpl);
     properties.setProperty(PORT_KEY, defaultPort);
+    properties.setProperty(DB_CONNECTION_DRIVER, "org.postgresql.Driver");
+    properties.setProperty(DB_CONNECTION_URL, "jdbc:postgresql://localhost:5432/wattdepot3");
+    properties.setProperty(DB_USER_NAME, "myuser");
+    properties.setProperty(DB_PASSWORD, "secret");
+    properties.setProperty(DB_SHOW_SQL, "false");
+    properties.setProperty(DB_TABLE_UPDATE, "update");
     properties.setProperty(TEST_PORT_KEY, defaultTestPort);
     properties.setProperty(TEST_WATT_DEPOT_IMPL_KEY, defaultWattDepotImpl);
 
@@ -216,6 +237,7 @@ public class ServerProperties {
     addServerSystemProperties(this.properties);
     trimProperties(properties);
 
+    System.out.println(echoProperties());
   }
 
   /**
