@@ -21,7 +21,7 @@ package org.wattdepot3.server.depository.impl.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-//import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.wattdepot3.server.ServerProperties;
 
 /**
@@ -42,45 +42,45 @@ public class Manager {
    */
   public static SessionFactory getFactory(ServerProperties properties) {
     if (sessionFactory == null) {
-//      Configuration cfg = new Configuration()
-//          .addClass(org.wattdepot3.datamodel.CollectorMetaData.class)
-//          .addClass(org.wattdepot3.datamodel.Depository.class)
-//          .addClass(org.wattdepot3.server.depository.impl.hibernate.DepositoryImpl.class)
-//          .addClass(org.wattdepot3.datamodel.Measurement.class)
-//          .addClass(org.wattdepot3.server.depository.impl.hibernate.MeasurementImpl.class)
-//          .addClass(org.wattdepot3.datamodel.MeasurementType.class)
-//          .addClass(org.wattdepot3.datamodel.Property.class)
-//          .addClass(org.wattdepot3.datamodel.Sensor.class)
-//          .addClass(org.wattdepot3.datamodel.SensorGroup.class)
-//          .addClass(org.wattdepot3.datamodel.SensorLocation.class)
-//          .addClass(org.wattdepot3.datamodel.SensorModel.class)
-//          .addClass(org.wattdepot3.datamodel.UserGroup.class)
-//          .addClass(org.wattdepot3.datamodel.UserInfo.class)
-//          .addClass(org.wattdepot3.datamodel.UserPassword.class)
-//          .setProperty("hibernate.connection.driver_class",
-//              properties.get(ServerProperties.DB_CONNECTION_DRIVER))
-//          .setProperty("hibernate.connection.url",
-//              properties.get(ServerProperties.DB_CONNECTION_URL))
-//          .setProperty("hibernate.connection.username",
-//              properties.get(ServerProperties.DB_USER_NAME))
-//          .setProperty("hibernate.connection.password",
-//              properties.get(ServerProperties.DB_PASSWORD))
-//          .setProperty("hibernate.c3p0.min_size", "5").setProperty("hibernate.c3p0.max_size", "20")
-//          .setProperty("hibernate.c3p0.timeout", "1800")
-//          .setProperty("hibernate.c3p0.max_statements", "50")
-//          .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
-//          .setProperty("hibernate.show_sql", properties.get(ServerProperties.DB_SHOW_SQL))
-//          .setProperty("hibernate.hbm2ddl.auto", properties.get(ServerProperties.DB_TABLE_UPDATE));
-//      serviceRegistry = new ServiceRegistryBuilder().applySettings(cfg.getProperties())
-//          .buildServiceRegistry();
-//      // A SessionFactory is set up once for an application
-//      sessionFactory = cfg.buildSessionFactory(serviceRegistry);
-      
+      Configuration cfg = new Configuration()
+          .addClass(org.wattdepot3.datamodel.CollectorMetaData.class)
+          .addClass(org.wattdepot3.datamodel.Depository.class)
+          .addClass(org.wattdepot3.server.depository.impl.hibernate.DepositoryImpl.class)
+          .addClass(org.wattdepot3.datamodel.Measurement.class)
+          .addClass(org.wattdepot3.server.depository.impl.hibernate.MeasurementImpl.class)
+          .addClass(org.wattdepot3.datamodel.MeasurementType.class)
+          .addClass(org.wattdepot3.datamodel.Property.class)
+          .addClass(org.wattdepot3.datamodel.Sensor.class)
+          .addClass(org.wattdepot3.datamodel.SensorGroup.class)
+          .addClass(org.wattdepot3.datamodel.SensorLocation.class)
+          .addClass(org.wattdepot3.datamodel.SensorModel.class)
+          .addClass(org.wattdepot3.datamodel.UserGroup.class)
+          .addClass(org.wattdepot3.datamodel.UserInfo.class)
+          .addClass(org.wattdepot3.datamodel.UserPassword.class)
+          .setProperty("hibernate.connection.driver_class",
+              properties.get(ServerProperties.DB_CONNECTION_DRIVER))
+          .setProperty("hibernate.connection.url",
+              properties.get(ServerProperties.DB_CONNECTION_URL))
+          .setProperty("hibernate.connection.username",
+              properties.get(ServerProperties.DB_USER_NAME))
+          .setProperty("hibernate.connection.password",
+              properties.get(ServerProperties.DB_PASSWORD))
+          .setProperty("hibernate.c3p0.min_size", "5").setProperty("hibernate.c3p0.max_size", "20")
+          .setProperty("hibernate.c3p0.timeout", "1800")
+          .setProperty("hibernate.c3p0.max_statements", "50")
+          .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
+          .setProperty("hibernate.show_sql", properties.get(ServerProperties.DB_SHOW_SQL))
+          .setProperty("hibernate.hbm2ddl.auto", properties.get(ServerProperties.DB_TABLE_UPDATE));
+      serviceRegistry = new ServiceRegistryBuilder().applySettings(cfg.getProperties())
+          .buildServiceRegistry();
       // A SessionFactory is set up once for an application
-      sessionFactory = new Configuration().configure() // configures settings
-                                                       // from
-                                                       // hibernate.cfg.xml
-          .buildSessionFactory();
+      sessionFactory = cfg.buildSessionFactory(serviceRegistry);
+      
+//      // A SessionFactory is set up once for an application
+//      sessionFactory = new Configuration().configure() // configures settings
+//                                                       // from
+//                                                       // hibernate.cfg.xml
+//          .buildSessionFactory();
 
     }
     return sessionFactory;
