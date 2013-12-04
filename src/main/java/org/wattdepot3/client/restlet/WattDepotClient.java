@@ -18,6 +18,8 @@
  */
 package org.wattdepot3.client.restlet;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -160,7 +162,6 @@ public class WattDepotClient implements WattDepotInterface {
     }
   }
 
-
   /*
    * (non-Javadoc)
    * 
@@ -170,8 +171,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteDepository(Depository depository) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
-        + depository.getId());
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getId());
     DepositoryResource resource = client.wrap(DepositoryResource.class);
     try {
       resource.remove();
@@ -195,7 +195,8 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void deleteLocation(SensorLocation sensorLocation) throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI + sensorLocation.getId());
+    ClientResource client = makeClient(this.groupId + "/" + API.LOCATION_URI
+        + sensorLocation.getId());
     SensorLocationResource resource = client.wrap(SensorLocationResource.class);
     try {
       resource.remove();
@@ -220,8 +221,8 @@ public class WattDepotClient implements WattDepotInterface {
   @Override
   public void deleteMeasurement(Depository depository, Measurement measurement)
       throws IdNotFoundException {
-    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
-        + depository.getId() + "/" + API.MEASUREMENT_URI + measurement.getId());
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getId()
+        + "/" + API.MEASUREMENT_URI + measurement.getId());
     DepositoryMeasurementResource resource = client.wrap(DepositoryMeasurementResource.class);
     try {
       resource.remove(measurement);
@@ -324,7 +325,8 @@ public class WattDepotClient implements WattDepotInterface {
    * (non-Javadoc)
    * 
    * @see
-   * org.wattdepot3.client.WattDepotInterface#getCollectorMetaData(java.lang.String)
+   * org.wattdepot3.client.WattDepotInterface#getCollectorMetaData(java.lang
+   * .String)
    */
   @Override
   public CollectorMetaData getCollectorMetaData(String id) throws IdNotFoundException {
@@ -762,7 +764,9 @@ public class WattDepotClient implements WattDepotInterface {
     return wattDepotUri;
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   * 
    * @see org.wattdepot3.client.WattDepotInterface#isHealthy()
    */
   @Override
@@ -783,8 +787,20 @@ public class WattDepotClient implements WattDepotInterface {
    * @return The client resource.
    */
   public ClientResource makeClient(String requestString) {
+    try {
+      URL url = new URL(this.wattDepotUri + requestString);
+      Reference reference = new Reference(url);
+      // System.out.print(reference);
+      ClientResource client = new ClientResource(reference);
+      client.setChallengeResponse(authentication);
+      return client;
+    }
+    catch (MalformedURLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     Reference reference = new Reference(this.wattDepotUri + requestString);
-    System.out.print(reference);
+    // System.out.print(reference);
     ClientResource client = new ClientResource(reference);
     client.setChallengeResponse(authentication);
     return client;
@@ -815,8 +831,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   @Override
   public void putDepository(Depository depository) {
-    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
-        + depository.getId());
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getId());
     DepositoryResource resource = client.wrap(DepositoryResource.class);
     resource.store(depository);
     client.release();
@@ -851,8 +866,8 @@ public class WattDepotClient implements WattDepotInterface {
       throw new MeasurementTypeException("Depository " + depository.getName() + " stores "
           + depository.getMeasurementType() + " not " + measurement.getMeasurementType());
     }
-    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI
-        + depository.getId() + "/" + API.MEASUREMENT_URI);
+    ClientResource client = makeClient(this.groupId + "/" + API.DEPOSITORY_URI + depository.getId()
+        + "/" + API.MEASUREMENT_URI);
     DepositoryMeasurementResource resource = client.wrap(DepositoryMeasurementResource.class);
     try {
       resource.store(measurement);

@@ -56,6 +56,7 @@ public class WattDepotComponent extends Component {
     // Add a CLAP client connector
     getClients().add(Protocol.CLAP);
     getClients().add(Protocol.FILE);
+    getClients().add(Protocol.HTTP);
 
     // Adds a HTTP server connector
     Server server = getServers().add(Protocol.HTTP, port);

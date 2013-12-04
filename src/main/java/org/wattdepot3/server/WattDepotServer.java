@@ -83,8 +83,7 @@ public class WattDepotServer {
     int port = Integer.parseInt(properties.get(ServerProperties.PORT_KEY));
     WattDepotServer server = new WattDepotServer();
     server.depot = (WattDepot) Class.forName(properties.get(ServerProperties.WATT_DEPOT_IMPL_KEY))
-        .getConstructor(ServerProperties.class)
-        .newInstance(properties);
+        .getConstructor(ServerProperties.class).newInstance(properties);
     if (server.depot.getSessionOpen() != server.depot.getSessionClose()) {
       throw new RuntimeException("opens and closed mismatched.");
     }
@@ -101,6 +100,19 @@ public class WattDepotServer {
     server.serverProperties = properties;
     server.restletServer.start();
     return server;
+  }
+
+  /**
+   * Creates a new WattDepotServer suitable for unit testing.
+   * 
+   * @return A WattDepotServer configured for testing.
+   * @throws Exception
+   *           if there is a problem initializing the server.
+   */
+  public static WattDepotServer newTestInstance() throws Exception {
+    ServerProperties properties = new ServerProperties();
+    properties.setTestProperties();
+    return newInstance(properties);
   }
 
   /**
@@ -148,7 +160,7 @@ public class WattDepotServer {
 
     CommandLine cmd = null;
     String directoryName = null;
-    
+
     CommandLineParser parser = new PosixParser();
     HelpFormatter formatter = new HelpFormatter();
     try {

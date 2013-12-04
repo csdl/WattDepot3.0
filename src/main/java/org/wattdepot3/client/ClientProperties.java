@@ -183,7 +183,7 @@ public class ClientProperties {
       System.out.println("Loading Server properties from: " + propFileName);
     }
     catch (IOException e) {
-      System.out.println(propFileName + " not found. Using default server properties.");
+      System.out.println(propFileName + " not found. Using default client properties.");
     }
     finally {
       if (stream != null) {

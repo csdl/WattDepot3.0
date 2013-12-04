@@ -43,6 +43,45 @@ import org.wattdepot3.server.ServerProperties;
  */
 public class DepositoryImpl extends Depository {
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (!super.equals(obj)) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    DepositoryImpl other = (DepositoryImpl) obj;
+    if (serverProperties == null) {
+      if (other.serverProperties != null) {
+        return false;
+      }
+    }
+    else if (!serverProperties.equals(other.serverProperties)) {
+      return false;
+    }
+    return true;
+  }
+
   private ServerProperties serverProperties;
 
   /**
