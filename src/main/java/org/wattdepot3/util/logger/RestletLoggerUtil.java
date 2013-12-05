@@ -1,4 +1,4 @@
-package org.wattdepot.util.logger;
+package org.wattdepot3.util.logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public final class RestletLoggerUtil {
           logger.removeHandler(handler);
         }
         // System.out.println("Removed handlers.");
-        // Define a handler that writes to the ~/.wattdepot/<service>/logs directory
+        // Define a handler that writes to the ~/.wattdepot3/<service>/logs directory
         // Define a file handler that writes to the logs directory, creating it if nec.
         if (serverHome == null) {
           throw new IllegalArgumentException("Attempt to change Restlet logging to null filename");

@@ -93,9 +93,9 @@ public class WattDepotComponent extends Component {
     app.getContext().setDefaultEnroler(realm.getEnroler());
     app.getContext().setDefaultVerifier(realm.getVerifier());
 
-    // Configure the log service
-    getLogService().setLoggerName("WattDepot3.AccessLog");
-    getLogService().setLogPropertiesRef("clap://system/org/wattdepot3/server/log.properties");
+//    // Configure the log service
+//    getLogService().setLoggerName("WattDepot3.AccessLog");
+//    getLogService().setLogPropertiesRef("clap://system/org/wattdepot3/server/log.properties");
   }
 
 }

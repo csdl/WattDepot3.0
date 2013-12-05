@@ -1,4 +1,4 @@
-package org.wattdepot.util.logger;
+package org.wattdepot3.util.logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,28 +65,6 @@ public final class WattDepotLogger {
       setLoggingLevel(logger, "INFO");
     }
   }
-
-  // /**
-  // * Return the WattDepot Logger named with loggerName, creating it if it does not yet exist.
-  // * WattDepot loggers have the following characteristics:
-  // * <ul>
-  // * <li>Log messages are one line and are prefixed with a time stamp using the OneLineFormatter
-  // * class.
-  // * <li>The logger creates a Console logger and a File logger.
-  // * <li>The File logger is written out to the [serverHome]/logs/ directory, creating this if it
-  // is
-  // * not found.
-  // * <li>The File log name is {name}.%u.log.
-  // * </ul>
-  // *
-  // * @param loggerName The name of this WattDepotLogger.
-  // * @return The Logger instance.
-  // * @throws IllegalArgumentException If serverHome is null.
-  // * @throws RuntimeException If there are problems creating directories or opening log file.
-  // */
-  // public static Logger getLogger(String loggerName) {
-  // return WattDepotLogger.getLogger(loggerName, null, true);
-  // }
 
   /**
    * Return the WattDepot Logger named with loggerName, creating it if it does not yet exist.

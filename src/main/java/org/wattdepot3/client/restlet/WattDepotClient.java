@@ -107,6 +107,7 @@ public class WattDepotClient implements WattDepotInterface {
    */
   public WattDepotClient(String serverUri, String username, String password)
       throws BadCredentialException {
+    System.out.println("Client " + serverUri + ", " + username + ", " + password);
     this.authentication = new ChallengeResponse(this.scheme, username, password);
     if (serverUri == null) {
       throw new IllegalArgumentException("serverUri cannot be null");

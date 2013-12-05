@@ -1,4 +1,4 @@
-package org.wattdepot.util.logger;
+package org.wattdepot3.util.logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

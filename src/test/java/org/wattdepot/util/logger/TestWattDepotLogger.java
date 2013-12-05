@@ -1,8 +1,11 @@
 package org.wattdepot.util.logger;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.logging.Logger;
+
 import org.junit.Test;
+import org.wattdepot3.util.logger.WattDepotLogger;
 
 /**
  * Tests the WattDepotLogger class. Portions of this code are adapted from
