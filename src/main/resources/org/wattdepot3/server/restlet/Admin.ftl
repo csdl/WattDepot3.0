@@ -22,7 +22,7 @@ $(function(){
 
 </head>
 <body>
-Opens: ${opens} Closes: ${closes}
+<!-- Opens: ${opens} Closes: ${closes} -->
 <nav class="navbar navbar-default" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
@@ -32,7 +32,7 @@ Opens: ${opens} Closes: ${closes}
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#"><img src="/webroot/dist/wattdepot-logo.png"> WattDepot: <strong><em>${groupId}</em></strong></a>
+    <a class="navbar-brand" href="#"><img src="/webroot/dist/wattdepot-logo.png"> WattDepot</a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
